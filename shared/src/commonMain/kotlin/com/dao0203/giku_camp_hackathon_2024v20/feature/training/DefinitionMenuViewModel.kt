@@ -20,7 +20,7 @@ data class DefineMenuUiState(
     val trainingTypes: List<TrainingType> = TrainingType.dummies() //TODO: fetch from API or Local DB
 )
 
-class DefineMenuViewModel : ViewModel() {
+class DefinitionMenuViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(DefineMenuUiState())
     val uiState: StateFlow<DefineMenuUiState> = _uiState.asStateFlow()
 
