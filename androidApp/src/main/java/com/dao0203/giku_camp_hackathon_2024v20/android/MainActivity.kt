@@ -10,7 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.dao0203.giku_camp_hackathon_2024v20.Platform
+import com.dao0203.giku_camp_hackathon_2024v20.android.ui.rememberMainAppState
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,7 +21,9 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    GreetingView(Platform().name)
+                    MainNavHost(
+                        mainAppState = rememberMainAppState(),
+                    )
                 }
             }
         }
