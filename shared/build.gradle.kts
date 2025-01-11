@@ -15,7 +15,11 @@ kotlin {
             }
         }
     }
-    
+
+    compilerOptions {
+        freeCompilerArgs.add("-Xexpect-actual-classes")
+    }
+
     listOf(
         iosX64(),
         iosArm64(),
