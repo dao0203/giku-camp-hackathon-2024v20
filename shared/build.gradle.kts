@@ -41,9 +41,6 @@ kotlin {
             // lifecycle-viewmodel
             implementation(libs.lifecycle.viewmodel.ktx)
             implementation(libs.lifecycle.viewmodel.compose)
-
-            // koin
-            implementation(libs.koin.android)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

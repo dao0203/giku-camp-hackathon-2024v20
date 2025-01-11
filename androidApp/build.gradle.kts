@@ -32,7 +32,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
 }
 
@@ -43,4 +43,7 @@ dependencies {
     implementation(libs.compose.material3)
     implementation(libs.androidx.activity.compose)
     debugImplementation(libs.compose.ui.tooling)
+
+    // koin
+    implementation(libs.koin.android)
 }
