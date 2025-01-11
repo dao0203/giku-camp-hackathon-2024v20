@@ -39,6 +39,9 @@ kotlin {
 
             // koin
             implementation(libs.koin.core)
+
+            // kotlinx-datetime
+            implementation(libs.kotlinx.datetime)
         }
         androidMain.dependencies {
 
