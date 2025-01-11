@@ -34,7 +34,7 @@ fun NavGraphBuilder.trainingNavigation(
         startDestination = TrainingRoute.MenuDefinition,
     ) {
         composable<TrainingRoute.MenuDefinition> {
-            // DefinitionMenuScreen()
+           DefinitionMenuScreen {  }
         }
         composable<TrainingRoute.TrainingWithCamera> {
             // TrainingWithCameraScreen()
