@@ -10,10 +10,20 @@ import kotlinx.serialization.Serializable
 sealed interface TrainingRoute {
     @Serializable
     data object Base : TrainingRoute
+
     @Serializable
     data object MenuDefinition : TrainingRoute
+
+    sealed interface TrainingAction : TrainingRoute {
+        @Serializable
+        data class TrainingWithCamera(val trainingId: String) : TrainingAction
+
+        @Serializable
+        data object Rest : TrainingAction
+    }
+
     @Serializable
-    data object TrainingWithCamera : TrainingRoute
+    data class Result(val trainingId: String) : TrainingRoute
 }
 
 fun NavController.navigateToTraining() {
@@ -25,7 +35,15 @@ fun NavController.navigateToMenuDefinition() {
 }
 
 fun NavController.navigateToTrainingWithCamera() {
-    navigate(TrainingRoute.TrainingWithCamera)
+    navigate(TrainingRoute.TrainingAction.TrainingWithCamera("trainingId"))
+}
+
+fun NavController.navigateToRest() {
+    navigate(TrainingRoute.TrainingAction.Rest)
+}
+
+fun NavController.navigateToResult() {
+    navigate(TrainingRoute.Result("trainingId"))
 }
 
 fun NavGraphBuilder.trainingNavigation(
@@ -35,10 +53,16 @@ fun NavGraphBuilder.trainingNavigation(
         startDestination = TrainingRoute.MenuDefinition,
     ) {
         composable<TrainingRoute.MenuDefinition> {
-           DefinitionMenuScreen {  }
+            DefinitionMenuScreen { }
         }
-        composable<TrainingRoute.TrainingWithCamera> {
-            // TrainingWithCameraScreen()
+        composable<TrainingRoute.TrainingAction.TrainingWithCamera> {
+            // TODO: Implement
+        }
+        composable<TrainingRoute.TrainingAction.Rest> {
+            // TODO: Implement
+        }
+        composable<TrainingRoute.Result> {
+            // TODO: Implement
         }
     }
 }
