@@ -9,8 +9,12 @@ import kotlinx.coroutines.SupervisorJob
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
-fun sharedModule() = module {
-    viewModel { DefinitionMenuViewModel(get()) }
-    single<OnGoingTrainingMenuRepository> { OnGoingTrainingMenuRepositoryImpl(CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)) }
+val repositoryModule = module {
+    single<OnGoingTrainingMenuRepository> {
+        OnGoingTrainingMenuRepositoryImpl(CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate))
+    }
+}
 
+val viewModelModule = module {
+    viewModel<DefinitionMenuViewModel> { DefinitionMenuViewModel() }
 }
