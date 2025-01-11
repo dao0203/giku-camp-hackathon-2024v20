@@ -1,13 +1,18 @@
 import SwiftUI
-import shared
-import Observation
+import GikuCampKit
 
 struct ContentView: View {
-	let viewModel = DefinitionMenuViewModel()
+	let storeOwner = SharedViewModelStoreOwner<DefinitionMenuViewModel>()
 
 	var body: some View {
-		Observing(viewModel.uiState) { uiState in
-			Text("counter")
+		Observing(storeOwner.instance.uiState) { uiState in
+			VStack {
+				Text(uiState.trainingMenu.id)
+				Button("change") {
+					storeOwner.instance.startTraining()
+				}
+			}
 		}
 	}
 }
+

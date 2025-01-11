@@ -27,6 +27,7 @@ kotlin {
         iosSimulatorArm64()
     ).forEach {
         it.binaries.framework {
+            export(libs.lifecycle.viewmodel) // Swift側からViewModelを使えるようにする
             baseName = "GikuCampKit"
             isStatic = true
         }
@@ -36,7 +37,7 @@ kotlin {
         commonMain.dependencies {
 
             // lifecycle-viewmodel
-            implementation(libs.lifecycle.viewmodel)
+            api(libs.lifecycle.viewmodel)
 
             // koin
             implementation(libs.koin.core)
@@ -55,6 +56,10 @@ kotlin {
             implementation(libs.kotlin.test)
         }
     }
+}
+
+skie {
+    features.enableSwiftUIObservingPreview = true
 }
 
 android {

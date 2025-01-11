@@ -12,7 +12,7 @@ class SharedViewModelStoreOwner<VM: ViewModel> : ObservableObject, ViewModelStor
 
     var instance: VM {
         get {
-            return viewModelStore.get(key: key) as! VM
+            viewModelStore.get(key: key) as! VM
         }
     }
 
