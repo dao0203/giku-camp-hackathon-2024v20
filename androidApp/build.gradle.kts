@@ -48,6 +48,7 @@ dependencies {
 
     // koin
     implementation(libs.koin.android)
+    implementation(libs.koin.compose.viewmodel.navigation)
 
     // kotlinx-serialization
     implementation(libs.kotlinx.serialization.json)

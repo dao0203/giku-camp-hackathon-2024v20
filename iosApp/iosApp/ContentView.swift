@@ -1,16 +1,13 @@
 import SwiftUI
 import shared
+import Observation
 
 struct ContentView: View {
-	let greet = Greeting().greet()
+	let viewModel = DefinitionMenuViewModel()
 
 	var body: some View {
-		Text(greet)
-	}
-}
-
-struct ContentView_Previews: PreviewProvider {
-	static var previews: some View {
-		ContentView()
+		Observing(viewModel.uiState) { uiState in
+			Text("counter")
+		}
 	}
 }

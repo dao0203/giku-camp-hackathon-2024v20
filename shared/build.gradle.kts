@@ -40,6 +40,7 @@ kotlin {
 
             // koin
             implementation(libs.koin.core)
+            implementation(libs.koin.compose.viewmodel)
 
             // kotlinx-datetime
             implementation(libs.kotlinx.datetime)
