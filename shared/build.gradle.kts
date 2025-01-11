@@ -37,12 +37,13 @@ kotlin {
             implementation(libs.koin.core)
         }
         androidMain.dependencies {
-            // koin
-            implementation(libs.koin.android)
 
             // lifecycle-viewmodel
             implementation(libs.lifecycle.viewmodel.ktx)
             implementation(libs.lifecycle.viewmodel.compose)
+
+            // koin
+            implementation(libs.koin.android)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
