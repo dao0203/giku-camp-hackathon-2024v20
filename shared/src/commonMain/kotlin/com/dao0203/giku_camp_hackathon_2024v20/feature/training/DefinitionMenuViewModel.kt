@@ -7,6 +7,7 @@ import com.dao0203.giku_camp_hackathon_2024v20.domain.TrainingMenu
 import com.dao0203.giku_camp_hackathon_2024v20.domain.TrainingType
 import com.dao0203.giku_camp_hackathon_2024v20.domain.default
 import com.dao0203.giku_camp_hackathon_2024v20.domain.dummies
+import com.dao0203.giku_camp_hackathon_2024v20.repository.OnGoingTrainingMenuRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -21,7 +22,9 @@ data class DefinitionMenuUiState(
 )
 
 @OptIn(ExperimentalUuidApi::class)
-class DefinitionMenuViewModel : ViewModel() {
+class DefinitionMenuViewModel(
+    private val onGoingTrainingMenuRepository: OnGoingTrainingMenuRepository
+) : ViewModel() {
     private val _uiState = MutableStateFlow(DefinitionMenuUiState())
     val uiState: StateFlow<DefinitionMenuUiState> = _uiState.asStateFlow()
 
@@ -54,5 +57,6 @@ class DefinitionMenuViewModel : ViewModel() {
                 )
             )
         }
+        onGoingTrainingMenuRepository.updateTrainingMenu(uiState.value.trainingMenu)
     }
 }
