@@ -4,6 +4,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.dao0203.giku_camp_hackathon_2024v20.android.feature.training.DefinitionMenuScreen
 import kotlinx.serialization.Serializable
 
 sealed interface TrainingRoute {
