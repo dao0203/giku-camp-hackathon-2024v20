@@ -10,7 +10,7 @@ kotlin {
         compilations.all {
             compileTaskProvider.configure {
                 compilerOptions {
-                    jvmTarget.set(JvmTarget.JVM_1_8)
+                    jvmTarget.set(JvmTarget.JVM_17)
                 }
             }
         }
@@ -29,7 +29,20 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            //put your multiplatform dependencies here
+
+            // lifecycle-viewmodel
+            implementation(libs.lifecycle.viewmodel)
+
+            // koin
+            implementation(libs.koin.core)
+        }
+        androidMain.dependencies {
+            // koin
+            implementation(libs.koin.android)
+
+            // lifecycle-viewmodel
+            implementation(libs.lifecycle.viewmodel.ktx)
+            implementation(libs.lifecycle.viewmodel.compose)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
