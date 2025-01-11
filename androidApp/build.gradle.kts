@@ -6,11 +6,11 @@ plugins {
 
 android {
     namespace = "com.dao0203.giku_camp_hackathon_2024v20.android"
-    compileSdk = 34
+    compileSdk = 35
     defaultConfig {
         applicationId = "com.dao0203.giku_camp_hackathon_2024v20.android"
         minSdk = 26
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
     }
