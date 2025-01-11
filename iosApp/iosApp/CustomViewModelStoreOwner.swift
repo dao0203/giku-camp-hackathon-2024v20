@@ -1,7 +1,7 @@
 import Foundation
 import GikuCampKit
 
-class SharedViewModelStoreOwner<VM: ViewModel> : ObservableObject, ViewModelStoreOwner {
+class CustomViewModelStoreOwner<VM: ViewModel> : ObservableObject, ViewModelStoreOwner {
     var viewModelStore: ViewModelStore = ViewModelStore()
 
     private let key: String = String(describing: type(of: VM.self))
