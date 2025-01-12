@@ -1,6 +1,5 @@
 package com.dao0203.giku_camp_hackathon_2024v20.android.feature.training
 
-import android.provider.CalendarContract.Colors
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -20,7 +19,6 @@ import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -87,20 +85,20 @@ private fun DefinitionMenuScreenContent(
     onRestChange: (String) -> Unit,
     listState: LazyListState,
     uiState: DefinitionMenuUiState,
-    modifier : Modifier = Modifier
+    modifier: Modifier = Modifier
 ) {
     Scaffold(
         modifier = modifier,
         floatingActionButton = {
             if (uiState.showStartingTrainingButton) {
-                ExtendedFloatingActionButton (
+                ExtendedFloatingActionButton(
                     onClick = onStartTraining,
                     icon = { Icon(Icons.Filled.DateRange, null) },
                     text = { Text("Start Training") },
                 )
             } else {
                 ExtendedFloatingActionButton(
-                    onClick = {  },
+                    onClick = { },
                     containerColor = Color(0xFFd3d3d3),
                     icon = { Icon(Icons.Filled.DateRange, null) },
                     text = { Text("Start Training") },
