@@ -5,6 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.dao0203.giku_camp_hackathon_2024v20.android.feature.training.DefinitionMenuScreen
+import com.dao0203.giku_camp_hackathon_2024v20.android.feature.training.TrainingWithCameraScreen
 import kotlinx.serialization.Serializable
 
 sealed interface TrainingRoute {
@@ -47,16 +48,18 @@ fun NavController.navigateToResult() {
 }
 
 fun NavGraphBuilder.trainingNavigation(
-//    onBackClick: () -> Unit,
+    navController: NavController,
 ) {
     navigation<TrainingRoute.Base>(
         startDestination = TrainingRoute.MenuDefinition,
     ) {
         composable<TrainingRoute.MenuDefinition> {
-            DefinitionMenuScreen { }
+            DefinitionMenuScreen {
+                navController.navigateToTrainingWithCamera()
+            }
         }
         composable<TrainingRoute.TrainingAction.TrainingWithCamera> {
-            // TODO: Implement
+            TrainingWithCameraScreen()
         }
         composable<TrainingRoute.TrainingAction.Rest> {
             // TODO: Implement

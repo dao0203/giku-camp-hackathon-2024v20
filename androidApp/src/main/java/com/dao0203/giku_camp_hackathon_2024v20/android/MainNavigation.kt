@@ -18,6 +18,6 @@ fun MainNavHost(
         startDestination = TrainingRoute.Base,
         modifier = modifier,
     ) {
-        trainingNavigation()
+        trainingNavigation(navController)
     }
 }
