@@ -37,7 +37,14 @@ data class DefinitionMenuUiState(
     val muscleGroupsUiModel: MuscleGroupsUiModel = MuscleGroupsUiModel(
         TrainingType.groupByMuscleGroup(TrainingType.dummies())
     )
-)
+) {
+    val showStartingTrainingButton: Boolean
+        get() = selectedTrainingType != null &&
+                sets.isNotBlank() &&
+                reps.isNotBlank() &&
+                weight.isNotBlank() &&
+                rest.isNotBlank()
+}
 
 @OptIn(ExperimentalUuidApi::class)
 class DefinitionMenuViewModel(

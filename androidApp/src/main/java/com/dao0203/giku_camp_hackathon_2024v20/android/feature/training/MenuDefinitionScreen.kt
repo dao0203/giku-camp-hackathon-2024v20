@@ -1,5 +1,6 @@
 package com.dao0203.giku_camp_hackathon_2024v20.android.feature.training
 
+import android.provider.CalendarContract.Colors
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,8 +15,13 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -24,6 +30,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -77,8 +84,27 @@ private fun DefinitionMenuScreenContent(
     onRestChange: (String) -> Unit,
     listState: LazyListState,
     uiState: DefinitionMenuUiState,
+    modifier : Modifier = Modifier
 ) {
-    Scaffold {
+    Scaffold(
+        modifier = modifier,
+        floatingActionButton = {
+            if (uiState.showStartingTrainingButton) {
+                ExtendedFloatingActionButton (
+                    onClick = onStartTraining,
+                    icon = { Icon(Icons.Filled.DateRange, null) },
+                    text = { Text("Start Training") },
+                )
+            } else {
+                ExtendedFloatingActionButton(
+                    onClick = {  },
+                    containerColor = Color(0xFFd3d3d3),
+                    icon = { Icon(Icons.Filled.DateRange, null) },
+                    text = { Text("Start Training") },
+                )
+            }
+        }
+    ) {
         LazyColumn(
             state = listState,
             modifier = Modifier
