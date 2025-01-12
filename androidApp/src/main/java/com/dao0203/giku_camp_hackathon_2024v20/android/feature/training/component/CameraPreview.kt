@@ -40,6 +40,7 @@ fun CameraPreview(
 
         val imageAnalysis = ImageAnalysis
             .Builder()
+            .setOutputImageFormat(ImageAnalysis.OUTPUT_IMAGE_FORMAT_RGBA_8888)
             .build()
             .also {
                 it.setAnalyzer(executor) { imageProxy ->
