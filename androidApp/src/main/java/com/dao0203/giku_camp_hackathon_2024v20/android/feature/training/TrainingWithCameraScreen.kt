@@ -30,8 +30,8 @@ fun TrainingWithCameraScreen() {
 @Composable
 private fun TrainingWithCameraContent(
     uiState: TrainingWithCameraUiState,
-    onAnalyzeImage: (image: ImageProxy) -> Unit = {},
-    modifier: Modifier = Modifier
+    onAnalyzeImage: (image: ImageProxy) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Scaffold(
         modifier = modifier,
