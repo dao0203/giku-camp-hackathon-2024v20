@@ -46,6 +46,7 @@ mediapipe = { module = "com.google.mediapipe:tasks-vision", version.ref = "media
 
 ## CameraX
 androidx-camera = { module = "androidx.camera:camera-camera2", version.ref = "androidx-camera" }
+androidx-camera-compose = { module = "androidx.camera:camera-compose", version.ref = "androidx-camera" }
 androidx-camera-viewfinder-compose = { module = "androidx.camera.viewfinder:viewfinder-compose", version.ref = "viewfinder-compose" }
 
 [plugins]
