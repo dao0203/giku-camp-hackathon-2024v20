@@ -11,6 +11,7 @@ plugin-serialization = "2.1.0"
 kotlinx-serialization-json = "1.8.0"
 kotlinx-datetime = "0.6.1"
 skie = "0.10.0"
+mediapipe = "0.20230731"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -37,6 +38,9 @@ kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serializa
 
 ## kotlinx-datetime
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
+
+## MediaPipe
+mediapipe = { module = "com.google.mediapipe:tasks-vision", version.ref = "mediapipe" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

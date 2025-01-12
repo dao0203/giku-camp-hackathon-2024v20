@@ -51,6 +51,9 @@ kotlin {
             // lifecycle-viewmodel
             implementation(libs.lifecycle.viewmodel.ktx)
             implementation(libs.lifecycle.viewmodel.compose)
+
+            // mediapipe
+            implementation(libs.mediapipe)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
