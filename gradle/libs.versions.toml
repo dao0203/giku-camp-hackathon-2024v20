@@ -46,8 +46,8 @@ mediapipe = { module = "com.google.mediapipe:tasks-vision", version.ref = "media
 
 ## CameraX
 androidx-camera = { module = "androidx.camera:camera-camera2", version.ref = "androidx-camera" }
-androidx-camera-compose = { module = "androidx.camera:camera-compose", version.ref = "androidx-camera" }
-androidx-camera-viewfinder-compose = { module = "androidx.camera.viewfinder:viewfinder-compose", version.ref = "viewfinder-compose" }
+androidx-camera-lifecycle = { module = "androidx.camera:camera-lifecycle", version.ref = "androidx-camera" }
+androidx-camera-view = { module = "androidx.camera:camera-view", version.ref = "androidx-camera" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
