@@ -1,6 +1,5 @@
 package com.dao0203.giku_camp_hackathon_2024v20.android.feature.training
 
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,6 +13,7 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -24,6 +24,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.dao0203.giku_camp_hackathon_2024v20.domain.TrainingType
@@ -50,7 +51,7 @@ fun DefinitionMenuScreen(
             viewModel.changeSets("3")
             viewModel.changeReps("10")
             viewModel.changeWeight("20.0")
-            viewModel.changeRest("60")
+            viewModel.changeRest("120")
 
             // scroll to the top of the list
             coroutineScope.launch {
@@ -121,15 +122,29 @@ private fun LazyListScope.writingTrainingMenu(
         Row {
             OutlinedTextField(
                 value = sets,
-                onValueChange = onSetsChange,
+                onValueChange = {
+                    if (it.all { char -> char.isDigit() }) {
+                        onSetsChange(it)
+                    }
+                },
                 label = { Text("Sets") },
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = KeyboardType.Number
+                ),
                 modifier = Modifier.weight(1f)
             )
             Spacer(modifier = Modifier.width(4.dp))
             OutlinedTextField(
                 value = reps,
-                onValueChange = onRepsChange,
+                onValueChange = {
+                    if (it.all { char -> char.isDigit() }) {
+                        onRepsChange(it)
+                    }
+                },
                 label = { Text("Reps") },
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = KeyboardType.Number
+                ),
                 modifier = Modifier.weight(1f)
             )
             Spacer(modifier = Modifier.width(4.dp))
@@ -137,6 +152,9 @@ private fun LazyListScope.writingTrainingMenu(
                 value = weight,
                 onValueChange = onWeightChange,
                 label = { Text("Weight") },
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = KeyboardType.Number
+                ),
                 modifier = Modifier.weight(1f),
             )
         }
@@ -162,8 +180,15 @@ private fun LazyListScope.writingTrainingMenu(
             Spacer(modifier = Modifier.width(4.dp))
             OutlinedTextField(
                 value = rest,
-                onValueChange = onRestChange,
+                onValueChange = {
+                    if (it.all { char -> char.isDigit() }) {
+                        onRestChange(it)
+                    }
+                },
                 label = { Text("Rest") },
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = KeyboardType.Number
+                ),
                 modifier = Modifier.weight(1f)
             )
         }
