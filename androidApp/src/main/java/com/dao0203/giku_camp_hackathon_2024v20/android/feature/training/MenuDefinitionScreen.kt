@@ -34,7 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.dao0203.giku_camp_hackathon_2024v20.domain.TrainingType
 import com.dao0203.giku_camp_hackathon_2024v20.feature.training.DefinitionMenuUiState
-import com.dao0203.giku_camp_hackathon_2024v20.feature.training.DefinitionMenuViewModel
+import com.dao0203.giku_camp_hackathon_2024v20.feature.training.MenuDefinitionViewModel
 import com.dao0203.giku_camp_hackathon_2024v20.feature.training.MuscleGroupsUiModel
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
@@ -43,7 +43,7 @@ import org.koin.compose.viewmodel.koinViewModel
 fun DefinitionMenuScreen(
     onStartTraining: () -> Unit,
 ) {
-    val viewModel = koinViewModel<DefinitionMenuViewModel>()
+    val viewModel = koinViewModel<MenuDefinitionViewModel>()
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
