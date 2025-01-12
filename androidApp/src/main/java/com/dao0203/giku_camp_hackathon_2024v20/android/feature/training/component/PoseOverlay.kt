@@ -42,12 +42,24 @@ fun PoseOverlay(
     uiModel: PoseOverlayUiModel,
     modifier: Modifier = Modifier,
 ) {
+    println("poseLandmarkerResult: ${uiModel.poseLandmarkerResult.landmarks()}")
     val scaleFactor = uiModel.getScaleFactor(
         overlayWidth = 100,
         overlayHeight = 100
     )
     Canvas(modifier = modifier) {
-        PoseLandmarker.POSE_LANDMARKS.forEach {
+        for(landmark in uiModel.poseLandmarkerResult.landmarks()) {
+            for(normalizedLandmark in landmark) {
+                drawCircle(
+                    center = Offset(
+                        normalizedLandmark.x() * uiModel.imageWidth * scaleFactor,
+                        normalizedLandmark.y() * uiModel.imageHeight * scaleFactor
+                    ),
+                    radius = 4f,
+                    color = Color(0xFFE57373)
+                )
+            }
+                    PoseLandmarker.POSE_LANDMARKS.forEach {
             with(uiModel) {
                 val start = Offset(
                     poseLandmarkerResult.landmarks()[0][it.start()].x() * imageWidth * scaleFactor,
@@ -64,5 +76,7 @@ fun PoseOverlay(
                 )
             }
         }
+        }
+
     }
 }
