@@ -45,6 +45,7 @@ private fun TrainingWithCameraContent(
             FloatingActionButton(
                 onClick = onSwitchCamera
             ) {
+                // TODO: change icon
                 Icon(Icons.Default.Star, contentDescription = null)
             }
         }
