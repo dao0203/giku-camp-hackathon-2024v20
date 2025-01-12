@@ -1,6 +1,7 @@
 package com.dao0203.giku_camp_hackathon_2024v20.android.feature.training
 
 import android.content.Context
+import androidx.camera.core.ImageProxy
 import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import com.dao0203.giku_camp_hackathon_2024v20.android.feature.training.component.PoseOverlayUiModel
@@ -27,11 +28,16 @@ class TrainingWithCameraViewModel : ViewModel(), KoinComponent,
 
     private val poseRandmarkerHelper = PoseLandmarkerHelper(
         context = context,
+        runningMode = RunningMode.LIVE_STREAM,
         landmarkerListener = this
     )
 
     fun initialize() {
         poseRandmarkerHelper.setup()
+    }
+
+    fun detectPose(imageProxy: ImageProxy) {
+        poseRandmarkerHelper.detectLiveStream(imageProxy)
     }
 
     override fun onResult(resultBundle: PoseLandmarkerHelper.ResultBundle) {

@@ -9,11 +9,13 @@ import com.google.mediapipe.framework.image.BitmapImageBuilder
 import com.google.mediapipe.framework.image.MPImage
 import com.google.mediapipe.tasks.core.BaseOptions
 import com.google.mediapipe.tasks.core.Delegate
+import com.google.mediapipe.tasks.vision.core.RunningMode
 import com.google.mediapipe.tasks.vision.poselandmarker.PoseLandmarker
 import com.google.mediapipe.tasks.vision.poselandmarker.PoseLandmarkerResult
 
 class PoseLandmarkerHelper(
     private val context: Context,
+    private val runningMode: RunningMode,
     private val landmarkerListener: LandmarkerListener? = null
 ) {
     private var poseLandmarker: PoseLandmarker? = null
@@ -29,6 +31,7 @@ class PoseLandmarkerHelper(
 
         val optionsBuilder = PoseLandmarker.PoseLandmarkerOptions.builder()
             .setBaseOptions(baseOptions)
+            .setRunningMode(runningMode)
             .setResultListener(this::returnLivestreamResult)
             .build()
 
