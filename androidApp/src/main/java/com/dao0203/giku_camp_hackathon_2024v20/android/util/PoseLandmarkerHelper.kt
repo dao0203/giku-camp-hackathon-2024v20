@@ -26,7 +26,7 @@ class PoseLandmarkerHelper(
     fun setup() {
         val baseOptions = BaseOptions.builder()
             .setDelegate(Delegate.CPU)
-            .setModelAssetPath("task/pose_landmark_full.task")
+            .setModelAssetPath("task/pose_landmarker_full.task")
             .build()
 
         val optionsBuilder = PoseLandmarker.PoseLandmarkerOptions.builder()
