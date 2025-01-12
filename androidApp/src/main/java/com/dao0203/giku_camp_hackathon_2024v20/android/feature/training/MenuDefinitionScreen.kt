@@ -26,6 +26,7 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,13 +37,26 @@ import com.dao0203.giku_camp_hackathon_2024v20.domain.TrainingType
 import com.dao0203.giku_camp_hackathon_2024v20.feature.training.DefinitionMenuUiState
 import com.dao0203.giku_camp_hackathon_2024v20.feature.training.MenuDefinitionViewModel
 import com.dao0203.giku_camp_hackathon_2024v20.feature.training.MuscleGroupsUiModel
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
 
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun DefinitionMenuScreen(
     onStartTraining: () -> Unit,
 ) {
+    val permissionState = rememberPermissionState(android.Manifest.permission.CAMERA)
+
+    LaunchedEffect(Unit) {
+        if (permissionState.status.isGranted) {
+            // Permission is already granted
+        } else {
+            permissionState.launchPermissionRequest()
+        }
+    }
     val viewModel = koinViewModel<MenuDefinitionViewModel>()
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
     val listState = rememberLazyListState()

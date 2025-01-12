@@ -60,4 +60,7 @@ dependencies {
 
     // mediapipe
     implementation(libs.mediapipe)
+
+    // permission
+    implementation(libs.accompanist.permissions)
 }
