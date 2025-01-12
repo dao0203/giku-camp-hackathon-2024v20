@@ -104,7 +104,8 @@ private fun DefinitionMenuScreenContent(
     }
 }
 
-// OutlinedTextField can`t be changed thickness of border
+// OutlinedTextField's border thickness can't be changed from parameter
+// so we need to create a custom TextField with BasicTextField
 private fun LazyListScope.writingTrainingMenu(
     sets: String,
     reps: String,
