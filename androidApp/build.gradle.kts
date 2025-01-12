@@ -55,6 +55,7 @@ dependencies {
 
     // cameraX
     implementation(libs.androidx.camera)
+    implementation(libs.androidx.camera.compose)
 
     // mediapipe
     implementation(libs.mediapipe)
