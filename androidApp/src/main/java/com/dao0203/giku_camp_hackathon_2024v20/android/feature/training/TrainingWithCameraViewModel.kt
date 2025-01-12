@@ -10,12 +10,14 @@ import com.dao0203.giku_camp_hackathon_2024v20.repository.OnGoingTrainingMenuRep
 import com.google.mediapipe.tasks.vision.core.RunningMode
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 @Stable
 data class TrainingWithCameraUiState(
     val poseOverlayUiModel: PoseOverlayUiModel? = null,
+    val isBackCamera: Boolean = true,
 )
 
 class TrainingWithCameraViewModel : ViewModel(), KoinComponent,
@@ -38,6 +40,10 @@ class TrainingWithCameraViewModel : ViewModel(), KoinComponent,
 
     fun detectPose(imageProxy: ImageProxy) {
         poseRandmarkerHelper.detectLiveStream(imageProxy)
+    }
+
+    fun switchCamera() {
+        _uiState.update { it.copy(isBackCamera = !it.isBackCamera) }
     }
 
     override fun onResult(resultBundle: PoseLandmarkerHelper.ResultBundle) {

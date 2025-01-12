@@ -4,6 +4,10 @@ import androidx.camera.core.ImageProxy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -23,7 +27,8 @@ fun TrainingWithCameraScreen() {
     }
     TrainingWithCameraContent(
         uiState = uiState,
-        onAnalyzeImage = viewModel::detectPose
+        onAnalyzeImage = viewModel::detectPose,
+        onSwitchCamera = viewModel::switchCamera
     )
 }
 
@@ -31,10 +36,18 @@ fun TrainingWithCameraScreen() {
 private fun TrainingWithCameraContent(
     uiState: TrainingWithCameraUiState,
     onAnalyzeImage: (image: ImageProxy) -> Unit,
+    onSwitchCamera: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
         modifier = modifier,
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = onSwitchCamera
+            ) {
+                Icon(Icons.Default.Star, contentDescription = null)
+            }
+        }
     ) {
         Column(
             modifier = Modifier
@@ -44,7 +57,8 @@ private fun TrainingWithCameraContent(
 
             ) {
                 CameraPreview(
-                    onAnalyzeImage = onAnalyzeImage
+                    onAnalyzeImage = onAnalyzeImage,
+                    isBackCamera = uiState.isBackCamera
                 )
                 uiState.poseOverlayUiModel?.let { poseOverlayUiModel ->
                     PoseOverlay(
