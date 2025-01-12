@@ -50,7 +50,10 @@ fun DefinitionMenuScreen(
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
     DefinitionMenuScreenContent(
-        onStartTraining = onStartTraining,
+        onStartTraining = {
+            viewModel.startTraining()
+            onStartTraining()
+        },
         onSelectTrainingType = {
 
             // define the default training menu
