@@ -98,3 +98,16 @@ fun TrainingType.Companion.dummies() = listOf(
         createdAt = Instant.DISTANT_PAST,
     ),
 )
+
+fun TrainingType.Companion.groupByMuscleGroup(trainingTypes: List<TrainingType>): Map<MuscleGroup, List<TrainingType>> {
+    val map = mutableMapOf<MuscleGroup, MutableList<TrainingType>>()
+    trainingTypes.forEach { trainingType ->
+        trainingType.muscleGroups.forEach { muscleGroup ->
+            if (map[muscleGroup] == null) {
+                map[muscleGroup] = mutableListOf()
+            }
+            map[muscleGroup]!!.add(trainingType)
+        }
+    }
+    return map
+}
