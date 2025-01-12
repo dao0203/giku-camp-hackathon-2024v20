@@ -52,4 +52,10 @@ dependencies {
 
     // kotlinx-serialization
     implementation(libs.kotlinx.serialization.json)
+
+    // cameraX
+    implementation(libs.androidx.camera)
+
+    // mediapipe
+    implementation(libs.mediapipe)
 }
