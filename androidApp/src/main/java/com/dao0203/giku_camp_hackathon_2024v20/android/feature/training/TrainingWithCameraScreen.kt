@@ -2,7 +2,6 @@ package com.dao0203.giku_camp_hackathon_2024v20.android.feature.training
 
 import androidx.camera.core.ImageProxy
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
@@ -50,24 +49,19 @@ private fun TrainingWithCameraContent(
             }
         }
     ) {
-        Column(
+        Box(
             modifier = Modifier
                 .padding(it)
         ) {
-            Box(
-
-            ) {
-                CameraPreview(
-                    onAnalyzeImage = onAnalyzeImage,
-                    isBackCamera = uiState.isBackCamera
+            CameraPreview(
+                onAnalyzeImage = onAnalyzeImage,
+                isBackCamera = uiState.isBackCamera
+            )
+            uiState.poseOverlayUiModel?.let { poseOverlayUiModel ->
+                PoseOverlay(
+                    uiModel = poseOverlayUiModel
                 )
-                uiState.poseOverlayUiModel?.let { poseOverlayUiModel ->
-                    PoseOverlay(
-                        uiModel = poseOverlayUiModel
-                    )
-                }
             }
-
         }
     }
 }

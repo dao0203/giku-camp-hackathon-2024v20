@@ -25,7 +25,11 @@ fun CameraPreview(
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
-    val previewView = remember { PreviewView(context) }
+    val previewView = remember {
+        val previewView = PreviewView(context)
+        previewView.scaleType = PreviewView.ScaleType.FILL_START
+        previewView
+    }
 
     DisposableEffect(isBackCamera) {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(context)
@@ -34,11 +38,15 @@ fun CameraPreview(
 
         val preview = createPreview(previewView.surfaceProvider)
 
-        val cameraSelector = if (isBackCamera) {
-            CameraSelector.DEFAULT_BACK_CAMERA
+        val cameraFacing = if (isBackCamera) {
+            CameraSelector.LENS_FACING_FRONT// TODO: change to back camera
         } else {
-            CameraSelector.DEFAULT_FRONT_CAMERA
+            CameraSelector.LENS_FACING_FRONT
         }
+
+        val cameraSelector = CameraSelector.Builder()
+            .requireLensFacing(cameraFacing)
+            .build()
         val imageAnalysis = createImageAnalysis(executor, onAnalyzeImage)
         try {
             cameraProvider.unbindAll()

@@ -44,8 +44,7 @@ fun PoseOverlay(
     modifier: Modifier = Modifier,
 ) {
     Canvas(
-        modifier =
-        modifier
+        modifier = modifier
             .fillMaxSize()
     ) {
         val scaleFactor = uiModel.getScaleFactor(size.width.toInt(), size.height.toInt())
@@ -74,7 +73,7 @@ fun PoseOverlay(
                     drawLine(
                         start = start,
                         end = end,
-                        strokeWidth = 4f,
+                        strokeWidth = 12f,
                         color = Color(0xFF007F8B)
                     )
                 }

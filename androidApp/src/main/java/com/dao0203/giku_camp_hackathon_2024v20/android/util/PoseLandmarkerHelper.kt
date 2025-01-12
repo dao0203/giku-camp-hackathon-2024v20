@@ -40,6 +40,7 @@ class PoseLandmarkerHelper(
 
     fun detectLiveStream(
         imageProxy: ImageProxy,
+        isFrontCamera: Boolean = true,
     ) {
         val bitmapBuffer = Bitmap.createBitmap(
             imageProxy.width,
@@ -55,6 +56,10 @@ class PoseLandmarkerHelper(
         val matrix = Matrix()
             .apply {
                 postRotate(imageProxy.imageInfo.rotationDegrees.toFloat())
+
+                if (isFrontCamera) {
+                    postScale(-1f, 1f, bitmapBuffer.width.toFloat(), bitmapBuffer.height.toFloat())
+                }
             }
 
         val rotatedBitmap = Bitmap.createBitmap(
