@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.camera.core.ImageProxy
 import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.dao0203.giku_camp_hackathon_2024v20.android.feature.training.component.PoseOverlayUiModel
 import com.dao0203.giku_camp_hackathon_2024v20.android.util.PoseLandmarkerHelper
 import com.dao0203.giku_camp_hackathon_2024v20.repository.OnGoingTrainingMenuRepository
@@ -11,6 +12,7 @@ import com.google.mediapipe.tasks.vision.core.RunningMode
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -18,6 +20,7 @@ import org.koin.core.component.inject
 data class TrainingWithCameraUiState(
     val poseOverlayUiModel: PoseOverlayUiModel? = null,
     val isBackCamera: Boolean = true,
+    val remainingReps: Int = 0,
 )
 
 class TrainingWithCameraViewModel : ViewModel(), KoinComponent,
@@ -36,6 +39,15 @@ class TrainingWithCameraViewModel : ViewModel(), KoinComponent,
 
     fun initialize() {
         poseRandmarkerHelper.setup()
+        viewModelScope.launch {
+            onGoingTrainingMenuRepository.onGoingTrainingMenu.collect { trainingMenu ->
+                _uiState.update { it.copy(remainingReps = trainingMenu.reps) }
+            }
+        }
+    }
+
+    fun updateReps(reps: Int) {
+        onGoingTrainingMenuRepository.updateSets(reps)
     }
 
     fun detectPose(imageProxy: ImageProxy) {

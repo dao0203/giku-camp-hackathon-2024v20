@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.dao0203.giku_camp_hackathon_2024v20.android.feature.training.component.CameraPreview
 import com.dao0203.giku_camp_hackathon_2024v20.android.feature.training.component.PoseOverlay
+import com.dao0203.giku_camp_hackathon_2024v20.android.feature.training.component.TrainingInfoCard
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -27,7 +28,8 @@ fun TrainingWithCameraScreen() {
     TrainingWithCameraContent(
         uiState = uiState,
         onAnalyzeImage = viewModel::detectPose,
-        onSwitchCamera = viewModel::switchCamera
+        onSwitchCamera = viewModel::switchCamera,
+        onClickCard = { }
     )
 }
 
@@ -36,6 +38,7 @@ private fun TrainingWithCameraContent(
     uiState: TrainingWithCameraUiState,
     onAnalyzeImage: (image: ImageProxy) -> Unit,
     onSwitchCamera: () -> Unit,
+    onClickCard: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
@@ -53,6 +56,10 @@ private fun TrainingWithCameraContent(
             modifier = Modifier
                 .padding(it)
         ) {
+            TrainingInfoCard(
+                remainingReps = uiState.remainingReps,
+                onClick = onClickCard,
+            )
             CameraPreview(
                 onAnalyzeImage = onAnalyzeImage,
                 isBackCamera = uiState.isBackCamera

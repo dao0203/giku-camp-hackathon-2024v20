@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.update
 interface OnGoingTrainingMenuRepository {
     val plannedTrainingMenu: Flow<TrainingMenu>
     val onGoingTrainingMenu: Flow<TrainingMenu>
-    fun updateTrainingMenu(trainingMenu: TrainingMenu)
+    fun updateSets(sets: Int)
 }
 
 class OnGoingTrainingMenuRepositoryImpl(
@@ -31,11 +31,7 @@ class OnGoingTrainingMenuRepositoryImpl(
         initialValue = TrainingMenu.default()
     )
 
-    override fun updateTrainingMenu(trainingMenu: TrainingMenu) {
-        _plannedTrainingMenu.update { trainingMenu }
-    }
-
-    fun updateSets(sets: Int) {
+    override fun updateSets(sets: Int) {
         _onGoingTrainingMenu.update { it.copy(sets = sets) }
     }
 }
