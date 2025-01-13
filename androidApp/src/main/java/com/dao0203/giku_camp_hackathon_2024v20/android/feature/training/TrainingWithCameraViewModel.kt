@@ -24,18 +24,27 @@ data class TrainingWithCameraUiState(
     val remainingReps: Int = 0,
 )
 
+private data class TrainingWithCameraViewModelState(
+    val poseOverlayUiModel: PoseOverlayUiModel? = null,
+    val isBackCamera: Boolean = true,
+)
+
 class TrainingWithCameraViewModel : ViewModel(), KoinComponent,
     PoseLandmarkerHelper.LandmarkerListener {
     private val onGoingTrainingMenuRepository by inject<OnGoingTrainingMenuRepository>()
     private val context: Context by inject()
 
-    private val _uiState = MutableStateFlow(TrainingWithCameraUiState())
+    private val vmState = MutableStateFlow(TrainingWithCameraViewModelState())
 
     val uiState = combine(
-        _uiState,
+        vmState,
         onGoingTrainingMenuRepository.onGoingTrainingMenu
-    ) { uiState, onGoingTrainingMenu ->
-        uiState.copy(remainingReps = onGoingTrainingMenu.reps)
+    ) { vmState, onGoingTrainingMenu ->
+        TrainingWithCameraUiState(
+            poseOverlayUiModel = vmState.poseOverlayUiModel,
+            isBackCamera = vmState.isBackCamera,
+            remainingReps = onGoingTrainingMenu.reps
+        )
     }.stateIn(
         viewModelScope,
         SharingStarted.Lazily,
@@ -61,18 +70,20 @@ class TrainingWithCameraViewModel : ViewModel(), KoinComponent,
     }
 
     fun switchCamera() {
-        _uiState.update { it.copy(isBackCamera = !it.isBackCamera) }
+        vmState.update { it.copy(isBackCamera = !it.isBackCamera) }
     }
 
     override fun onResult(resultBundle: PoseLandmarkerHelper.ResultBundle) {
-        _uiState.value = TrainingWithCameraUiState(
-            poseOverlayUiModel = PoseOverlayUiModel(
-                poseLandmarkerResult = resultBundle.results.first(),
-                imageWidth = resultBundle.inputImageWidth,
-                imageHeight = resultBundle.inputImageHeight,
-                runningMode = RunningMode.LIVE_STREAM,
+        vmState.update {
+            it.copy(
+                poseOverlayUiModel = PoseOverlayUiModel(
+                    poseLandmarkerResult = resultBundle.results.first(),
+                    imageWidth = resultBundle.inputImageWidth,
+                    imageHeight = resultBundle.inputImageHeight,
+                    runningMode = RunningMode.LIVE_STREAM,
+                )
             )
-        )
+        }
     }
 
     override fun onCleared() {
