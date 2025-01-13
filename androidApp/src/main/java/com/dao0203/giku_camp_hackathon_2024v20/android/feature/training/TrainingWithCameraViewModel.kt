@@ -10,9 +10,10 @@ import com.dao0203.giku_camp_hackathon_2024v20.android.util.PoseLandmarkerHelper
 import com.dao0203.giku_camp_hackathon_2024v20.repository.OnGoingTrainingMenuRepository
 import com.google.mediapipe.tasks.vision.core.RunningMode
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -29,7 +30,17 @@ class TrainingWithCameraViewModel : ViewModel(), KoinComponent,
     private val context: Context by inject()
 
     private val _uiState = MutableStateFlow(TrainingWithCameraUiState())
-    val uiState = _uiState.asStateFlow()
+
+    val uiState = combine(
+        _uiState,
+        onGoingTrainingMenuRepository.onGoingTrainingMenu
+    ) { uiState, onGoingTrainingMenu ->
+        uiState.copy(remainingReps = onGoingTrainingMenu.reps)
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.Lazily,
+        TrainingWithCameraUiState()
+    )
 
     private val poseRandmarkerHelper = PoseLandmarkerHelper(
         context = context,
@@ -39,15 +50,10 @@ class TrainingWithCameraViewModel : ViewModel(), KoinComponent,
 
     fun initialize() {
         poseRandmarkerHelper.setup()
-        viewModelScope.launch {
-            onGoingTrainingMenuRepository.onGoingTrainingMenu.collect {
-                _uiState.update { it.copy(remainingReps = it.remainingReps) }
-            }
-        }
     }
 
-    fun updateReps(reps: Int) {
-        onGoingTrainingMenuRepository.updateSets(reps)
+    fun updateReps() {
+        onGoingTrainingMenuRepository.updateReps(uiState.value.remainingReps - 1)
     }
 
     fun detectPose(imageProxy: ImageProxy) {

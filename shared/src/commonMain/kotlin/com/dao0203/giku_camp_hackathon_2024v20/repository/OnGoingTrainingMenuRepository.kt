@@ -6,35 +6,27 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 
 interface OnGoingTrainingMenuRepository {
     val plannedTrainingMenu: Flow<TrainingMenu>
     val onGoingTrainingMenu: Flow<TrainingMenu>
-    fun updateSets(sets: Int)
+    fun updateReps(reps: Int)
     fun updatePlannedTrainingMenu(trainingMenu: TrainingMenu)
     fun updateOnGoingTrainingMenu(trainingMenu: TrainingMenu)
 }
 
 class OnGoingTrainingMenuRepositoryImpl(
-    private val coroutineScope: CoroutineScope
 ) : OnGoingTrainingMenuRepository {
     private val _plannedTrainingMenu = MutableStateFlow(TrainingMenu.default())
-    override val plannedTrainingMenu = _plannedTrainingMenu.stateIn(
-        coroutineScope,
-        started = SharingStarted.WhileSubscribed(1_000),
-        initialValue = TrainingMenu.default()
-    )
+    override val plannedTrainingMenu = _plannedTrainingMenu.asStateFlow()
     private val _onGoingTrainingMenu = MutableStateFlow(TrainingMenu.default())
-    override val onGoingTrainingMenu = _onGoingTrainingMenu.stateIn(
-        coroutineScope,
-        started = SharingStarted.WhileSubscribed(1_000),
-        initialValue = TrainingMenu.default()
-    )
+    override val onGoingTrainingMenu = _onGoingTrainingMenu.asStateFlow()
 
-    override fun updateSets(sets: Int) {
-        _onGoingTrainingMenu.update { it.copy(sets = sets) }
+    override fun updateReps(reps: Int) {
+        _onGoingTrainingMenu.update { it.copy(reps = reps) }
     }
 
     override fun updatePlannedTrainingMenu(trainingMenu: TrainingMenu) {
