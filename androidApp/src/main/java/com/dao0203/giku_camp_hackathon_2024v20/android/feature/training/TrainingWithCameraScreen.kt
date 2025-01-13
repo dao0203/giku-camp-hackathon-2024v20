@@ -49,10 +49,7 @@ private fun TrainingWithCameraContent(
         modifier = modifier,
         floatingActionButton = {
             FloatingActionButton(
-                onClick = {
-                    // TODO: tentatively decrease reps, need to be changed
-                    onPassLine()
-                }
+                onClick = onSwitchCamera
             ) {
                 // TODO: change icon
                 Icon(Icons.Default.Star, contentDescription = null)

@@ -39,7 +39,7 @@ fun CameraPreview(
         val preview = createPreview(previewView.surfaceProvider)
 
         val cameraFacing = if (isBackCamera) {
-            CameraSelector.LENS_FACING_FRONT// TODO: change to back camera
+            CameraSelector.LENS_FACING_BACK
         } else {
             CameraSelector.LENS_FACING_FRONT
         }
