@@ -30,9 +30,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.dao0203.giku_camp_hackathon_2024v20.android.R
 import com.dao0203.giku_camp_hackathon_2024v20.domain.TrainingType
 import com.dao0203.giku_camp_hackathon_2024v20.feature.training.DefinitionMenuUiState
 import com.dao0203.giku_camp_hackathon_2024v20.feature.training.MenuDefinitionViewModel
@@ -108,14 +110,14 @@ private fun DefinitionMenuScreenContent(
                 ExtendedFloatingActionButton(
                     onClick = onStartTraining,
                     icon = { Icon(Icons.Filled.DateRange, null) },
-                    text = { Text("Start Training") },
+                    text = { Text(stringResource(R.string.start)) },
                 )
             } else {
                 ExtendedFloatingActionButton(
                     onClick = { },
                     containerColor = Color(0xFFd3d3d3),
                     icon = { Icon(Icons.Filled.DateRange, null) },
-                    text = { Text("Start Training") },
+                    text = { Text(stringResource(R.string.start)) },
                 )
             }
         }
@@ -168,7 +170,7 @@ private fun LazyListScope.writingTrainingMenu(
                         onSetsChange(it)
                     }
                 },
-                label = { Text("Sets") },
+                label = { Text(stringResource(R.string.sets)) },
                 keyboardOptions = KeyboardOptions.Default.copy(
                     keyboardType = KeyboardType.Number
                 ),
@@ -182,7 +184,7 @@ private fun LazyListScope.writingTrainingMenu(
                         onRepsChange(it)
                     }
                 },
-                label = { Text("Reps") },
+                label = { Text(stringResource(R.string.reps)) },
                 keyboardOptions = KeyboardOptions.Default.copy(
                     keyboardType = KeyboardType.Number
                 ),
@@ -192,7 +194,7 @@ private fun LazyListScope.writingTrainingMenu(
             OutlinedTextField(
                 value = weight,
                 onValueChange = onWeightChange,
-                label = { Text("Weight") },
+                label = { Text(stringResource(R.string.weight)) },
                 keyboardOptions = KeyboardOptions.Default.copy(
                     keyboardType = KeyboardType.Number
                 ),
@@ -206,9 +208,9 @@ private fun LazyListScope.writingTrainingMenu(
     item {
         Row {
             OutlinedTextField(
-                value = trainingType?.name ?: "Select Training Type",
+                value = trainingType?.name ?: stringResource(R.string.select_training_type),
                 onValueChange = {},
-                label = { Text("Training Type") },
+                label = { Text(stringResource(R.string.training_type)) },
                 readOnly = true,
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = MaterialTheme.colorScheme.onSurface,
@@ -226,7 +228,7 @@ private fun LazyListScope.writingTrainingMenu(
                         onRestChange(it)
                     }
                 },
-                label = { Text("Rest") },
+                label = { Text(stringResource(R.string.rest)) },
                 keyboardOptions = KeyboardOptions.Default.copy(
                     keyboardType = KeyboardType.Number
                 ),

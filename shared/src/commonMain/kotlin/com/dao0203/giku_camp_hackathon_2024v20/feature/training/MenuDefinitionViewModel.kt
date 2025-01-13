@@ -47,8 +47,7 @@ data class DefinitionMenuUiState(
 }
 
 @OptIn(ExperimentalUuidApi::class)
-class MenuDefinitionViewModel(
-) : ViewModel(), KoinComponent {
+class MenuDefinitionViewModel : ViewModel(), KoinComponent {
     private val onGoingTrainingMenuRepository by inject<OnGoingTrainingMenuRepository>()
     private val _uiState = MutableStateFlow(DefinitionMenuUiState())
     val uiState: StateFlow<DefinitionMenuUiState> = _uiState
