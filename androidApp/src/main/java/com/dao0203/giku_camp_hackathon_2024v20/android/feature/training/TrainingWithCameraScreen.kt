@@ -29,6 +29,7 @@ fun TrainingWithCameraScreen() {
         uiState = uiState,
         onAnalyzeImage = viewModel::detectPose,
         onSwitchCamera = viewModel::switchCamera,
+        onPassLine = viewModel::updateReps,
         onClickCard = { }
     )
 }
@@ -38,6 +39,7 @@ private fun TrainingWithCameraContent(
     uiState: TrainingWithCameraUiState,
     onAnalyzeImage: (image: ImageProxy) -> Unit,
     onSwitchCamera: () -> Unit,
+    onPassLine: (Int) -> Unit,
     onClickCard: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -45,7 +47,9 @@ private fun TrainingWithCameraContent(
         modifier = modifier,
         floatingActionButton = {
             FloatingActionButton(
-                onClick = onSwitchCamera
+                onClick = {
+                    onPassLine(uiState.remainingReps - 1)
+                }
             ) {
                 // TODO: change icon
                 Icon(Icons.Default.Star, contentDescription = null)

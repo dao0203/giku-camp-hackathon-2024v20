@@ -40,8 +40,8 @@ class TrainingWithCameraViewModel : ViewModel(), KoinComponent,
     fun initialize() {
         poseRandmarkerHelper.setup()
         viewModelScope.launch {
-            onGoingTrainingMenuRepository.onGoingTrainingMenu.collect { trainingMenu ->
-                _uiState.update { it.copy(remainingReps = trainingMenu.reps) }
+            onGoingTrainingMenuRepository.onGoingTrainingMenu.collect {
+                _uiState.update { it.copy(remainingReps = it.remainingReps) }
             }
         }
     }

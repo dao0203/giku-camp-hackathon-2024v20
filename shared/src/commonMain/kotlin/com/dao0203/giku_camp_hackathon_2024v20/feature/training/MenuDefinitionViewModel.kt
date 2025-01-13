@@ -87,6 +87,7 @@ class MenuDefinitionViewModel : ViewModel(), KoinComponent {
             rest = uiState.value.rest.toInt(),
             createdAt = Clock.System.now(),
         )
-        onGoingTrainingMenuRepository.updateTrainingMenu(trainingMenu)
+        onGoingTrainingMenuRepository.updatePlannedTrainingMenu(trainingMenu)
+        onGoingTrainingMenuRepository.updateOnGoingTrainingMenu(trainingMenu)
     }
 }

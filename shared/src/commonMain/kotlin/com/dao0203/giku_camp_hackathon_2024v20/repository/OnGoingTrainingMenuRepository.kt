@@ -13,6 +13,8 @@ interface OnGoingTrainingMenuRepository {
     val plannedTrainingMenu: Flow<TrainingMenu>
     val onGoingTrainingMenu: Flow<TrainingMenu>
     fun updateSets(sets: Int)
+    fun updatePlannedTrainingMenu(trainingMenu: TrainingMenu)
+    fun updateOnGoingTrainingMenu(trainingMenu: TrainingMenu)
 }
 
 class OnGoingTrainingMenuRepositoryImpl(
@@ -33,5 +35,13 @@ class OnGoingTrainingMenuRepositoryImpl(
 
     override fun updateSets(sets: Int) {
         _onGoingTrainingMenu.update { it.copy(sets = sets) }
+    }
+
+    override fun updatePlannedTrainingMenu(trainingMenu: TrainingMenu) {
+        _plannedTrainingMenu.update { trainingMenu }
+    }
+
+    override fun updateOnGoingTrainingMenu(trainingMenu: TrainingMenu) {
+        _onGoingTrainingMenu.update { trainingMenu }
     }
 }
