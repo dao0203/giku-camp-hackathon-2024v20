@@ -77,14 +77,3 @@ fun TrainingInfoCard(
         }
     }
 }
-
-@MainPreview
-@Composable
-fun TrainingInfoCardPreview() {
-    MainTheme {
-        TrainingInfoCard(
-            remainingReps = 10,
-            onClick = { },
-        )
-    }
-}
