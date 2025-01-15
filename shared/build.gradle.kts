@@ -63,7 +63,7 @@ skie {
 }
 
 android {
-    namespace = "com.dao0203.giku_camp_hackathon_2024v20"
+    namespace = "com.dao0203.gikucampv20"
     compileSdk = 34
     defaultConfig {
         minSdk = 26

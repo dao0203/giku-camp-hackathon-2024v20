@@ -14,6 +14,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "giku-camp-hackathon-2024v20"
+rootProject.name = "gikucampv20"
 include(":androidApp")
 include(":shared")

@@ -6,10 +6,10 @@ plugins {
 }
 
 android {
-    namespace = "com.dao0203.giku_camp_hackathon_2024v20.android"
+    namespace = "com.dao0203.gikucampv20.android"
     compileSdk = 35
     defaultConfig {
-        applicationId = "com.dao0203.giku_camp_hackathon_2024v20.android"
+        applicationId = "com.dao0203.gikucampv20.android"
         minSdk = 26
         targetSdk = 35
         versionCode = 1
@@ -63,4 +63,6 @@ dependencies {
 
     // permission
     implementation(libs.accompanist.permissions)
+
+    lintChecks(libs.compose.lint.checks)
 }
