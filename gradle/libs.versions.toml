@@ -14,7 +14,8 @@ skie = "0.10.0"
 mediapipe = "0.20230731"
 androidx-camera = "1.5.0-alpha04"
 accompanist-permissions = "0.37.0"
-spotless = "7.0.2"
+ktlint-gradle = "12.1.2"
+slack-compose-lint = "1.4.1"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -53,6 +54,9 @@ androidx-camera-view = { module = "androidx.camera:camera-view", version.ref = "
 ## Accompanist Permissions
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanist-permissions" }
 
+## Slack Compose Lint
+compose-lint-checks = { module = "com.slack.lint.compose:compose-lint-checks", version.ref = "slack-compose-lint" }
+
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
@@ -62,4 +66,4 @@ kotlinCocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = 
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "plugin-serialization" }
 skie = { id = "co.touchlab.skie", version.ref = "skie" }
-spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint-gradle" }
