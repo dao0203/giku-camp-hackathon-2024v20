@@ -35,7 +35,6 @@ data class PoseOverlayUiModel(
                 overlayHeight * 1f / imageHeight
             )
         }
-
 }
 
 @Composable
