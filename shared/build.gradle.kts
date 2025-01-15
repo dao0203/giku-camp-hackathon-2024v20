@@ -72,4 +72,28 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+    lint {
+        sarifOutput =
+            File(
+                project.layout.buildDirectory
+                    .get()
+                    .asFile,
+                "reports/android-lint/lintResults.sarif",
+            )
+        textOutput =
+            File(
+                project.layout.buildDirectory
+                    .get()
+                    .asFile,
+                "reports/android-lint/lintResults.txt",
+            )
+        htmlOutput =
+            File(
+                project.layout.buildDirectory
+                    .get()
+                    .asFile,
+                "reports/android-lint/lintResults.html",
+            )
+        xmlReport = false
+    }
 }
