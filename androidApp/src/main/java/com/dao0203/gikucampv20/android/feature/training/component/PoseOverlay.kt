@@ -17,7 +17,7 @@ import kotlin.math.min
 @Stable
 data class PoseOverlayUiModel(
     val poseLandmarkerResult: PoseLandmarkerResult,
-    val landmarksIndexesForTraining: List<LandmarkIndex>,
+    val trainingLineSegments: List<LineSegment>,
     val poseLandmarksIndexesForAdjusting: List<PoseLandmarksIndex>,
     val showLandmarkIndexesForAdjusting: Boolean,
     val imageHeight: Int,
@@ -42,7 +42,7 @@ data class PoseOverlayUiModel(
 }
 
 @Stable
-data class LandmarkIndex(
+data class LineSegment(
     val start: Coordination,
     val end: Coordination,
 )
@@ -117,7 +117,7 @@ fun PoseOverlay(
                     )
                 }
             }
-            uiModel.landmarksIndexesForTraining.forEach {
+            uiModel.trainingLineSegments.forEach {
                 val start =
                     Offset(
                         it.start.x * uiModel.imageWidth * scaleFactor,

@@ -6,7 +6,7 @@ import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dao0203.gikucampv20.android.feature.training.component.Coordination
-import com.dao0203.gikucampv20.android.feature.training.component.LandmarkIndex
+import com.dao0203.gikucampv20.android.feature.training.component.LineSegment
 import com.dao0203.gikucampv20.android.feature.training.component.PoseOverlayUiModel
 import com.dao0203.gikucampv20.android.util.PoseLandmarkerHelper
 import com.dao0203.gikucampv20.domain.PoseLandmarksIndex
@@ -136,7 +136,7 @@ class TrainingWithCameraViewModel :
         return this.copy(
             poseOverlayUiModel =
                 this.poseOverlayUiModel?.copy(
-                    landmarksIndexesForTraining =
+                    trainingLineSegments =
                         this.poseOverlayUiModel
                             .poseLandmarksIndexesForAdjusting.mapToLandmarkIndex(
                                 this.poseOverlayUiModel.poseLandmarkerResult,
@@ -146,27 +146,16 @@ class TrainingWithCameraViewModel :
         )
     }
 
-    private fun List<PoseLandmarksIndex>.mapToLandmarkIndex(poseLandmarkerResult: PoseLandmarkerResult): List<LandmarkIndex> {
+    private fun List<PoseLandmarksIndex>.mapToLandmarkIndex(poseLandmarkerResult: PoseLandmarkerResult): List<LineSegment> {
         return this.map {
-            LandmarkIndex(
-                start =
-                    Coordination(
-                        x =
-                            poseLandmarkerResult
-                                .landmarks()[0][it.start.index].x(),
-                        y =
-                            poseLandmarkerResult
-                                .landmarks()[0][it.start.index].y(),
-                    ),
-                end =
-                    Coordination(
-                        x =
-                            poseLandmarkerResult
-                                .landmarks()[0][it.end.index].x(),
-                        y =
-                            poseLandmarkerResult
-                                .landmarks()[0][it.end.index].y(),
-                    ),
+            val landmark = poseLandmarkerResult.landmarks()[0]
+            val startX = landmark[it.start.index].x()
+            val startY = landmark[it.start.index].y()
+            val endX = landmark[it.end.index].x()
+            val endY = landmark[it.end.index].y()
+            LineSegment(
+                start = Coordination(x = startX, y = startY),
+                end = Coordination(x = endX, y = endY),
             )
         }
     }
@@ -199,8 +188,8 @@ class TrainingWithCameraViewModel :
                             imageWidth = resultBundle.inputImageWidth,
                             imageHeight = resultBundle.inputImageHeight,
                             runningMode = RunningMode.LIVE_STREAM,
-                            landmarksIndexesForTraining =
-                                it.poseOverlayUiModel?.landmarksIndexesForTraining
+                            trainingLineSegments =
+                                it.poseOverlayUiModel?.trainingLineSegments
                                     ?: emptyList(),
                             poseLandmarksIndexesForAdjusting =
                                 adjusting ?: emptyList(),
@@ -227,7 +216,7 @@ class TrainingWithCameraViewModel :
                 poseLandmarksIndexesForAdjusting =
                     onGoingTrainingMenu.type?.targetPoseLandmarksIndices
                         ?: emptyList(),
-                landmarksIndexesForTraining = vmState.poseOverlayUiModel.landmarksIndexesForTraining,
+                trainingLineSegments = vmState.poseOverlayUiModel.trainingLineSegments,
                 showLandmarkIndexesForAdjusting = vmState.poseOverlayUiModel.showLandmarkIndexesForAdjusting,
             ),
         isBackCamera = vmState.isBackCamera,
