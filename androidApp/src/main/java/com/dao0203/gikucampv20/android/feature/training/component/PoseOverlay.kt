@@ -17,7 +17,7 @@ import kotlin.math.min
 @Stable
 data class PoseOverlayUiModel(
     val poseLandmarkerResult: PoseLandmarkerResult,
-    val trainingMidPointLines: List<MidpointLine>,
+    val trainingMidPointLines: MidpointLine?,
     val poseLandmarksIndexesForAdjusting: List<PoseLandmarksIndex>,
     val showLandmarkIndexesForAdjusting: Boolean,
     val imageHeight: Int,
@@ -123,7 +123,7 @@ fun PoseOverlay(
                     )
                 }
             }
-            uiModel.trainingMidPointLines.forEach {
+            uiModel.trainingMidPointLines?.let {
                 val start: Offset
                 val end: Offset
                 when (it.direction) {

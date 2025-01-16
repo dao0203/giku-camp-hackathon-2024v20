@@ -148,8 +148,8 @@ class TrainingWithCameraViewModel :
         )
     }
 
-    private fun List<PoseLandmarksIndex>.mapToLandmarkIndex(poseLandmarkerResult: PoseLandmarkerResult): List<MidpointLine> {
-        return this.map {
+    private fun List<PoseLandmarksIndex>.mapToLandmarkIndex(poseLandmarkerResult: PoseLandmarkerResult): MidpointLine {
+        return this.first().let {
             val landmark = poseLandmarkerResult.landmarks()[0]
             val startX = landmark[it.start.index].x()
             val startY = landmark[it.start.index].y()
