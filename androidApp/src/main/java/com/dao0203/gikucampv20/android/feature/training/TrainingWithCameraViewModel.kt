@@ -78,7 +78,6 @@ class TrainingWithCameraViewModel :
         viewModelScope.launch {
             onGoingTrainingMenuRepository.onGoingTrainingMenu.collect {
                 if (it.reps == 0) {
-                    poseRandmarkerHelper.clear()
                     _effect.emit(TrainingWithCameraEffect.NavigateToRest)
                     onGoingTrainingMenuRepository.resetReps()
                     onGoingTrainingMenuRepository.decreaseSets()
