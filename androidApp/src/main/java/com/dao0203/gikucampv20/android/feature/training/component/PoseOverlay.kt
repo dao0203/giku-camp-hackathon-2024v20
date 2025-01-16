@@ -17,7 +17,7 @@ import kotlin.math.min
 @Stable
 data class PoseOverlayUiModel(
     val poseLandmarkerResult: PoseLandmarkerResult,
-    val trainingLineSegments: List<LineSegment>,
+    val trainingMidPointLines: List<MidpointLine>,
     val poseLandmarksIndexesForAdjusting: List<PoseLandmarksIndex>,
     val showLandmarkIndexesForAdjusting: Boolean,
     val imageHeight: Int,
@@ -42,9 +42,9 @@ data class PoseOverlayUiModel(
 }
 
 @Stable
-data class LineSegment(
-    val start: Coordination,
-    val end: Coordination,
+data class MidpointLine(
+    val midpoint: Coordination,
+    val direction: LineDirection,
 )
 
 @Stable
@@ -52,6 +52,12 @@ data class Coordination(
     val x: Float,
     val y: Float,
 )
+
+@Stable
+enum class LineDirection {
+    HORIZONTAL,
+    VERTICAL,
+}
 
 @Composable
 fun PoseOverlay(
@@ -117,17 +123,35 @@ fun PoseOverlay(
                     )
                 }
             }
-            uiModel.trainingLineSegments.forEach {
-                val start =
-                    Offset(
-                        it.start.x * uiModel.imageWidth * scaleFactor,
-                        it.start.y * uiModel.imageHeight * scaleFactor,
-                    )
-                val end =
-                    Offset(
-                        it.end.x * uiModel.imageWidth * scaleFactor,
-                        it.end.y * uiModel.imageHeight * scaleFactor,
-                    )
+            uiModel.trainingMidPointLines.forEach {
+                val start: Offset
+                val end: Offset
+                when (it.direction) {
+                    LineDirection.HORIZONTAL -> {
+                        start =
+                            Offset(
+                                0f,
+                                it.midpoint.y * uiModel.imageHeight * scaleFactor,
+                            )
+                        end =
+                            Offset(
+                                size.width,
+                                it.midpoint.y * uiModel.imageHeight * scaleFactor,
+                            )
+                    }
+                    LineDirection.VERTICAL -> {
+                        start =
+                            Offset(
+                                it.midpoint.x * uiModel.imageWidth * scaleFactor,
+                                0f,
+                            )
+                        end =
+                            Offset(
+                                it.midpoint.x * uiModel.imageWidth * scaleFactor,
+                                size.height,
+                            )
+                    }
+                }
                 drawLine(
                     start = start,
                     end = end,

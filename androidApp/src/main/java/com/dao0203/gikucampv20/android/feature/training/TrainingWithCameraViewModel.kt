@@ -6,7 +6,8 @@ import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dao0203.gikucampv20.android.feature.training.component.Coordination
-import com.dao0203.gikucampv20.android.feature.training.component.LineSegment
+import com.dao0203.gikucampv20.android.feature.training.component.LineDirection
+import com.dao0203.gikucampv20.android.feature.training.component.MidpointLine
 import com.dao0203.gikucampv20.android.feature.training.component.PoseOverlayUiModel
 import com.dao0203.gikucampv20.android.util.PoseLandmarkerHelper
 import com.dao0203.gikucampv20.domain.PoseLandmarksIndex
@@ -28,6 +29,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import kotlin.math.abs
 
 @Stable
 data class TrainingWithCameraUiState(
@@ -136,7 +138,7 @@ class TrainingWithCameraViewModel :
         return this.copy(
             poseOverlayUiModel =
                 this.poseOverlayUiModel?.copy(
-                    trainingLineSegments =
+                    trainingMidPointLines =
                         this.poseOverlayUiModel
                             .poseLandmarksIndexesForAdjusting.mapToLandmarkIndex(
                                 this.poseOverlayUiModel.poseLandmarkerResult,
@@ -146,16 +148,20 @@ class TrainingWithCameraViewModel :
         )
     }
 
-    private fun List<PoseLandmarksIndex>.mapToLandmarkIndex(poseLandmarkerResult: PoseLandmarkerResult): List<LineSegment> {
+    private fun List<PoseLandmarksIndex>.mapToLandmarkIndex(poseLandmarkerResult: PoseLandmarkerResult): List<MidpointLine> {
         return this.map {
             val landmark = poseLandmarkerResult.landmarks()[0]
             val startX = landmark[it.start.index].x()
             val startY = landmark[it.start.index].y()
             val endX = landmark[it.end.index].x()
             val endY = landmark[it.end.index].y()
-            LineSegment(
-                start = Coordination(x = startX, y = startY),
-                end = Coordination(x = endX, y = endY),
+            val midX = (startX + endX) / 2
+            val midY = (startY + endY) / 2
+            val dx = endX - startX
+            val dy = endY - startY
+            MidpointLine(
+                midpoint = Coordination(midX, midY),
+                direction = if (abs(dx) > abs(dy)) LineDirection.HORIZONTAL else LineDirection.VERTICAL,
             )
         }
     }
@@ -188,8 +194,8 @@ class TrainingWithCameraViewModel :
                             imageWidth = resultBundle.inputImageWidth,
                             imageHeight = resultBundle.inputImageHeight,
                             runningMode = RunningMode.LIVE_STREAM,
-                            trainingLineSegments =
-                                it.poseOverlayUiModel?.trainingLineSegments
+                            trainingMidPointLines =
+                                it.poseOverlayUiModel?.trainingMidPointLines
                                     ?: emptyList(),
                             poseLandmarksIndexesForAdjusting =
                                 adjusting ?: emptyList(),
@@ -216,7 +222,7 @@ class TrainingWithCameraViewModel :
                 poseLandmarksIndexesForAdjusting =
                     onGoingTrainingMenu.type?.targetPoseLandmarksIndices
                         ?: emptyList(),
-                trainingLineSegments = vmState.poseOverlayUiModel.trainingLineSegments,
+                trainingMidPointLines = vmState.poseOverlayUiModel.trainingMidPointLines,
                 showLandmarkIndexesForAdjusting = vmState.poseOverlayUiModel.showLandmarkIndexesForAdjusting,
             ),
         isBackCamera = vmState.isBackCamera,
