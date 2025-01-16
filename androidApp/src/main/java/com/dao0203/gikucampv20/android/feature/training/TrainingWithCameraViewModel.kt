@@ -11,6 +11,7 @@ import com.dao0203.gikucampv20.domain.TrainingMenu
 import com.dao0203.gikucampv20.domain.default
 import com.dao0203.gikucampv20.repository.OnGoingTrainingMenuRepository
 import com.google.mediapipe.tasks.vision.core.RunningMode
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -27,7 +28,9 @@ data class TrainingWithCameraUiState(
     val poseOverlayUiModel: PoseOverlayUiModel?,
     val isBackCamera: Boolean,
     val remainingReps: Int,
-    val preparationTime: Int,
+    val preparationTimeUntilTraining: String,
+    val showPreparationTime: Boolean = preparationTimeUntilTraining.toInt() > 0,
+    val showGoText: Boolean,
 )
 
 sealed interface TrainingWithCameraEffect {
@@ -39,7 +42,8 @@ sealed interface TrainingWithCameraEffect {
 private data class TrainingWithCameraViewModelState(
     val poseOverlayUiModel: PoseOverlayUiModel? = null,
     val isBackCamera: Boolean = true,
-    val preparationTime: Int = 10,
+    val preparationTimeUntilTraining: Int = 10,
+    val showGoText: Boolean = false,
 )
 
 class TrainingWithCameraViewModel :
@@ -56,7 +60,10 @@ class TrainingWithCameraViewModel :
             vmState,
             onGoingTrainingMenuRepository.onGoingTrainingMenu,
         ) { vmState, onGoingTrainingMenu ->
-            createUiState(vmState, onGoingTrainingMenu)
+            createUiState(
+                vmState,
+                onGoingTrainingMenu,
+            )
         }.stateIn(
             viewModelScope,
             SharingStarted.Lazily,
@@ -75,6 +82,27 @@ class TrainingWithCameraViewModel :
 
     fun initialize() {
         poseRandmarkerHelper.setup()
+        decreasePreparationTime()
+        collectReps()
+    }
+
+    private fun decreasePreparationTime() {
+        viewModelScope.launch {
+            while (true) {
+                delay(1_000)
+                val currentState = vmState.value.preparationTimeUntilTraining
+                vmState.update { it.copy(preparationTimeUntilTraining = currentState - 1) }
+                if (vmState.value.preparationTimeUntilTraining == 0) {
+                    break
+                }
+            }
+            vmState.update { it.copy(showGoText = true) }
+            delay(1_000)
+            vmState.update { it.copy(showGoText = false) }
+        }
+    }
+
+    private fun collectReps() {
         viewModelScope.launch {
             onGoingTrainingMenuRepository.onGoingTrainingMenu.collect {
                 if (it.reps == 0) {
@@ -107,6 +135,8 @@ class TrainingWithCameraViewModel :
                         imageWidth = resultBundle.inputImageWidth,
                         imageHeight = resultBundle.inputImageHeight,
                         runningMode = RunningMode.LIVE_STREAM,
+                        landmarkIndexesForTraining = emptyList(),
+                        landmarkIndexesForAdjusting = emptyList(),
                     ),
             )
         }
@@ -121,9 +151,14 @@ class TrainingWithCameraViewModel :
         vmState: TrainingWithCameraViewModelState,
         onGoingTrainingMenu: TrainingMenu,
     ) = TrainingWithCameraUiState(
-        poseOverlayUiModel = vmState.poseOverlayUiModel,
+        poseOverlayUiModel =
+            vmState.poseOverlayUiModel?.copy(
+                landmarkIndexesForTraining = onGoingTrainingMenu.type?.targetLandmarkIndexes ?: emptyList(),
+                landmarkIndexesForAdjusting = onGoingTrainingMenu.type?.targetLandmarkIndexes ?: emptyList(),
+            ),
         isBackCamera = vmState.isBackCamera,
         remainingReps = onGoingTrainingMenu.reps,
-        preparationTime = vmState.preparationTime,
+        preparationTimeUntilTraining = vmState.preparationTimeUntilTraining.toString(),
+        showGoText = vmState.showGoText,
     )
 }

@@ -10,14 +10,20 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.dao0203.gikucampv20.android.BuildConfig
+import com.dao0203.gikucampv20.android.R
 import com.dao0203.gikucampv20.android.feature.training.component.CameraPreview
 import com.dao0203.gikucampv20.android.feature.training.component.PoseOverlay
 import com.dao0203.gikucampv20.android.feature.training.component.TrainingInfoCard
@@ -99,6 +105,30 @@ private fun TrainingWithCameraContent(
                     Modifier
                         .padding(16.dp),
             )
+            if (uiState.showPreparationTime) {
+                Text(
+                    text = uiState.preparationTimeUntilTraining,
+                    style =
+                        MaterialTheme.typography.displayLarge.copy(
+                            fontSize = 100.sp,
+                        ),
+                    modifier =
+                        Modifier
+                            .align(Alignment.Center),
+                )
+            }
+            if (uiState.showGoText) {
+                Text(
+                    text = stringResource(R.string.go),
+                    style =
+                        MaterialTheme.typography.displayLarge.copy(
+                            fontSize = 100.sp,
+                        ),
+                    modifier =
+                        Modifier
+                            .align(Alignment.Center),
+                )
+            }
         }
     }
 }
