@@ -10,7 +10,7 @@ import com.dao0203.gikucampv20.android.feature.training.TrainingResultScreen
 import com.dao0203.gikucampv20.android.feature.training.TrainingWithCameraScreen
 import kotlinx.serialization.Serializable
 
-private sealed interface TrainingRoute {
+sealed interface TrainingRoute {
     @Serializable
     data object Base : TrainingRoute
 
