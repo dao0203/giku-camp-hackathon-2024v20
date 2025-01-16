@@ -8,12 +8,12 @@ data class TrainingType(
     val description: String,
     val muscleGroups: List<MuscleGroup>,
     val createdAt: Instant,
-    val targetLandmarkIndexes: List<LandmarkIndex>? = null, // TODO: Remove initial value
+    val targetPoseLandmarksIndices: List<PoseLandmarksIndex>? = null, // TODO: Remove initial value
 ) {
     companion object
 }
 
-data class LandmarkIndex(
+data class PoseLandmarksIndex(
     val start: PoseLandmark,
     val end: PoseLandmark,
 )
@@ -26,9 +26,9 @@ fun TrainingType.Companion.dummies() =
             description = "Bench Press is a compound exercise that builds strength and muscle in the chest and triceps.",
             muscleGroups = listOf(MuscleGroup.CHEST, MuscleGroup.TRICEPS),
             createdAt = Instant.DISTANT_PAST,
-            targetLandmarkIndexes =
+            targetPoseLandmarksIndices =
                 listOf(
-                    LandmarkIndex(
+                    PoseLandmarksIndex(
                         start = PoseLandmark.LEFT_WRIST,
                         end = PoseLandmark.RIGHT_WRIST,
                     ),
@@ -40,9 +40,9 @@ fun TrainingType.Companion.dummies() =
             description = "Deadlift is a compound exercise that builds strength and muscle in the back, legs, and forearms.",
             muscleGroups = listOf(MuscleGroup.BACK, MuscleGroup.LEGS, MuscleGroup.FOREARM),
             createdAt = Instant.DISTANT_PAST,
-            targetLandmarkIndexes =
+            targetPoseLandmarksIndices =
                 listOf(
-                    LandmarkIndex(
+                    PoseLandmarksIndex(
                         start = PoseLandmark.LEFT_WRIST,
                         end = PoseLandmark.RIGHT_WRIST,
                     ),
@@ -96,9 +96,9 @@ fun TrainingType.Companion.dummies() =
             description = "Squat is a compound exercise that builds strength and muscle in the legs and back.",
             muscleGroups = listOf(MuscleGroup.LEGS, MuscleGroup.BACK),
             createdAt = Instant.DISTANT_PAST,
-            targetLandmarkIndexes =
+            targetPoseLandmarksIndices =
                 listOf(
-                    LandmarkIndex(
+                    PoseLandmarksIndex(
                         start = PoseLandmark.LEFT_HIP,
                         end = PoseLandmark.RIGHT_HIP,
                     ),

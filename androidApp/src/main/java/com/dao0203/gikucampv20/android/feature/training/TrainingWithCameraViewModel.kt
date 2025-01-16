@@ -5,18 +5,24 @@ import androidx.camera.core.ImageProxy
 import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.dao0203.gikucampv20.android.feature.training.component.Coordination
+import com.dao0203.gikucampv20.android.feature.training.component.LandmarkIndex
 import com.dao0203.gikucampv20.android.feature.training.component.PoseOverlayUiModel
 import com.dao0203.gikucampv20.android.util.PoseLandmarkerHelper
+import com.dao0203.gikucampv20.domain.PoseLandmarksIndex
 import com.dao0203.gikucampv20.domain.TrainingMenu
 import com.dao0203.gikucampv20.domain.default
 import com.dao0203.gikucampv20.repository.OnGoingTrainingMenuRepository
 import com.google.mediapipe.tasks.vision.core.RunningMode
+import com.google.mediapipe.tasks.vision.poselandmarker.PoseLandmarkerResult
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -84,6 +90,7 @@ class TrainingWithCameraViewModel :
         poseRandmarkerHelper.setup()
         decreasePreparationTime()
         collectReps()
+        defineLandmarkIndexesForTraining()
     }
 
     private fun decreasePreparationTime() {
@@ -114,6 +121,55 @@ class TrainingWithCameraViewModel :
         }
     }
 
+    private fun defineLandmarkIndexesForTraining() {
+        viewModelScope.launch {
+            vmState.collect { collect ->
+                if (collect.preparationTimeUntilTraining == 0) {
+                    vmState.update { updateVmState ->
+                        updateVmState.copy(
+                            poseOverlayUiModel =
+                                updateVmState.poseOverlayUiModel?.copy(
+                                    landmarksIndexesForTraining =
+                                        updateVmState
+                                            .poseOverlayUiModel
+                                            .poseLandmarksIndexesForAdjusting.mapToLandmarkIndex(
+                                                updateVmState.poseOverlayUiModel.poseLandmarkerResult,
+                                            ),
+                                    showLandmarkIndexesForAdjusting = false,
+                                ),
+                        )
+                    }
+                    cancel()
+                }
+            }
+        }
+    }
+
+    private fun List<PoseLandmarksIndex>.mapToLandmarkIndex(poseLandmarkerResult: PoseLandmarkerResult): List<LandmarkIndex> {
+        return this.map { forEach ->
+            LandmarkIndex(
+                start =
+                    Coordination(
+                        x =
+                            poseLandmarkerResult
+                                .landmarks()[0][forEach.start.index].x(),
+                        y =
+                            poseLandmarkerResult
+                                .landmarks()[0][forEach.start.index].y(),
+                    ),
+                end =
+                    Coordination(
+                        x =
+                            poseLandmarkerResult
+                                .landmarks()[0][forEach.end.index].x(),
+                        y =
+                            poseLandmarkerResult
+                                .landmarks()[0][forEach.end.index].y(),
+                    ),
+            )
+        }
+    }
+
     fun updateReps() {
         onGoingTrainingMenuRepository.decreaseReps()
     }
@@ -127,18 +183,32 @@ class TrainingWithCameraViewModel :
     }
 
     override fun onResult(resultBundle: PoseLandmarkerHelper.ResultBundle) {
-        vmState.update {
-            it.copy(
-                poseOverlayUiModel =
-                    PoseOverlayUiModel(
-                        poseLandmarkerResult = resultBundle.results.first(),
-                        imageWidth = resultBundle.inputImageWidth,
-                        imageHeight = resultBundle.inputImageHeight,
-                        runningMode = RunningMode.LIVE_STREAM,
-                        landmarkIndexesForTraining = emptyList(),
-                        landmarkIndexesForAdjusting = emptyList(),
-                    ),
-            )
+        viewModelScope.launch {
+            val adjusting =
+                if (vmState.value.poseOverlayUiModel == null) {
+                    onGoingTrainingMenuRepository.onGoingTrainingMenu.first().type?.targetPoseLandmarksIndices
+                } else {
+                    vmState.value.poseOverlayUiModel?.poseLandmarksIndexesForAdjusting
+                }
+            vmState.update {
+                it.copy(
+                    poseOverlayUiModel =
+                        PoseOverlayUiModel(
+                            poseLandmarkerResult = resultBundle.results.first(),
+                            imageWidth = resultBundle.inputImageWidth,
+                            imageHeight = resultBundle.inputImageHeight,
+                            runningMode = RunningMode.LIVE_STREAM,
+                            landmarksIndexesForTraining =
+                                it.poseOverlayUiModel?.landmarksIndexesForTraining
+                                    ?: emptyList(),
+                            poseLandmarksIndexesForAdjusting =
+                                adjusting ?: emptyList(),
+                            showLandmarkIndexesForAdjusting =
+                                it.poseOverlayUiModel?.showLandmarkIndexesForAdjusting
+                                    ?: true,
+                        ),
+                )
+            }
         }
     }
 
@@ -153,8 +223,11 @@ class TrainingWithCameraViewModel :
     ) = TrainingWithCameraUiState(
         poseOverlayUiModel =
             vmState.poseOverlayUiModel?.copy(
-                landmarkIndexesForTraining = onGoingTrainingMenu.type?.targetLandmarkIndexes ?: emptyList(),
-                landmarkIndexesForAdjusting = onGoingTrainingMenu.type?.targetLandmarkIndexes ?: emptyList(),
+                poseLandmarksIndexesForAdjusting =
+                    onGoingTrainingMenu.type?.targetPoseLandmarksIndices
+                        ?: emptyList(),
+                landmarksIndexesForTraining = vmState.poseOverlayUiModel.landmarksIndexesForTraining,
+                showLandmarkIndexesForAdjusting = vmState.poseOverlayUiModel.showLandmarkIndexesForAdjusting,
             ),
         isBackCamera = vmState.isBackCamera,
         remainingReps = onGoingTrainingMenu.reps,

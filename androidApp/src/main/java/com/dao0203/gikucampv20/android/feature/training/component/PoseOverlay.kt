@@ -7,8 +7,7 @@ import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import com.dao0203.gikucampv20.domain.PoseLandmark
-import com.google.mediapipe.tasks.components.containers.Connection
+import com.dao0203.gikucampv20.domain.PoseLandmarksIndex
 import com.google.mediapipe.tasks.vision.core.RunningMode
 import com.google.mediapipe.tasks.vision.poselandmarker.PoseLandmarker
 import com.google.mediapipe.tasks.vision.poselandmarker.PoseLandmarkerResult
@@ -18,6 +17,9 @@ import kotlin.math.min
 @Stable
 data class PoseOverlayUiModel(
     val poseLandmarkerResult: PoseLandmarkerResult,
+    val landmarksIndexesForTraining: List<LandmarkIndex>,
+    val poseLandmarksIndexesForAdjusting: List<PoseLandmarksIndex>,
+    val showLandmarkIndexesForAdjusting: Boolean,
     val imageHeight: Int,
     val imageWidth: Int,
     val runningMode: RunningMode,
@@ -38,6 +40,18 @@ data class PoseOverlayUiModel(
             )
         }
 }
+
+@Stable
+data class LandmarkIndex(
+    val start: Coordination,
+    val end: Coordination,
+)
+
+@Stable
+data class Coordination(
+    val x: Float,
+    val y: Float,
+)
 
 @Composable
 fun PoseOverlay(
@@ -83,30 +97,44 @@ fun PoseOverlay(
                     )
                 }
             }
-            val start =
-                Offset(
-                    uiModel.poseLandmarkerResult.landmarks()[0][leftToRightIndex.start()].x() * uiModel.imageWidth * scaleFactor,
-                    uiModel.poseLandmarkerResult.landmarks()[0][leftToRightIndex.start()].y() * uiModel.imageHeight * scaleFactor,
+            if (uiModel.showLandmarkIndexesForAdjusting) {
+                uiModel.poseLandmarksIndexesForAdjusting.forEach {
+                    val start =
+                        Offset(
+                            uiModel.poseLandmarkerResult.landmarks()[0][it.start.index].x() * uiModel.imageWidth * scaleFactor,
+                            uiModel.poseLandmarkerResult.landmarks()[0][it.start.index].y() * uiModel.imageHeight * scaleFactor,
+                        )
+                    val end =
+                        Offset(
+                            uiModel.poseLandmarkerResult.landmarks()[0][it.end.index].x() * uiModel.imageWidth * scaleFactor,
+                            uiModel.poseLandmarkerResult.landmarks()[0][it.end.index].y() * uiModel.imageHeight * scaleFactor,
+                        )
+                    drawLine(
+                        start = start,
+                        end = end,
+                        strokeWidth = 12f,
+                        color = Color(0xFF007F8B),
+                    )
+                }
+            }
+            uiModel.landmarksIndexesForTraining.forEach {
+                val start =
+                    Offset(
+                        it.start.x * uiModel.imageWidth * scaleFactor,
+                        it.start.y * uiModel.imageHeight * scaleFactor,
+                    )
+                val end =
+                    Offset(
+                        it.end.x * uiModel.imageWidth * scaleFactor,
+                        it.end.y * uiModel.imageHeight * scaleFactor,
+                    )
+                drawLine(
+                    start = start,
+                    end = end,
+                    strokeWidth = 12f,
+                    color = Color(0xFF007F8B),
                 )
-
-            val end =
-                Offset(
-                    uiModel.poseLandmarkerResult.landmarks()[0][leftToRightIndex.end()].x() * uiModel.imageWidth * scaleFactor,
-                    uiModel.poseLandmarkerResult.landmarks()[0][leftToRightIndex.end()].y() * uiModel.imageHeight * scaleFactor,
-                )
-
-            drawLine(
-                start = start,
-                end = end,
-                strokeWidth = 12f,
-                color = Color(0xFF007F8B),
-            )
+            }
         }
     }
 }
-
-private val leftToRightIndex =
-    Connection.create(
-        PoseLandmark.LEFT_INDEX.index,
-        PoseLandmark.RIGHT_INDEX.index,
-    )
