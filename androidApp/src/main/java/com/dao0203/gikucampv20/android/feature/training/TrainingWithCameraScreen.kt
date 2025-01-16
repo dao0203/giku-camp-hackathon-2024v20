@@ -21,18 +21,27 @@ import com.dao0203.gikucampv20.android.feature.training.component.TrainingInfoCa
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun TrainingWithCameraScreen() {
+fun TrainingWithCameraScreen(
+    navigateToRest: () -> Unit,
+    navigateToResult: () -> Unit,
+) {
     val viewModel = koinViewModel<TrainingWithCameraViewModel>()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     LaunchedEffect(Unit) {
         viewModel.initialize()
+        viewModel.effect.collect {
+            when (it) {
+                is TrainingWithCameraEffect.NavigateToRest -> navigateToRest()
+                is TrainingWithCameraEffect.NavigateToResult -> navigateToResult()
+            }
+        }
     }
     TrainingWithCameraContent(
         uiState = uiState,
         onAnalyzeImage = viewModel::detectPose,
         onSwitchCamera = viewModel::switchCamera,
         onPassLine = viewModel::updateReps,
-        onClickCard = { }
+        onClickCard = { },
     )
 }
 
@@ -49,32 +58,34 @@ private fun TrainingWithCameraContent(
         modifier = modifier,
         floatingActionButton = {
             FloatingActionButton(
-                onClick = onSwitchCamera
+                onClick = onSwitchCamera,
             ) {
                 // TODO: change icon
                 Icon(Icons.Default.Star, contentDescription = null)
             }
-        }
+        },
     ) {
         Box(
-            modifier = Modifier
-                .padding(it)
-                .fillMaxSize()
+            modifier =
+                Modifier
+                    .padding(it)
+                    .fillMaxSize(),
         ) {
             CameraPreview(
                 onAnalyzeImage = onAnalyzeImage,
-                isBackCamera = uiState.isBackCamera
+                isBackCamera = uiState.isBackCamera,
             )
             uiState.poseOverlayUiModel?.let { poseOverlayUiModel ->
                 PoseOverlay(
-                    uiModel = poseOverlayUiModel
+                    uiModel = poseOverlayUiModel,
                 )
             }
             TrainingInfoCard(
                 remainingReps = uiState.remainingReps,
                 onClick = onClickCard,
-                modifier = Modifier
-                    .padding(16.dp)
+                modifier =
+                    Modifier
+                        .padding(16.dp),
             )
         }
     }

@@ -17,14 +17,18 @@ sealed interface TrainingRoute {
 
     sealed interface TrainingAction : TrainingRoute {
         @Serializable
-        data class TrainingWithCamera(val trainingId: String) : TrainingAction
+        data class TrainingWithCamera(
+            val trainingId: String,
+        ) : TrainingAction
 
         @Serializable
         data object Rest : TrainingAction
     }
 
     @Serializable
-    data class Result(val trainingId: String) : TrainingRoute
+    data class Result(
+        val trainingId: String,
+    ) : TrainingRoute
 }
 
 fun NavController.navigateToTraining() {
@@ -47,9 +51,7 @@ fun NavController.navigateToResult() {
     navigate(TrainingRoute.Result("trainingId"))
 }
 
-fun NavGraphBuilder.trainingNavigation(
-    navController: NavController,
-) {
+fun NavGraphBuilder.trainingNavigation(navController: NavController) {
     navigation<TrainingRoute.Base>(
         startDestination = TrainingRoute.MenuDefinition,
     ) {
@@ -59,7 +61,10 @@ fun NavGraphBuilder.trainingNavigation(
             }
         }
         composable<TrainingRoute.TrainingAction.TrainingWithCamera> {
-            TrainingWithCameraScreen()
+            TrainingWithCameraScreen(
+                navigateToRest = { navController.navigateToRest() },
+                navigateToResult = { navController.navigateToResult() },
+            )
         }
         composable<TrainingRoute.TrainingAction.Rest> {
             // TODO: Implement

@@ -10,13 +10,19 @@ import kotlinx.coroutines.flow.update
 interface OnGoingTrainingMenuRepository {
     val plannedTrainingMenu: Flow<TrainingMenu>
     val onGoingTrainingMenu: Flow<TrainingMenu>
+
     fun updateReps(reps: Int)
+
+    fun resetReps()
+
+    fun decreaseSets()
+
     fun updatePlannedTrainingMenu(trainingMenu: TrainingMenu)
+
     fun updateOnGoingTrainingMenu(trainingMenu: TrainingMenu)
 }
 
-class OnGoingTrainingMenuRepositoryImpl(
-) : OnGoingTrainingMenuRepository {
+class OnGoingTrainingMenuRepositoryImpl : OnGoingTrainingMenuRepository {
     private val _plannedTrainingMenu = MutableStateFlow(TrainingMenu.default())
     override val plannedTrainingMenu = _plannedTrainingMenu.asStateFlow()
     private val _onGoingTrainingMenu = MutableStateFlow(TrainingMenu.default())
@@ -24,6 +30,14 @@ class OnGoingTrainingMenuRepositoryImpl(
 
     override fun updateReps(reps: Int) {
         _onGoingTrainingMenu.update { it.copy(reps = reps) }
+    }
+
+    override fun resetReps() {
+        _onGoingTrainingMenu.update { it.copy(reps = _plannedTrainingMenu.value.reps) }
+    }
+
+    override fun decreaseSets() {
+        _onGoingTrainingMenu.update { it.copy(sets = it.sets - 1) }
     }
 
     override fun updatePlannedTrainingMenu(trainingMenu: TrainingMenu) {
