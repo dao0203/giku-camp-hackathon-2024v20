@@ -12,4 +12,5 @@
     <string name="training_type">種目</string>
     <string name="muscle_groups">筋肉部位</string>
     <string name="select_training_type">トレーニングタイプを選択してください</string>
+    <string name="go">GO!</string>
 </resources>
