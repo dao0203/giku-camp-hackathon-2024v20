@@ -50,8 +50,10 @@ sealed interface TrainingWithCameraEffect {
 private data class TrainingWithCameraViewModelState(
     val poseOverlayUiModel: PoseOverlayUiModel? = null,
     val isBackCamera: Boolean = true,
-    val isLiftedAboveMidpoint: Boolean = false,
-    val preparationTimeUntilTraining: Int = 10,
+    val isLiftedAboveMidpointAll: Boolean = false,
+    val isLoweredBelowMidpointAll: Boolean = false,
+    val preparationTimeUntilTraining: Int = 15,
+    val preparationTimeUntilAdjusting: Int = 7,
     val showGoText: Boolean = false,
 )
 
@@ -92,6 +94,7 @@ class TrainingWithCameraViewModel :
     fun initialize() {
         poseRandmarkerHelper.setup()
         decreasePreparationTime()
+        decreasePreparationTimeUntilAdjusting()
         collectReps()
         collectCoordination()
         defineLandmarkIndexesForTraining()
@@ -110,6 +113,19 @@ class TrainingWithCameraViewModel :
             vmState.update { it.copy(showGoText = true) }
             delay(1_000)
             vmState.update { it.copy(showGoText = false) }
+        }
+    }
+
+    private fun decreasePreparationTimeUntilAdjusting() {
+        viewModelScope.launch {
+            while (true) {
+                delay(1_000)
+                val currentState = vmState.value.preparationTimeUntilAdjusting
+                vmState.update { it.copy(preparationTimeUntilAdjusting = currentState - 1) }
+                if (vmState.value.preparationTimeUntilAdjusting == 0) {
+                    break
+                }
+            }
         }
     }
 
@@ -176,6 +192,12 @@ class TrainingWithCameraViewModel :
 
     private fun List<PoseLandmarksIndex>.mapToLandmarkIndex(poseLandmarkerResult: PoseLandmarkerResult): MidpointLine {
         return this.first().let {
+            if (poseLandmarkerResult.landmarks().isEmpty()) {
+                return MidpointLine(
+                    midpoint = Coordination(0f, 0f),
+                    direction = LineDirection.HORIZONTAL,
+                )
+            }
             val landmark = poseLandmarkerResult.landmarks()[0]
             val startX = landmark[it.start.index].x()
             val startY = landmark[it.start.index].y()
@@ -250,11 +272,12 @@ class TrainingWithCameraViewModel :
                         ?: emptyList(),
                 trainingMidPointLines = vmState.poseOverlayUiModel.trainingMidPointLines,
                 showLandmarkIndexesForAdjusting = vmState.poseOverlayUiModel.showLandmarkIndexesForAdjusting,
-                isLiftedAboveLine = vmState.isLiftedAboveMidpoint,
+                isLiftedAboveLine = vmState.isLiftedAboveMidpointAll,
             ),
         isBackCamera = vmState.isBackCamera,
         remainingReps = onGoingTrainingMenu.reps,
         preparationTimeUntilTraining = vmState.preparationTimeUntilTraining.toString(),
+        preparationTimeUntilAdjusting = vmState.preparationTimeUntilAdjusting.toString(),
         showGoText = vmState.showGoText,
     )
 }
