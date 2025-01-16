@@ -5,10 +5,12 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.dao0203.gikucampv20.android.feature.training.DefinitionMenuScreen
+import com.dao0203.gikucampv20.android.feature.training.TrainingRestScreen
+import com.dao0203.gikucampv20.android.feature.training.TrainingResultScreen
 import com.dao0203.gikucampv20.android.feature.training.TrainingWithCameraScreen
 import kotlinx.serialization.Serializable
 
-sealed interface TrainingRoute {
+private sealed interface TrainingRoute {
     @Serializable
     data object Base : TrainingRoute
 
@@ -17,18 +19,14 @@ sealed interface TrainingRoute {
 
     sealed interface TrainingAction : TrainingRoute {
         @Serializable
-        data class TrainingWithCamera(
-            val trainingId: String,
-        ) : TrainingAction
+        data object TrainingWithCamera : TrainingAction
 
         @Serializable
         data object Rest : TrainingAction
     }
 
     @Serializable
-    data class Result(
-        val trainingId: String,
-    ) : TrainingRoute
+    data object Result : TrainingRoute
 }
 
 fun NavController.navigateToTraining() {
@@ -40,7 +38,7 @@ fun NavController.navigateToMenuDefinition() {
 }
 
 fun NavController.navigateToTrainingWithCamera() {
-    navigate(TrainingRoute.TrainingAction.TrainingWithCamera("trainingId"))
+    navigate(TrainingRoute.TrainingAction.TrainingWithCamera)
 }
 
 fun NavController.navigateToRest() {
@@ -48,7 +46,7 @@ fun NavController.navigateToRest() {
 }
 
 fun NavController.navigateToResult() {
-    navigate(TrainingRoute.Result("trainingId"))
+    navigate(TrainingRoute.Result)
 }
 
 fun NavGraphBuilder.trainingNavigation(navController: NavController) {
@@ -67,10 +65,14 @@ fun NavGraphBuilder.trainingNavigation(navController: NavController) {
             )
         }
         composable<TrainingRoute.TrainingAction.Rest> {
-            // TODO: Implement
+            TrainingRestScreen(
+                navigateToTrainingWithCamera = { navController.navigateToTrainingWithCamera() },
+            )
         }
         composable<TrainingRoute.Result> {
-            // TODO: Implement
+            TrainingResultScreen(
+                navigateToMenuDefinition = { navController.navigateToMenuDefinition() },
+            )
         }
     }
 }
