@@ -195,8 +195,7 @@ class TrainingWithCameraViewModel :
                             imageHeight = resultBundle.inputImageHeight,
                             runningMode = RunningMode.LIVE_STREAM,
                             trainingMidPointLines =
-                                it.poseOverlayUiModel?.trainingMidPointLines
-                                    ?: emptyList(),
+                                it.poseOverlayUiModel?.trainingMidPointLines,
                             poseLandmarksIndexesForAdjusting =
                                 adjusting ?: emptyList(),
                             showLandmarkIndexesForAdjusting =
