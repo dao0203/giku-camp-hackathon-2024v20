@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dao0203.gikucampv20.android.feature.training.component.PoseOverlayUiModel
 import com.dao0203.gikucampv20.android.util.PoseLandmarkerHelper
+import com.dao0203.gikucampv20.domain.TrainingMenu
+import com.dao0203.gikucampv20.domain.default
 import com.dao0203.gikucampv20.repository.OnGoingTrainingMenuRepository
 import com.google.mediapipe.tasks.vision.core.RunningMode
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -22,9 +24,10 @@ import org.koin.core.component.inject
 
 @Stable
 data class TrainingWithCameraUiState(
-    val poseOverlayUiModel: PoseOverlayUiModel? = null,
-    val isBackCamera: Boolean = true,
-    val remainingReps: Int = 0,
+    val poseOverlayUiModel: PoseOverlayUiModel?,
+    val isBackCamera: Boolean,
+    val remainingReps: Int,
+    val preparationTime: Int,
 )
 
 sealed interface TrainingWithCameraEffect {
@@ -36,6 +39,7 @@ sealed interface TrainingWithCameraEffect {
 private data class TrainingWithCameraViewModelState(
     val poseOverlayUiModel: PoseOverlayUiModel? = null,
     val isBackCamera: Boolean = true,
+    val preparationTime: Int = 10,
 )
 
 class TrainingWithCameraViewModel :
@@ -52,15 +56,11 @@ class TrainingWithCameraViewModel :
             vmState,
             onGoingTrainingMenuRepository.onGoingTrainingMenu,
         ) { vmState, onGoingTrainingMenu ->
-            TrainingWithCameraUiState(
-                poseOverlayUiModel = vmState.poseOverlayUiModel,
-                isBackCamera = vmState.isBackCamera,
-                remainingReps = onGoingTrainingMenu.reps,
-            )
+            createUiState(vmState, onGoingTrainingMenu)
         }.stateIn(
             viewModelScope,
             SharingStarted.Lazily,
-            TrainingWithCameraUiState(),
+            createUiState(vmState.value, TrainingMenu.default()),
         )
 
     private val _effect = MutableSharedFlow<TrainingWithCameraEffect>()
@@ -87,7 +87,7 @@ class TrainingWithCameraViewModel :
     }
 
     fun updateReps() {
-        onGoingTrainingMenuRepository.updateReps(uiState.value.remainingReps - 1)
+        onGoingTrainingMenuRepository.decreaseReps()
     }
 
     fun detectPose(imageProxy: ImageProxy) {
@@ -116,4 +116,14 @@ class TrainingWithCameraViewModel :
         super.onCleared()
         poseRandmarkerHelper.clear()
     }
+
+    private fun createUiState(
+        vmState: TrainingWithCameraViewModelState,
+        onGoingTrainingMenu: TrainingMenu,
+    ) = TrainingWithCameraUiState(
+        poseOverlayUiModel = vmState.poseOverlayUiModel,
+        isBackCamera = vmState.isBackCamera,
+        remainingReps = onGoingTrainingMenu.reps,
+        preparationTime = vmState.preparationTime,
+    )
 }
