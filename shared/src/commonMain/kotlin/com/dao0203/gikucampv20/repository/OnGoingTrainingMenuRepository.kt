@@ -11,7 +11,7 @@ interface OnGoingTrainingMenuRepository {
     val plannedTrainingMenu: Flow<TrainingMenu>
     val onGoingTrainingMenu: Flow<TrainingMenu>
 
-    fun updateReps(reps: Int)
+    fun decreaseReps()
 
     fun resetReps()
 
@@ -28,8 +28,8 @@ class OnGoingTrainingMenuRepositoryImpl : OnGoingTrainingMenuRepository {
     private val _onGoingTrainingMenu = MutableStateFlow(TrainingMenu.default())
     override val onGoingTrainingMenu = _onGoingTrainingMenu.asStateFlow()
 
-    override fun updateReps(reps: Int) {
-        _onGoingTrainingMenu.update { it.copy(reps = reps) }
+    override fun decreaseReps() {
+        _onGoingTrainingMenu.update { it.copy(reps = it.reps - 1) }
     }
 
     override fun resetReps() {
