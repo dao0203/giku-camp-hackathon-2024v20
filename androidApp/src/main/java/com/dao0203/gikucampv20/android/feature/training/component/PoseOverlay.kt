@@ -20,6 +20,7 @@ data class PoseOverlayUiModel(
     val trainingMidPointLines: MidpointLine?,
     val poseLandmarksIndexesForAdjusting: List<PoseLandmarksIndex>,
     val showLandmarkIndexesForAdjusting: Boolean,
+    val isLiftedAboveLine: Boolean,
     val imageHeight: Int,
     val imageWidth: Int,
     val runningMode: RunningMode,
@@ -156,7 +157,12 @@ fun PoseOverlay(
                     start = start,
                     end = end,
                     strokeWidth = 12f,
-                    color = Color(0xFFE57373),
+                    color =
+                        if (uiModel.isLiftedAboveLine) {
+                            Color(0xFF4CAF50)
+                        } else {
+                            Color(0xFFE57373)
+                        },
                 )
             }
         }

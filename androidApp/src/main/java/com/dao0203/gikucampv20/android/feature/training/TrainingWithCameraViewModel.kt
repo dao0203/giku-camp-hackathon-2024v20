@@ -50,6 +50,7 @@ sealed interface TrainingWithCameraEffect {
 private data class TrainingWithCameraViewModelState(
     val poseOverlayUiModel: PoseOverlayUiModel? = null,
     val isBackCamera: Boolean = true,
+    val isLiftedAboveMidpoint: Boolean = false,
     val preparationTimeUntilTraining: Int = 10,
     val showGoText: Boolean = false,
 )
@@ -92,6 +93,7 @@ class TrainingWithCameraViewModel :
         poseRandmarkerHelper.setup()
         decreasePreparationTime()
         collectReps()
+        collectCoordination()
         defineLandmarkIndexesForTraining()
     }
 
@@ -118,6 +120,30 @@ class TrainingWithCameraViewModel :
                     _effect.emit(TrainingWithCameraEffect.NavigateToRest)
                     onGoingTrainingMenuRepository.resetReps()
                     onGoingTrainingMenuRepository.decreaseSets()
+                }
+            }
+        }
+    }
+
+    private fun collectCoordination() {
+        viewModelScope.launch {
+            vmState.collect { collect ->
+                if (collect.poseOverlayUiModel?.poseLandmarksIndexesForAdjusting?.isNotEmpty() == true) {
+                    if (collect.poseOverlayUiModel.poseLandmarkerResult.landmarks()?.isNotEmpty() != true) return@collect
+                    val landmark = collect.poseOverlayUiModel.poseLandmarkerResult.landmarks()[0]
+                    val midPoint = collect.poseOverlayUiModel.trainingMidPointLines?.midpoint
+                    val isLiftedAboveMidpoint =
+                        collect.poseOverlayUiModel.trainingMidPointLines?.let {
+                            val landMarkOffset = collect.poseOverlayUiModel.poseLandmarksIndexesForAdjusting.first()
+                            if (it.direction == LineDirection.HORIZONTAL) {
+                                landmark[landMarkOffset.start.index].y() < (midPoint?.y ?: 0f) &&
+                                    landmark[landMarkOffset.end.index].y() < (midPoint?.y ?: 0f)
+                            } else {
+                                landmark[landMarkOffset.start.index].x() < (midPoint?.x ?: 0f) &&
+                                    landmark[landMarkOffset.end.index].x() < (midPoint?.x ?: 0f)
+                            }
+                        } ?: false
+                    vmState.update { it.copy(isLiftedAboveMidpoint = isLiftedAboveMidpoint) }
                 }
             }
         }
@@ -201,6 +227,7 @@ class TrainingWithCameraViewModel :
                             showLandmarkIndexesForAdjusting =
                                 it.poseOverlayUiModel?.showLandmarkIndexesForAdjusting
                                     ?: true,
+                            isLiftedAboveLine = it.isLiftedAboveMidpoint,
                         ),
                 )
             }
@@ -223,6 +250,7 @@ class TrainingWithCameraViewModel :
                         ?: emptyList(),
                 trainingMidPointLines = vmState.poseOverlayUiModel.trainingMidPointLines,
                 showLandmarkIndexesForAdjusting = vmState.poseOverlayUiModel.showLandmarkIndexesForAdjusting,
+                isLiftedAboveLine = vmState.isLiftedAboveMidpoint,
             ),
         isBackCamera = vmState.isBackCamera,
         remainingReps = onGoingTrainingMenu.reps,
