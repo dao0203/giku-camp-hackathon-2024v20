@@ -17,15 +17,15 @@ import org.koin.core.component.inject
 
 @Stable
 data class TrainingRestUiState(
-    val onGoingRestTime: Int = 0,
-    val showTimeText: Boolean = false,
+    val onGoingRestTime: String = "",
+    val showTimeText: Boolean = true,
     val remainingRestTime: Int = 0,
     val remainingSets: Int = 0,
 )
 
 data class TrainingRestViewModelState(
     val onGoingRestTime: Int = 0,
-    val showTimeText: Boolean = false,
+    val showTimeText: Boolean = true,
     val remainingRestTime: Int = 0,
 )
 
@@ -41,7 +41,7 @@ class TrainingRestViewModel :
             onGoingTrainingMenuRepository.onGoingTrainingMenu,
         ) { vmState, onGoingTrainingMenu ->
             TrainingRestUiState(
-                onGoingRestTime = vmState.onGoingRestTime,
+                onGoingRestTime = vmState.onGoingRestTime.toString(),
                 showTimeText = vmState.showTimeText,
                 remainingRestTime = vmState.remainingRestTime,
                 remainingSets = onGoingTrainingMenu.sets,
