@@ -113,7 +113,7 @@ fun PoseOverlay(
                         start = start,
                         end = end,
                         strokeWidth = 12f,
-                        color = Color(0xFF007F8B),
+                        color = Color(0xFFE57373),
                     )
                 }
             }
@@ -132,7 +132,7 @@ fun PoseOverlay(
                     start = start,
                     end = end,
                     strokeWidth = 12f,
-                    color = Color(0xFF007F8B),
+                    color = Color(0xFFE57373),
                 )
             }
         }

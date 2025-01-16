@@ -125,46 +125,47 @@ class TrainingWithCameraViewModel :
         viewModelScope.launch {
             vmState.collect { collect ->
                 if (collect.preparationTimeUntilTraining == 0) {
-                    vmState.update { updateVmState ->
-                        updateVmState.copy(
-                            poseOverlayUiModel =
-                                updateVmState.poseOverlayUiModel?.copy(
-                                    landmarksIndexesForTraining =
-                                        updateVmState
-                                            .poseOverlayUiModel
-                                            .poseLandmarksIndexesForAdjusting.mapToLandmarkIndex(
-                                                updateVmState.poseOverlayUiModel.poseLandmarkerResult,
-                                            ),
-                                    showLandmarkIndexesForAdjusting = false,
-                                ),
-                        )
-                    }
+                    vmState.update { it.copyOnPreparationTimeUntilTrainingZero() }
                     cancel()
                 }
             }
         }
     }
 
+    private fun TrainingWithCameraViewModelState.copyOnPreparationTimeUntilTrainingZero(): TrainingWithCameraViewModelState {
+        return this.copy(
+            poseOverlayUiModel =
+                this.poseOverlayUiModel?.copy(
+                    landmarksIndexesForTraining =
+                        this.poseOverlayUiModel
+                            .poseLandmarksIndexesForAdjusting.mapToLandmarkIndex(
+                                this.poseOverlayUiModel.poseLandmarkerResult,
+                            ),
+                    showLandmarkIndexesForAdjusting = false,
+                ),
+        )
+    }
+
     private fun List<PoseLandmarksIndex>.mapToLandmarkIndex(poseLandmarkerResult: PoseLandmarkerResult): List<LandmarkIndex> {
-        return this.map { forEach ->
+        return this.map {
             LandmarkIndex(
                 start =
                     Coordination(
                         x =
                             poseLandmarkerResult
-                                .landmarks()[0][forEach.start.index].x(),
+                                .landmarks()[0][it.start.index].x(),
                         y =
                             poseLandmarkerResult
-                                .landmarks()[0][forEach.start.index].y(),
+                                .landmarks()[0][it.start.index].y(),
                     ),
                 end =
                     Coordination(
                         x =
                             poseLandmarkerResult
-                                .landmarks()[0][forEach.end.index].x(),
+                                .landmarks()[0][it.end.index].x(),
                         y =
                             poseLandmarkerResult
-                                .landmarks()[0][forEach.end.index].y(),
+                                .landmarks()[0][it.end.index].y(),
                     ),
             )
         }
