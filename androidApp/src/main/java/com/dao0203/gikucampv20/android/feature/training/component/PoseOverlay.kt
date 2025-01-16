@@ -7,6 +7,8 @@ import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import com.dao0203.gikucampv20.domain.PoseLandmark
+import com.google.mediapipe.tasks.components.containers.Connection
 import com.google.mediapipe.tasks.vision.core.RunningMode
 import com.google.mediapipe.tasks.vision.poselandmarker.PoseLandmarker
 import com.google.mediapipe.tasks.vision.poselandmarker.PoseLandmarkerResult
@@ -22,17 +24,17 @@ data class PoseOverlayUiModel(
 ) {
     fun getScaleFactor(
         overlayWidth: Int,
-        overlayHeight: Int
+        overlayHeight: Int,
     ): Float =
         if (runningMode == RunningMode.VIDEO || runningMode == RunningMode.IMAGE) {
             min(
                 overlayWidth * 1f / imageWidth,
-                overlayHeight * 1f / imageHeight
+                overlayHeight * 1f / imageHeight,
             )
         } else {
             max(
                 overlayWidth * 1f / imageWidth,
-                overlayHeight * 1f / imageHeight
+                overlayHeight * 1f / imageHeight,
             )
         }
 }
@@ -43,41 +45,68 @@ fun PoseOverlay(
     modifier: Modifier = Modifier,
 ) {
     Canvas(
-        modifier = modifier
-            .fillMaxSize()
+        modifier =
+            modifier
+                .fillMaxSize(),
     ) {
         val scaleFactor = uiModel.getScaleFactor(size.width.toInt(), size.height.toInt())
         for (landmark in uiModel.poseLandmarkerResult.landmarks()) {
             for (normalizedLandmark in landmark) {
                 drawCircle(
-                    center = Offset(
-                        normalizedLandmark.x() * uiModel.imageWidth * scaleFactor,
-                        normalizedLandmark.y() * uiModel.imageHeight * scaleFactor
-                    ),
+                    center =
+                        Offset(
+                            normalizedLandmark.x() * uiModel.imageWidth * scaleFactor,
+                            normalizedLandmark.y() * uiModel.imageHeight * scaleFactor,
+                        ),
                     radius = 4f,
-                    color = Color(0xFFE57373)
+                    color = Color(0xFFE57373),
                 )
             }
             PoseLandmarker.POSE_LANDMARKS.forEach {
                 with(uiModel) {
                     if (poseLandmarkerResult.landmarks().isEmpty()) return@forEach
-                    val start = Offset(
-                        poseLandmarkerResult.landmarks()[0][it.start()].x() * imageWidth * scaleFactor,
-                        poseLandmarkerResult.landmarks()[0][it.start()].y() * imageHeight * scaleFactor
-                    )
-                    val end = Offset(
-                        poseLandmarkerResult.landmarks()[0][it.end()].x() * imageWidth * scaleFactor,
-                        poseLandmarkerResult.landmarks()[0][it.end()].y() * imageHeight * scaleFactor
-                    )
+                    val start =
+                        Offset(
+                            poseLandmarkerResult.landmarks()[0][it.start()].x() * imageWidth * scaleFactor,
+                            poseLandmarkerResult.landmarks()[0][it.start()].y() * imageHeight * scaleFactor,
+                        )
+                    val end =
+                        Offset(
+                            poseLandmarkerResult.landmarks()[0][it.end()].x() * imageWidth * scaleFactor,
+                            poseLandmarkerResult.landmarks()[0][it.end()].y() * imageHeight * scaleFactor,
+                        )
                     drawLine(
                         start = start,
                         end = end,
                         strokeWidth = 12f,
-                        color = Color(0xFF007F8B)
+                        color = Color(0xFF007F8B),
                     )
                 }
             }
-        }
+            val start =
+                Offset(
+                    uiModel.poseLandmarkerResult.landmarks()[0][leftToRightIndex.start()].x() * uiModel.imageWidth * scaleFactor,
+                    uiModel.poseLandmarkerResult.landmarks()[0][leftToRightIndex.start()].y() * uiModel.imageHeight * scaleFactor,
+                )
 
+            val end =
+                Offset(
+                    uiModel.poseLandmarkerResult.landmarks()[0][leftToRightIndex.end()].x() * uiModel.imageWidth * scaleFactor,
+                    uiModel.poseLandmarkerResult.landmarks()[0][leftToRightIndex.end()].y() * uiModel.imageHeight * scaleFactor,
+                )
+
+            drawLine(
+                start = start,
+                end = end,
+                strokeWidth = 12f,
+                color = Color(0xFF007F8B),
+            )
+        }
     }
 }
+
+private val leftToRightIndex =
+    Connection.create(
+        PoseLandmark.LEFT_INDEX.index,
+        PoseLandmark.RIGHT_INDEX.index,
+    )
