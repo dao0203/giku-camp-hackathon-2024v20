@@ -130,6 +130,7 @@ class TrainingWithCameraViewModel :
             vmState.update { it.copy(showGoText = true) }
             delay(1_000)
             vmState.update { it.copy(showGoText = false) }
+            cancel()
         }
     }
 
@@ -139,6 +140,7 @@ class TrainingWithCameraViewModel :
                 delay(1_000)
                 if (vmState.value.preparationTimeUntilAdjusting == 0) {
                     vmState.update { it.copy(showPreparationTimeUntilAdjusting = false) }
+                    cancel()
                     break
                 }
                 val currentState = vmState.value.preparationTimeUntilAdjusting
@@ -154,6 +156,8 @@ class TrainingWithCameraViewModel :
                     _effect.emit(TrainingWithCameraEffect.NavigateToRest)
                     onGoingTrainingMenuRepository.resetReps()
                     onGoingTrainingMenuRepository.decreaseSets()
+                    vmState.update { TrainingWithCameraViewModelState() }
+                    cancel()
                 }
             }
         }
