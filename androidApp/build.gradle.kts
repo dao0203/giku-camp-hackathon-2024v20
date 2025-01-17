@@ -90,4 +90,6 @@ dependencies {
     implementation(libs.accompanist.permissions)
 
     lintChecks(libs.compose.lint.checks)
+
+    implementation(libs.lottie.compose)
 }
