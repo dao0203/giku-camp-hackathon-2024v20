@@ -45,6 +45,7 @@ data class TrainingWithCameraUiState(
     val rotationDegrees: Float,
     val showPreparationTimeUntilAdjusting: Boolean,
     val showGoText: Boolean,
+    val showFinishCheck: Boolean,
 )
 
 sealed interface TrainingWithCameraEffect {
@@ -62,6 +63,7 @@ private data class TrainingWithCameraViewModelState(
     val screenOrientation: ScreenOrientation = ScreenOrientation.PORTRAIT,
     val showPreparationTimeUntilAdjusting: Boolean = true,
     val showGoText: Boolean = false,
+    val showFinishCheck: Boolean = false,
 )
 
 enum class ScreenOrientation(val degrees: Float) {
@@ -153,6 +155,8 @@ class TrainingWithCameraViewModel :
         viewModelScope.launch {
             onGoingTrainingMenuRepository.onGoingTrainingMenu.collect {
                 if (it.reps == 0) {
+                    vmState.update { vm -> vm.copy(showFinishCheck = true) }
+                    delay(1_500) // for showing finish check
                     _effect.emit(TrainingWithCameraEffect.NavigateToRest)
                     onGoingTrainingMenuRepository.resetReps()
                     onGoingTrainingMenuRepository.decreaseSets()
@@ -167,6 +171,7 @@ class TrainingWithCameraViewModel :
         viewModelScope.launch {
             vmState.collect { collect ->
                 if (collect.preparationTimeUntilTraining != 0) return@collect
+                if (uiState.value.remainingReps == 0) return@collect
                 if (collect.poseOverlayUiModel?.poseLandmarksIndexesForAdjusting?.isNotEmpty() == true) {
                     if (collect.poseOverlayUiModel.poseLandmarkerResult.landmarks()
                             ?.isNotEmpty() != true
@@ -370,6 +375,7 @@ class TrainingWithCameraViewModel :
         showPreparationTimeUntilAdjusting = vmState.showPreparationTimeUntilAdjusting,
         showGoText = vmState.showGoText,
         rotationDegrees = vmState.screenOrientation.degrees,
+        showFinishCheck = vmState.showFinishCheck,
     )
 
     override fun onSensorChanged(event: SensorEvent?) {
