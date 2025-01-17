@@ -24,17 +24,26 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.airbnb.lottie.LottieComposition
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieClipSpec
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.dao0203.gikucampv20.android.BuildConfig
 import com.dao0203.gikucampv20.android.R
 import com.dao0203.gikucampv20.android.feature.training.component.CameraPreview
 import com.dao0203.gikucampv20.android.feature.training.component.PoseOverlay
 import com.dao0203.gikucampv20.android.feature.training.component.TrainingInfoCard
+import com.dao0203.gikucampv20.android.ui.theme.MainTheme
+import com.dao0203.gikucampv20.android.util.MainPreview
 import com.dao0203.gikucampv20.android.util.rotateWithAnimation
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -47,6 +56,7 @@ fun TrainingWithCameraScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val sensorManager = remember { context.getSystemService(SensorManager::class.java) }
+    val checkComposition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.primary_color_check))
 
     DisposableEffect(Unit) {
         val accelerometer = sensorManager?.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
@@ -72,6 +82,7 @@ fun TrainingWithCameraScreen(
     }
     TrainingWithCameraContent(
         uiState = uiState,
+        checkComposition = checkComposition,
         onAnalyzeImage = viewModel::detectPose,
         onSwitchCamera = viewModel::switchCamera,
         onPassLine = viewModel::updateReps,
@@ -82,6 +93,7 @@ fun TrainingWithCameraScreen(
 @Composable
 private fun TrainingWithCameraContent(
     uiState: TrainingWithCameraUiState,
+    checkComposition: LottieComposition?,
     onAnalyzeImage: (image: ImageProxy) -> Unit,
     onSwitchCamera: () -> Unit,
     onPassLine: () -> Unit,
@@ -174,6 +186,42 @@ private fun TrainingWithCameraContent(
                             .rotateWithAnimation(uiState.rotationDegrees),
                 )
             }
+            LottieAnimation(
+                composition = checkComposition,
+                iterations = LottieConstants.IterateForever,
+                clipSpec = LottieClipSpec.Progress(0f, 1f),
+                modifier =
+                    Modifier
+                        .align(Alignment.Center)
+                        .fillMaxSize()
+                        .rotate(uiState.rotationDegrees),
+            )
         }
+    }
+}
+
+@MainPreview
+@Composable
+private fun TrainingWithCameraContentPreview() {
+    MainTheme {
+        TrainingWithCameraContent(
+            uiState =
+                TrainingWithCameraUiState(
+                    isBackCamera = true,
+                    remainingReps = 10,
+                    rotationDegrees = 0f,
+                    showPreparationTime = true,
+                    showPreparationTimeUntilAdjusting = true,
+                    preparationTimeUntilAdjusting = "3",
+                    preparationTimeUntilTraining = "2",
+                    showGoText = false,
+                    poseOverlayUiModel = null,
+                ),
+            checkComposition = null,
+            onAnalyzeImage = {},
+            onSwitchCamera = {},
+            onPassLine = {},
+            onClickCard = {},
+        )
     }
 }
