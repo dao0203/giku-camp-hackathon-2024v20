@@ -6,8 +6,11 @@ import androidx.camera.core.ImageProxy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.Star
@@ -102,6 +105,7 @@ private fun TrainingWithCameraContent(
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
+        contentWindowInsets = WindowInsets(0.dp),
         modifier = modifier,
         floatingActionButton = {
             Row {
@@ -142,6 +146,7 @@ private fun TrainingWithCameraContent(
                 modifier =
                     Modifier
                         .rotateWithAnimation(uiState.rotationDegrees)
+                        .padding(WindowInsets.systemBars.asPaddingValues())
                         .padding(20.dp),
             )
             if (uiState.showPreparationTime) {
