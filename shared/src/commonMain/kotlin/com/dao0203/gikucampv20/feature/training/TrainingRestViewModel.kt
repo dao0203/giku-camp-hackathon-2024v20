@@ -22,11 +22,13 @@ data class TrainingRestUiState(
     val showTimeText: Boolean = true,
     val progress: Float = 0f,
     val remainingSets: Int = 0,
+    val showSkipAlertDialog: Boolean = false,
 )
 
 data class TrainingRestViewModelState(
     val remainingRestTime: Int = 0,
     val showTimeText: Boolean = true,
+    val showSkipAlertDialog: Boolean = false,
 )
 
 class TrainingRestViewModel :
@@ -45,6 +47,7 @@ class TrainingRestViewModel :
                 showTimeText = vmState.showTimeText,
                 progress = vmState.remainingRestTime.toFloat() / onGoingTrainingMenu.rest,
                 enableStartButton = vmState.remainingRestTime == 0,
+                showSkipAlertDialog = vmState.showSkipAlertDialog,
                 remainingSets = onGoingTrainingMenu.sets,
             )
         }.stateIn(
@@ -74,5 +77,9 @@ class TrainingRestViewModel :
                 delay(500)
             }
         }
+    }
+
+    fun changeShowSkipAlertDialog() {
+        vmState.update { it.copy(showSkipAlertDialog = !it.showSkipAlertDialog) }
     }
 }

@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.dao0203.gikucampv20.android.R
 import com.dao0203.gikucampv20.android.feature.training.component.CircularTimer
+import com.dao0203.gikucampv20.android.feature.training.component.SkipAlertDialog
 import com.dao0203.gikucampv20.android.ui.theme.MainTheme
 import com.dao0203.gikucampv20.android.util.MainPreview
 import com.dao0203.gikucampv20.android.util.StringRes
@@ -38,10 +39,16 @@ fun TrainingRestScreen(navigateToTrainingWithCamera: () -> Unit) {
     LaunchedEffect(Unit) {
         viewModel.initialize()
     }
+    if (uiState.showSkipAlertDialog) {
+        SkipAlertDialog(
+            onDismissRequest = viewModel::changeShowSkipAlertDialog,
+            onConfirm = navigateToTrainingWithCamera,
+        )
+    }
     TrainingRestContent(
         uiState = uiState,
-        onClickSkip = { navigateToTrainingWithCamera() },
-        onClickStart = { navigateToTrainingWithCamera() },
+        onClickSkip = viewModel::changeShowSkipAlertDialog,
+        onClickStart = navigateToTrainingWithCamera,
     )
 }
 
@@ -79,13 +86,12 @@ private fun TrainingRestContent(
                 )
             }
             Button(
-                onClick = {
+                onClick =
                     if (uiState.enableStartButton) {
-                        onClickStart()
+                        onClickStart
                     } else {
-                        onClickSkip()
-                    }
-                },
+                        onClickSkip
+                    },
                 shape = RoundedCornerShape(10),
                 modifier =
                     Modifier
