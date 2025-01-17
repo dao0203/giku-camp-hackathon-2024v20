@@ -63,7 +63,7 @@
 		38C722E7724737BF54FB230A /* Feature */ = {
 			isa = PBXGroup;
 			children = (
-				38C72441EB5B11244ED352BD /* DefinitionMenuScreen.swift */,
+				FA2ABA572D3AE2A60026C050 /* Training */,
 			);
 			path = Feature;
 			sourceTree = "<group>";
@@ -95,7 +95,7 @@
 				2152FB032600AC8F00CF470E /* iOSApp.swift */,
 				058557D7273AAEEB004C7B11 /* Preview Content */,
 				38C72BAF2C2080BE702B735A /* CustomViewModelStoreOwner.swift */,
-				38C722E7724737BF54FB230A /* feature */,
+				38C722E7724737BF54FB230A /* Feature */,
 			);
 			path = iosApp;
 			sourceTree = "<group>";
@@ -113,6 +113,14 @@
 				FA2ABA552D3AE0BA0026C050 /* TrainingPath.swift */,
 			);
 			path = Navigation;
+			sourceTree = "<group>";
+		};
+		FA2ABA572D3AE2A60026C050 /* Training */ = {
+			isa = PBXGroup;
+			children = (
+				38C72441EB5B11244ED352BD /* DefinitionMenuScreen.swift */,
+			);
+			path = Training;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
