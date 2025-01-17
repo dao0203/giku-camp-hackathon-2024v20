@@ -13,5 +13,5 @@
     <string name="muscle_groups">Muscle Groups</string>
     <string name="select_training_type">Please select a training type</string>
     <string name="go">GO!</string>
-    <string name="operate_red_bar_align_for_easy_counting">Operate the red bar \nto adjust the position \nto make it easier to count. \nUntil fixed… %1$d</string>
+    <string name="operate_red_bar_align_for_easy_counting">Operate the red bar \nto adjust the position \nto make it easier to count. \nUntil fixed… %1$s</string>
 </resources>
