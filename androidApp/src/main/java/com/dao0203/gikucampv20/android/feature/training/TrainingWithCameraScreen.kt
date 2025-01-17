@@ -55,8 +55,8 @@ import org.koin.compose.viewmodel.koinViewModel
 fun TrainingWithCameraScreen(
     navigateToRest: () -> Unit,
     navigateToResult: () -> Unit,
+    viewModel: TrainingWithCameraViewModel = koinViewModel(),
 ) {
-    val viewModel = koinViewModel<TrainingWithCameraViewModel>()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val sensorManager = remember { context.getSystemService(SensorManager::class.java) }
@@ -190,6 +190,7 @@ private fun TrainingWithCameraContent(
                     style =
                         MaterialTheme.typography.displayLarge.copy(
                             fontSize = 100.sp,
+                            color = surfaceLight,
                         ),
                     modifier =
                         Modifier
