@@ -17,16 +17,16 @@ import org.koin.core.component.inject
 
 @Stable
 data class TrainingRestUiState(
-    val onGoingRestTime: String = "",
+    val remainingRestTime: String = "",
+    val enableStartButton: Boolean = false,
     val showTimeText: Boolean = true,
-    val remainingRestTime: Int = 0,
+    val progress: Float = 0f,
     val remainingSets: Int = 0,
 )
 
 data class TrainingRestViewModelState(
-    val onGoingRestTime: Int = 0,
-    val showTimeText: Boolean = true,
     val remainingRestTime: Int = 0,
+    val showTimeText: Boolean = true,
 )
 
 class TrainingRestViewModel :
@@ -41,9 +41,10 @@ class TrainingRestViewModel :
             onGoingTrainingMenuRepository.onGoingTrainingMenu,
         ) { vmState, onGoingTrainingMenu ->
             TrainingRestUiState(
-                onGoingRestTime = vmState.onGoingRestTime.toString(),
+                remainingRestTime = vmState.remainingRestTime.toString(),
                 showTimeText = vmState.showTimeText,
-                remainingRestTime = vmState.remainingRestTime,
+                progress = vmState.remainingRestTime.toFloat() / onGoingTrainingMenu.rest,
+                enableStartButton = vmState.remainingRestTime == 0,
                 remainingSets = onGoingTrainingMenu.sets,
             )
         }.stateIn(
@@ -53,32 +54,23 @@ class TrainingRestViewModel :
         )
 
     fun initialize() {
+        operationTime()
+    }
+
+    private fun operationTime() {
         viewModelScope.launch {
             val plannedTrainingMenu = onGoingTrainingMenuRepository.plannedTrainingMenu.first()
 
-            vmState.update {
-                it.copy(
-                    onGoingRestTime = plannedTrainingMenu.rest,
-                    remainingRestTime = plannedTrainingMenu.rest,
-                )
-            }
+            vmState.update { it.copy(remainingRestTime = plannedTrainingMenu.rest) }
 
             while (true) {
-                if (vmState.value.onGoingRestTime == 0) break
-                vmState.update {
-                    it.copy(
-                        onGoingRestTime = it.onGoingRestTime - 1,
-                    )
-                }
+                if (vmState.value.remainingRestTime == 0) break
                 delay(1_000)
+                vmState.update { it.copy(remainingRestTime = it.remainingRestTime - 1) }
             }
 
             while (true) {
-                vmState.update {
-                    it.copy(
-                        showTimeText = !it.showTimeText,
-                    )
-                }
+                vmState.update { it.copy(showTimeText = !it.showTimeText) }
                 delay(500)
             }
         }

@@ -105,7 +105,7 @@ private fun TrainingWithCameraContent(
     onClickCard: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Box {
+    androidx.compose.foundation.layout.Box {
         Scaffold(
             contentWindowInsets = WindowInsets(0.dp),
             modifier = modifier,
