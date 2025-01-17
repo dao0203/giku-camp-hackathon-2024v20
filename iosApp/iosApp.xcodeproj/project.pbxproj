@@ -10,10 +10,11 @@
 		058557BB273AAA24004C7B11 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058557BA273AAA24004C7B11 /* Assets.xcassets */; };
 		058557D9273AAEEB004C7B11 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058557D8273AAEEB004C7B11 /* Preview Assets.xcassets */; };
 		2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2152FB032600AC8F00CF470E /* iOSApp.swift */; };
-		38C72155E0CA8D47F5B0FB32 /* DefinitionMenuScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C72441EB5B11244ED352BD /* DefinitionMenuScreen.swift */; };
+		38C72155E0CA8D47F5B0FB32 /* MenuDefinitionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C72441EB5B11244ED352BD /* MenuDefinitionScreen.swift */; };
 		38C7267629F263E16DE5F456 /* CustomViewModelStoreOwner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C72BAF2C2080BE702B735A /* CustomViewModelStoreOwner.swift */; };
 		7555FF83242A565900829871 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7555FF82242A565900829871 /* ContentView.swift */; };
 		FA2ABA562D3AE0BA0026C050 /* TrainingPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2ABA552D3AE0BA0026C050 /* TrainingPath.swift */; };
+		FA2ABA592D3AE4C60026C050 /* TrainingWithCameraScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2ABA582D3AE4C60026C050 /* TrainingWithCameraScreen.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -33,12 +34,13 @@
 		058557BA273AAA24004C7B11 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		058557D8273AAEEB004C7B11 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		2152FB032600AC8F00CF470E /* iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSApp.swift; sourceTree = "<group>"; };
-		38C72441EB5B11244ED352BD /* DefinitionMenuScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefinitionMenuScreen.swift; sourceTree = "<group>"; };
+		38C72441EB5B11244ED352BD /* MenuDefinitionScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuDefinitionScreen.swift; sourceTree = "<group>"; };
 		38C72BAF2C2080BE702B735A /* CustomViewModelStoreOwner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomViewModelStoreOwner.swift; sourceTree = "<group>"; };
 		7555FF7B242A565900829871 /* iosApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iosApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7555FF82242A565900829871 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		7555FF8C242A565B00829871 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FA2ABA552D3AE0BA0026C050 /* TrainingPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingPath.swift; sourceTree = "<group>"; };
+		FA2ABA582D3AE4C60026C050 /* TrainingWithCameraScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingWithCameraScreen.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,7 +120,8 @@
 		FA2ABA572D3AE2A60026C050 /* Training */ = {
 			isa = PBXGroup;
 			children = (
-				38C72441EB5B11244ED352BD /* DefinitionMenuScreen.swift */,
+				38C72441EB5B11244ED352BD /* MenuDefinitionScreen.swift */,
+				FA2ABA582D3AE4C60026C050 /* TrainingWithCameraScreen.swift */,
 			);
 			path = Training;
 			sourceTree = "<group>";
@@ -217,9 +220,10 @@
 			files = (
 				FA2ABA562D3AE0BA0026C050 /* TrainingPath.swift in Sources */,
 				2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */,
+				FA2ABA592D3AE4C60026C050 /* TrainingWithCameraScreen.swift in Sources */,
 				7555FF83242A565900829871 /* ContentView.swift in Sources */,
 				38C7267629F263E16DE5F456 /* CustomViewModelStoreOwner.swift in Sources */,
-				38C72155E0CA8D47F5B0FB32 /* DefinitionMenuScreen.swift in Sources */,
+				38C72155E0CA8D47F5B0FB32 /* MenuDefinitionScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
