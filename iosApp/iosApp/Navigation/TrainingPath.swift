@@ -19,8 +19,8 @@ enum TrainingPath: Int {
     @ViewBuilder
     func Destination() -> some View {
         switch self {
-        case .definitionMenu: DefinitionMenuScreen()
-        case .trainingWithCamera: DefinitionMenuScreen()
+        case .definitionMenu: MenuDefinitionScreen()
+        case .trainingWithCamera: TrainingWithCameraScreen()
         }
     }
 }
