@@ -15,4 +15,6 @@
     <string name="go">GO!</string>
     <string name="operate_red_bar_align_for_easy_counting">赤いバーを操作して\nカウントしやすい位置に合わせてください\n 固定まで… %1$s</string>
     <string name="skip">スキップ</string>
+    <string name="cancel">キャンセル</string>
+    <string name="skip_alert_title">この休憩をスキップして次のセットに進行しますか？</string>
 </resources>
