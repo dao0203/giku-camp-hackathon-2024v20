@@ -40,15 +40,17 @@ fun TrainingRestScreen(navigateToTrainingWithCamera: () -> Unit) {
     }
     TrainingRestContent(
         uiState = uiState,
+        onClickSkip = { navigateToTrainingWithCamera() },
+        onClickStart = { navigateToTrainingWithCamera() },
     )
 }
 
 @Composable
 private fun TrainingRestContent(
     uiState: TrainingRestUiState,
+    onClickSkip: () -> Unit,
+    onClickStart: () -> Unit,
     modifier: Modifier = Modifier,
-    onClickSkip: () -> Unit = {},
-    onClickStart: () -> Unit = {},
 ) {
     Scaffold(
         modifier = modifier,
@@ -128,6 +130,8 @@ private fun TrainingRestContentPreview() {
                     enableStartButton = true,
                     remainingSets = 3,
                 ),
+            onClickSkip = {},
+            onClickStart = {},
         )
     }
 }
@@ -145,6 +149,8 @@ private fun TrainingRestScreenPreview() {
                     enableStartButton = false,
                     remainingSets = 3,
                 ),
+            onClickSkip = {},
+            onClickStart = {},
         )
     }
 }
