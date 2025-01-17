@@ -36,8 +36,8 @@ fun TrainingInfoCard(
         modifier = modifier
             .clip(RoundedCornerShape(8.dp))
             .size(
-                width = 170.dp,
-                height = 100.dp,
+                width = 120.dp,
+                height = 120.dp,
             ),
         elevation = CardDefaults.elevatedCardElevation(),
     ) {
@@ -75,5 +75,16 @@ fun TrainingInfoCard(
                 Icon(painterResource(DrawableRes.more_horiz), contentDescription = null)
             }
         }
+    }
+}
+
+@MainPreview
+@Composable
+private fun TrainingInfoCardPreview() {
+    MainTheme {
+        TrainingInfoCard(
+            remainingReps = 10,
+            onClick = {},
+        )
     }
 }
