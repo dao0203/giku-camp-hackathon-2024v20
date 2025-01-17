@@ -24,12 +24,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.getSystemService
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.dao0203.gikucampv20.android.BuildConfig
 import com.dao0203.gikucampv20.android.R
@@ -128,6 +128,7 @@ private fun TrainingWithCameraContent(
                 onClick = onClickCard,
                 modifier =
                     Modifier
+                        .rotate(uiState.rotationDegrees)
                         .padding(16.dp),
             )
             if (uiState.showPreparationTime) {
@@ -139,7 +140,11 @@ private fun TrainingWithCameraContent(
                 ) {
                     if (uiState.showPreparationTimeUntilAdjusting) {
                         Text(
-                            text = stringResource(R.string.operate_red_bar_align_for_easy_counting, uiState.preparationTimeUntilAdjusting),
+                            text =
+                                stringResource(
+                                    R.string.operate_red_bar_align_for_easy_counting,
+                                    uiState.preparationTimeUntilAdjusting,
+                                ),
                             textAlign = TextAlign.Center,
                         )
                     }
