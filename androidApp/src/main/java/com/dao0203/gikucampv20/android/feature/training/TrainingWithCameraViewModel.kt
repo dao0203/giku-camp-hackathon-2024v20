@@ -397,5 +397,7 @@ class TrainingWithCameraViewModel :
         }
     }
 
-    override fun onAccuracyChanged(sensor: Sensor?, accurancy: Int) { /* no-op */ }
+    override fun onAccuracyChanged(sensor: Sensor?, accurancy: Int) {
+        // no-op
+    }
 }
