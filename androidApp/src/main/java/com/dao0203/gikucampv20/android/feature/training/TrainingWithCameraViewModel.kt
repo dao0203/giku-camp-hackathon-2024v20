@@ -220,16 +220,6 @@ class TrainingWithCameraViewModel :
                                                 )
                                             }
                                         Pair(isStartLefted, isEndLifted)
-//                                        Pair(
-//                                            landmark[landmarkOffset.start.index].x() < (
-//                                                midPoint?.x
-//                                                    ?: 0f
-//                                            ),
-//                                            landmark[landmarkOffset.end.index].x() < (
-//                                                midPoint?.x
-//                                                    ?: 0f
-//                                            ),
-//                                        )
                                     }
                                 isLiftedAboveLine
                             } else {
