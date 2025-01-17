@@ -17,9 +17,10 @@ import kotlin.math.min
 @Stable
 data class PoseOverlayUiModel(
     val poseLandmarkerResult: PoseLandmarkerResult,
-    val trainingMidPointLines: List<MidpointLine>,
+    val trainingMidPointLines: MidpointLine?,
     val poseLandmarksIndexesForAdjusting: List<PoseLandmarksIndex>,
     val showLandmarkIndexesForAdjusting: Boolean,
+    val isLiftedAboveLine: Boolean,
     val imageHeight: Int,
     val imageWidth: Int,
     val runningMode: RunningMode,
@@ -123,7 +124,7 @@ fun PoseOverlay(
                     )
                 }
             }
-            uiModel.trainingMidPointLines.forEach {
+            uiModel.trainingMidPointLines?.let {
                 val start: Offset
                 val end: Offset
                 when (it.direction) {
@@ -156,7 +157,12 @@ fun PoseOverlay(
                     start = start,
                     end = end,
                     strokeWidth = 12f,
-                    color = Color(0xFFE57373),
+                    color =
+                        if (uiModel.isLiftedAboveLine) {
+                            Color(0xFF4CAF50)
+                        } else {
+                            Color(0xFFE57373)
+                        },
                 )
             }
         }
