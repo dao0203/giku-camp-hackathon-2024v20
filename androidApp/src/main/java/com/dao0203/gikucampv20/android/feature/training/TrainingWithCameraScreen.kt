@@ -43,6 +43,7 @@ import com.dao0203.gikucampv20.android.feature.training.component.CameraPreview
 import com.dao0203.gikucampv20.android.feature.training.component.PoseOverlay
 import com.dao0203.gikucampv20.android.feature.training.component.TrainingInfoCard
 import com.dao0203.gikucampv20.android.ui.theme.MainTheme
+import com.dao0203.gikucampv20.android.ui.theme.surfaceLight
 import com.dao0203.gikucampv20.android.util.MainPreview
 import com.dao0203.gikucampv20.android.util.rotateWithAnimation
 import org.koin.compose.viewmodel.koinViewModel
@@ -159,6 +160,10 @@ private fun TrainingWithCameraContent(
                                     uiState.preparationTimeUntilAdjusting,
                                 ),
                             textAlign = TextAlign.Center,
+                            style =
+                                MaterialTheme.typography.bodyMedium.copy(
+                                    color = surfaceLight,
+                                ),
                         )
                     }
                     Text(
@@ -166,6 +171,7 @@ private fun TrainingWithCameraContent(
                         style =
                             MaterialTheme.typography.displayLarge.copy(
                                 fontSize = 100.sp,
+                                color = surfaceLight,
                             ),
                         modifier =
                             Modifier
