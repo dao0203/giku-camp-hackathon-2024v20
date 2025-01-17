@@ -20,7 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.dao0203.gikucampv20.android.MainTheme
+import com.dao0203.gikucampv20.android.ui.theme.MainTheme
 import com.dao0203.gikucampv20.android.util.DrawableRes
 import com.dao0203.gikucampv20.android.util.MainPreview
 import com.dao0203.gikucampv20.android.util.StringRes
