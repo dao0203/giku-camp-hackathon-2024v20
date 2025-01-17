@@ -1,6 +1,9 @@
 package com.dao0203.gikucampv20.android.feature.training
 
 import android.content.Context
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
 import androidx.camera.core.ImageProxy
 import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
@@ -55,14 +58,22 @@ private data class TrainingWithCameraViewModelState(
     val isLiftedAboveMidpointAll: Boolean = false,
     val preparationTimeUntilTraining: Int = 15,
     val preparationTimeUntilAdjusting: Int = 7,
+    val screenOrientation: ScreenOrientation = ScreenOrientation.PORTRAIT,
     val showPreparationTimeUntilAdjusting: Boolean = true,
     val showGoText: Boolean = false,
 )
 
+enum class ScreenOrientation {
+    PORTRAIT,
+    LANDSCAPE_LEFT,
+    LANDSCAPE_RIGHT,
+}
+
 class TrainingWithCameraViewModel :
     ViewModel(),
     KoinComponent,
-    PoseLandmarkerHelper.LandmarkerListener {
+    PoseLandmarkerHelper.LandmarkerListener,
+    SensorEventListener {
     private val onGoingTrainingMenuRepository by inject<OnGoingTrainingMenuRepository>()
     private val context: Context by inject()
 
@@ -317,4 +328,25 @@ class TrainingWithCameraViewModel :
         showPreparationTimeUntilAdjusting = vmState.showPreparationTimeUntilAdjusting,
         showGoText = vmState.showGoText,
     )
+
+    override fun onSensorChanged(event: SensorEvent?) {
+        event ?: return
+        when (event.sensor.type) {
+            Sensor.TYPE_ACCELEROMETER -> {
+                val x = event.values[0]
+                val y = event.values[1]
+
+                val orientation =
+                    when {
+                        abs(y) > abs(x) -> ScreenOrientation.PORTRAIT
+                        x > 0 -> ScreenOrientation.LANDSCAPE_LEFT
+                        else -> ScreenOrientation.LANDSCAPE_RIGHT
+                    }
+                vmState.update { it.copy(screenOrientation = orientation) }
+                println("orientation: $orientation")
+            }
+        }
+    }
+
+    override fun onAccuracyChanged(sensor: Sensor?, accurancy: Int) { /* no-op */ }
 }
