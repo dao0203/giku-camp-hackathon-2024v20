@@ -24,7 +24,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -36,6 +35,7 @@ import com.dao0203.gikucampv20.android.R
 import com.dao0203.gikucampv20.android.feature.training.component.CameraPreview
 import com.dao0203.gikucampv20.android.feature.training.component.PoseOverlay
 import com.dao0203.gikucampv20.android.feature.training.component.TrainingInfoCard
+import com.dao0203.gikucampv20.android.util.rotateWithAnimation
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -128,15 +128,15 @@ private fun TrainingWithCameraContent(
                 onClick = onClickCard,
                 modifier =
                     Modifier
-                        .rotate(uiState.rotationDegrees)
-                        .padding(16.dp),
+                        .rotateWithAnimation(uiState.rotationDegrees)
+                        .padding(20.dp),
             )
             if (uiState.showPreparationTime) {
                 Column(
                     modifier =
                         Modifier
                             .align(Alignment.Center)
-                            .rotate(uiState.rotationDegrees),
+                            .rotateWithAnimation(uiState.rotationDegrees),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     if (uiState.showPreparationTimeUntilAdjusting) {
@@ -171,7 +171,7 @@ private fun TrainingWithCameraContent(
                     modifier =
                         Modifier
                             .align(Alignment.Center)
-                            .rotate(uiState.rotationDegrees),
+                            .rotateWithAnimation(uiState.rotationDegrees),
                 )
             }
         }
