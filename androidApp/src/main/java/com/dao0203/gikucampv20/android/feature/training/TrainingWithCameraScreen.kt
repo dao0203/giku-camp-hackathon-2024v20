@@ -3,11 +3,15 @@ package com.dao0203.gikucampv20.android.feature.training
 import android.hardware.Sensor
 import android.hardware.SensorManager
 import androidx.camera.core.ImageProxy
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.Star
@@ -35,7 +39,6 @@ import com.airbnb.lottie.LottieComposition
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieClipSpec
 import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.dao0203.gikucampv20.android.BuildConfig
 import com.dao0203.gikucampv20.android.R
@@ -43,6 +46,8 @@ import com.dao0203.gikucampv20.android.feature.training.component.CameraPreview
 import com.dao0203.gikucampv20.android.feature.training.component.PoseOverlay
 import com.dao0203.gikucampv20.android.feature.training.component.TrainingInfoCard
 import com.dao0203.gikucampv20.android.ui.theme.MainTheme
+import com.dao0203.gikucampv20.android.ui.theme.surfaceLight
+import com.dao0203.gikucampv20.android.ui.theme.surfaceVariantDark
 import com.dao0203.gikucampv20.android.util.MainPreview
 import com.dao0203.gikucampv20.android.util.rotateWithAnimation
 import org.koin.compose.viewmodel.koinViewModel
@@ -51,8 +56,8 @@ import org.koin.compose.viewmodel.koinViewModel
 fun TrainingWithCameraScreen(
     navigateToRest: () -> Unit,
     navigateToResult: () -> Unit,
+    viewModel: TrainingWithCameraViewModel = koinViewModel(),
 ) {
-    val viewModel = koinViewModel<TrainingWithCameraViewModel>()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val sensorManager = remember { context.getSystemService(SensorManager::class.java) }
@@ -100,100 +105,112 @@ private fun TrainingWithCameraContent(
     onClickCard: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Scaffold(
-        modifier = modifier,
-        floatingActionButton = {
-            Row {
-                FloatingActionButton(
-                    onClick = onSwitchCamera,
-                ) {
-                    // TODO: change icon
-                    Icon(Icons.Default.Star, contentDescription = null)
-                }
-                if (BuildConfig.DEBUG) {
+    androidx.compose.foundation.layout.Box {
+        Scaffold(
+            contentWindowInsets = WindowInsets(0.dp),
+            modifier = modifier,
+            floatingActionButton = {
+                Row {
                     FloatingActionButton(
-                        onClick = onPassLine,
+                        onClick = onSwitchCamera,
                     ) {
-                        Icon(Icons.Default.KeyboardArrowDown, contentDescription = null)
+                        // TODO: change icon
+                        Icon(Icons.Default.Star, contentDescription = null)
+                    }
+                    if (BuildConfig.DEBUG) {
+                        FloatingActionButton(
+                            onClick = onPassLine,
+                        ) {
+                            Icon(Icons.Default.KeyboardArrowDown, contentDescription = null)
+                        }
                     }
                 }
-            }
-        },
-    ) {
-        Box(
-            modifier =
-                Modifier
-                    .padding(it)
-                    .fillMaxSize(),
+            },
         ) {
-            CameraPreview(
-                onAnalyzeImage = onAnalyzeImage,
-                isBackCamera = uiState.isBackCamera,
-            )
-            uiState.poseOverlayUiModel?.let { poseOverlayUiModel ->
-                PoseOverlay(
-                    uiModel = poseOverlayUiModel,
-                )
-            }
-            TrainingInfoCard(
-                remainingReps = uiState.remainingReps,
-                onClick = onClickCard,
+            Box(
                 modifier =
                     Modifier
-                        .rotateWithAnimation(uiState.rotationDegrees)
-                        .padding(20.dp),
-            )
-            if (uiState.showPreparationTime) {
-                Column(
+                        .padding(it)
+                        .fillMaxSize(),
+            ) {
+                CameraPreview(
+                    onAnalyzeImage = onAnalyzeImage,
+                    isBackCamera = uiState.isBackCamera,
+                )
+                uiState.poseOverlayUiModel?.let { poseOverlayUiModel ->
+                    PoseOverlay(
+                        uiModel = poseOverlayUiModel,
+                    )
+                }
+                TrainingInfoCard(
+                    remainingReps = uiState.remainingReps,
+                    onClick = onClickCard,
                     modifier =
                         Modifier
-                            .align(Alignment.Center)
-                            .rotateWithAnimation(uiState.rotationDegrees),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    if (uiState.showPreparationTimeUntilAdjusting) {
+                            .rotateWithAnimation(uiState.rotationDegrees)
+                            .padding(WindowInsets.systemBars.asPaddingValues())
+                            .padding(20.dp),
+                )
+                if (uiState.showPreparationTime) {
+                    Column(
+                        modifier =
+                            Modifier
+                                .align(Alignment.Center)
+                                .rotateWithAnimation(uiState.rotationDegrees),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                    ) {
+                        if (uiState.showPreparationTimeUntilAdjusting) {
+                            Text(
+                                text =
+                                    stringResource(
+                                        R.string.operate_red_bar_align_for_easy_counting,
+                                        uiState.preparationTimeUntilAdjusting,
+                                    ),
+                                textAlign = TextAlign.Center,
+                                style =
+                                    MaterialTheme.typography.bodyMedium.copy(
+                                        color = surfaceLight,
+                                    ),
+                            )
+                        }
                         Text(
-                            text =
-                                stringResource(
-                                    R.string.operate_red_bar_align_for_easy_counting,
-                                    uiState.preparationTimeUntilAdjusting,
+                            text = uiState.preparationTimeUntilTraining,
+                            style =
+                                MaterialTheme.typography.displayLarge.copy(
+                                    fontSize = 100.sp,
+                                    color = surfaceLight,
                                 ),
-                            textAlign = TextAlign.Center,
+                            modifier =
+                                Modifier
+                                    .alpha(0.8f),
                         )
                     }
+                }
+                if (uiState.showGoText) {
                     Text(
-                        text = uiState.preparationTimeUntilTraining,
+                        text = stringResource(R.string.go),
                         style =
                             MaterialTheme.typography.displayLarge.copy(
                                 fontSize = 100.sp,
+                                color = surfaceLight,
                             ),
                         modifier =
                             Modifier
-                                .alpha(0.8f),
+                                .align(Alignment.Center)
+                                .rotateWithAnimation(uiState.rotationDegrees),
                     )
                 }
             }
-            if (uiState.showGoText) {
-                Text(
-                    text = stringResource(R.string.go),
-                    style =
-                        MaterialTheme.typography.displayLarge.copy(
-                            fontSize = 100.sp,
-                        ),
-                    modifier =
-                        Modifier
-                            .align(Alignment.Center)
-                            .rotateWithAnimation(uiState.rotationDegrees),
-                )
-            }
+        }
+        if (uiState.showFinishCheck) {
             LottieAnimation(
                 composition = checkComposition,
-                iterations = LottieConstants.IterateForever,
                 clipSpec = LottieClipSpec.Progress(0f, 1f),
                 modifier =
                     Modifier
                         .align(Alignment.Center)
                         .fillMaxSize()
+                        .background(surfaceVariantDark.copy(alpha = 0.5f))
                         .rotate(uiState.rotationDegrees),
             )
         }
@@ -216,6 +233,7 @@ private fun TrainingWithCameraContentPreview() {
                     preparationTimeUntilTraining = "2",
                     showGoText = false,
                     poseOverlayUiModel = null,
+                    showFinishCheck = false,
                 ),
             checkComposition = null,
             onAnalyzeImage = {},
