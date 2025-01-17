@@ -135,7 +135,8 @@ private fun TrainingWithCameraContent(
                 Column(
                     modifier =
                         Modifier
-                            .align(Alignment.Center),
+                            .align(Alignment.Center)
+                            .rotate(uiState.rotationDegrees),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     if (uiState.showPreparationTimeUntilAdjusting) {
@@ -169,7 +170,8 @@ private fun TrainingWithCameraContent(
                         ),
                     modifier =
                         Modifier
-                            .align(Alignment.Center),
+                            .align(Alignment.Center)
+                            .rotate(uiState.rotationDegrees),
                 )
             }
         }
