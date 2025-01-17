@@ -37,7 +37,9 @@ data class TrainingWithCameraUiState(
     val isBackCamera: Boolean,
     val remainingReps: Int,
     val preparationTimeUntilTraining: String,
+    val preparationTimeUntilAdjusting: String,
     val showPreparationTime: Boolean = preparationTimeUntilTraining.toInt() > 0,
+    val showPreparationTimeUntilAdjusting: Boolean,
     val showGoText: Boolean,
 )
 
@@ -49,11 +51,11 @@ sealed interface TrainingWithCameraEffect {
 
 private data class TrainingWithCameraViewModelState(
     val poseOverlayUiModel: PoseOverlayUiModel? = null,
-    val isBackCamera: Boolean = true,
+    val isBackCamera: Boolean = false,
     val isLiftedAboveMidpointAll: Boolean = false,
-    val isLoweredBelowMidpointAll: Boolean = false,
     val preparationTimeUntilTraining: Int = 15,
     val preparationTimeUntilAdjusting: Int = 7,
+    val showPreparationTimeUntilAdjusting: Boolean = true,
     val showGoText: Boolean = false,
 )
 
@@ -120,11 +122,12 @@ class TrainingWithCameraViewModel :
         viewModelScope.launch {
             while (true) {
                 delay(1_000)
-                val currentState = vmState.value.preparationTimeUntilAdjusting
-                vmState.update { it.copy(preparationTimeUntilAdjusting = currentState - 1) }
                 if (vmState.value.preparationTimeUntilAdjusting == 0) {
+                    vmState.update { it.copy(showPreparationTimeUntilAdjusting = false) }
                     break
                 }
+                val currentState = vmState.value.preparationTimeUntilAdjusting
+                vmState.update { it.copy(preparationTimeUntilAdjusting = currentState - 1) }
             }
         }
     }
@@ -144,22 +147,55 @@ class TrainingWithCameraViewModel :
     private fun collectCoordination() {
         viewModelScope.launch {
             vmState.collect { collect ->
+                if (collect.preparationTimeUntilTraining != 0) return@collect
                 if (collect.poseOverlayUiModel?.poseLandmarksIndexesForAdjusting?.isNotEmpty() == true) {
                     if (collect.poseOverlayUiModel.poseLandmarkerResult.landmarks()?.isNotEmpty() != true) return@collect
                     val landmark = collect.poseOverlayUiModel.poseLandmarkerResult.landmarks()[0]
                     val midPoint = collect.poseOverlayUiModel.trainingMidPointLines?.midpoint
                     val isLiftedAboveMidpoint =
-                        collect.poseOverlayUiModel.trainingMidPointLines?.let {
-                            val landMarkOffset = collect.poseOverlayUiModel.poseLandmarksIndexesForAdjusting.first()
-                            if (it.direction == LineDirection.HORIZONTAL) {
-                                landmark[landMarkOffset.start.index].y() < (midPoint?.y ?: 0f) &&
-                                    landmark[landMarkOffset.end.index].y() < (midPoint?.y ?: 0f)
+                        collect.poseOverlayUiModel.poseLandmarksIndexesForAdjusting.map {
+                            val landmarkOffset = it
+                            if (collect.poseOverlayUiModel.trainingMidPointLines != null) {
+                                val isLiftedAboveLine =
+                                    if (collect
+                                            .poseOverlayUiModel
+                                            .trainingMidPointLines
+                                            .direction == LineDirection.HORIZONTAL
+                                    ) {
+                                        Pair(
+                                            landmark[landmarkOffset.start.index].y() < (midPoint?.y ?: 0f),
+                                            landmark[landmarkOffset.end.index].y() < (midPoint?.y ?: 0f),
+                                        )
+                                    } else {
+                                        Pair(
+                                            landmark[landmarkOffset.start.index].x() < (midPoint?.x ?: 0f),
+                                            landmark[landmarkOffset.end.index].x() < (midPoint?.x ?: 0f),
+                                        )
+                                    }
+                                isLiftedAboveLine
                             } else {
-                                landmark[landMarkOffset.start.index].x() < (midPoint?.x ?: 0f) &&
-                                    landmark[landMarkOffset.end.index].x() < (midPoint?.x ?: 0f)
+                                Pair(false, false)
                             }
-                        } ?: false
-                    vmState.update { it.copy(isLiftedAboveMidpoint = isLiftedAboveMidpoint) }
+                        }
+                    // 片方でも上に上がっていたら全部下げない限り，次はカウントしない
+                    val isLiftedAboveLine = isLiftedAboveMidpoint.first()
+
+                    if (isLiftedAboveLine.first) {
+                        // 一回，上に上がっていたら，falseにならない限り，次はカウントしない
+                        if (collect.isLiftedAboveMidpointAll) return@collect
+                        // 両方上に上がっていたら，全て上に上がっていると判定
+                        if (isLiftedAboveLine.second) {
+                            vmState.update { it.copy(isLiftedAboveMidpointAll = true) }
+                            updateReps()
+                        }
+                    } else {
+                        // 一回，下に下がっていたら，trueにならない限り，次はカウントしない
+                        if (!collect.isLiftedAboveMidpointAll) return@collect
+                        // 両方下に下がっていたら，全て下に下がっていると判定
+                        if (!isLiftedAboveLine.second) {
+                            vmState.update { it.copy(isLiftedAboveMidpointAll = false) }
+                        }
+                    }
                 }
             }
         }
@@ -168,7 +204,7 @@ class TrainingWithCameraViewModel :
     private fun defineLandmarkIndexesForTraining() {
         viewModelScope.launch {
             vmState.collect { collect ->
-                if (collect.preparationTimeUntilTraining == 0) {
+                if (collect.preparationTimeUntilTraining == 7) {
                     vmState.update { it.copyOnPreparationTimeUntilTrainingZero() }
                     cancel()
                 }
@@ -249,7 +285,7 @@ class TrainingWithCameraViewModel :
                             showLandmarkIndexesForAdjusting =
                                 it.poseOverlayUiModel?.showLandmarkIndexesForAdjusting
                                     ?: true,
-                            isLiftedAboveLine = it.isLiftedAboveMidpoint,
+                            isLiftedAboveLine = it.isLiftedAboveMidpointAll,
                         ),
                 )
             }
@@ -278,6 +314,7 @@ class TrainingWithCameraViewModel :
         remainingReps = onGoingTrainingMenu.reps,
         preparationTimeUntilTraining = vmState.preparationTimeUntilTraining.toString(),
         preparationTimeUntilAdjusting = vmState.preparationTimeUntilAdjusting.toString(),
+        showPreparationTimeUntilAdjusting = vmState.showPreparationTimeUntilAdjusting,
         showGoText = vmState.showGoText,
     )
 }
