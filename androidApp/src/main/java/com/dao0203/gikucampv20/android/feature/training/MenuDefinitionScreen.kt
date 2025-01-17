@@ -29,13 +29,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.dao0203.gikucampv20.android.R
+import com.dao0203.gikucampv20.android.ui.theme.MainTheme
+import com.dao0203.gikucampv20.android.util.MainPreview
 import com.dao0203.gikucampv20.domain.TrainingType
+import com.dao0203.gikucampv20.domain.dummies
 import com.dao0203.gikucampv20.feature.training.DefinitionMenuUiState
 import com.dao0203.gikucampv20.feature.training.MenuDefinitionViewModel
 import com.dao0203.gikucampv20.feature.training.MuscleGroupsUiModel
@@ -107,14 +109,33 @@ private fun DefinitionMenuScreenContent(
                 ExtendedFloatingActionButton(
                     onClick = onStartTraining,
                     icon = { Icon(Icons.Filled.DateRange, null) },
-                    text = { Text(stringResource(R.string.start)) },
+                    text = {
+                        Text(
+                            text = stringResource(R.string.start),
+                            style = MaterialTheme.typography.bodyMedium,
+                        )
+                    },
                 )
             } else {
                 ExtendedFloatingActionButton(
                     onClick = { },
-                    containerColor = Color(0xFFd3d3d3),
-                    icon = { Icon(Icons.Filled.DateRange, null) },
-                    text = { Text(stringResource(R.string.start)) },
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    icon = {
+                        Icon(
+                            Icons.Filled.DateRange,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
+                        )
+                    },
+                    text = {
+                        Text(
+                            text = stringResource(R.string.start),
+                            style =
+                                MaterialTheme.typography.bodyMedium.copy(
+                                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
+                                ),
+                        )
+                    },
                 )
             }
         },
@@ -281,5 +302,46 @@ private fun TrainingTypeItem(
             Spacer(modifier = Modifier.height(4.dp))
             Text(text = trainingType.description, style = MaterialTheme.typography.bodyMedium)
         }
+    }
+}
+
+@MainPreview
+@Composable
+private fun DefinitionMenuScreenPreview() {
+    MainTheme {
+        DefinitionMenuScreenContent(
+            onStartTraining = {},
+            onSelectTrainingType = {},
+            onSetsChange = {},
+            onRepsChange = {},
+            onWeightChange = {},
+            onRestChange = {},
+            listState = rememberLazyListState(),
+            uiState = DefinitionMenuUiState(),
+        )
+    }
+}
+
+@MainPreview
+@Composable
+private fun DefinitionMenuContentSelectedPreview() {
+    MainTheme {
+        DefinitionMenuScreenContent(
+            onStartTraining = {},
+            onSelectTrainingType = {},
+            onSetsChange = {},
+            onRepsChange = {},
+            onWeightChange = {},
+            onRestChange = {},
+            listState = rememberLazyListState(),
+            uiState =
+                DefinitionMenuUiState(
+                    sets = "3",
+                    reps = "10",
+                    weight = "20.0",
+                    rest = "120",
+                    selectedTrainingType = TrainingType.dummies().first(),
+                ),
+        )
     }
 }
