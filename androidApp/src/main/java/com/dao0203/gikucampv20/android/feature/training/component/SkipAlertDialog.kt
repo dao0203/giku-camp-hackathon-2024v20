@@ -3,7 +3,6 @@ package com.dao0203.gikucampv20.android.feature.training.component
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -62,8 +61,10 @@ fun SkipAlertDialog(
 @MainPreview
 @Composable
 private fun SkipAlertDialogPreview() {
-    MainTheme { SkipAlertDialog(
-        onDismissRequest = {},
-        onConfirm = {},
-    ) }
+    MainTheme {
+        SkipAlertDialog(
+            onDismissRequest = {},
+            onConfirm = {},
+        )
+    }
 }
