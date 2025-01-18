@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">一番楽しい筋トレアプリ</string>
+    <string name="remaining">残り</string>
+    <string name="reps">回</string>
+    <string name="sets">セット</string>
+    <string name="weight">重量</string>
+    <string name="kg">kg</string>
+    <string name="rest">休憩</string>
+    <string name="seconds">秒</string>
+    <string name="start">スタート</string>
+    <string name="training_type">種目</string>
+    <string name="muscle_groups">筋肉部位</string>
+    <string name="select_training_type">トレーニングタイプを選択してください</string>
+    <string name="go">GO!</string>
+    <string name="operate_red_bar_align_for_easy_counting">赤いバーを操作して\nカウントしやすい位置に合わせてください\n 固定まで… %1$s</string>
+    <string name="skip">スキップ</string>
+    <string name="cancel">キャンセル</string>
+    <string name="skip_alert_title">この休憩をスキップして次のセットに進行しますか？</string>
+</resources>
