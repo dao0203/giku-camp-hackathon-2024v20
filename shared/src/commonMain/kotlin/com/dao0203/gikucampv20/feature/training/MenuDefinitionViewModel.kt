@@ -17,6 +17,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.datetime.Clock
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import kotlin.uuid.ExperimentalUuidApi
@@ -89,7 +91,7 @@ class MenuDefinitionViewModel : ViewModel(), KoinComponent {
                 reps = uiState.value.reps.toInt(),
                 weight = uiState.value.weight.toDouble(),
                 rest = uiState.value.rest.toInt(),
-                createdAt = Clock.System.now(),
+                createdAt = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date,
             )
         onGoingTrainingMenuRepository.updatePlannedTrainingMenu(trainingMenu)
         onGoingTrainingMenuRepository.updateOnGoingTrainingMenu(trainingMenu)

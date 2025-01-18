@@ -40,7 +40,7 @@ interface TrainingHistoryDao {
     suspend fun getAll(): List<TrainingHistoryEntity>
 
     @Query("SELECT * FROM TrainingHistoryEntity")
-    suspend fun getAllStream(): Flow<List<TrainingHistoryEntity>>
+    fun getAllStream(): Flow<List<TrainingHistoryEntity>>
 
     @Delete
     suspend fun delete(entity: TrainingHistoryEntity)
