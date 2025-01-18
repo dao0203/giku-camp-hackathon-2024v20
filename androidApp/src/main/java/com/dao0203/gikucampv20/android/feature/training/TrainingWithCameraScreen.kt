@@ -25,6 +25,7 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -43,6 +44,7 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.dao0203.gikucampv20.android.BuildConfig
 import com.dao0203.gikucampv20.android.R
 import com.dao0203.gikucampv20.android.feature.training.component.CameraPreview
+import com.dao0203.gikucampv20.android.feature.training.component.DraggableBox
 import com.dao0203.gikucampv20.android.feature.training.component.PoseOverlay
 import com.dao0203.gikucampv20.android.feature.training.component.TrainingInfoCard
 import com.dao0203.gikucampv20.android.ui.theme.MainTheme
@@ -105,7 +107,7 @@ private fun TrainingWithCameraContent(
     onClickCard: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    androidx.compose.foundation.layout.Box {
+    Box {
         Scaffold(
             contentWindowInsets = WindowInsets(0.dp),
             modifier = modifier,
@@ -142,15 +144,17 @@ private fun TrainingWithCameraContent(
                         uiModel = poseOverlayUiModel,
                     )
                 }
-                TrainingInfoCard(
-                    remainingReps = uiState.remainingReps,
-                    onClick = onClickCard,
-                    modifier =
-                        Modifier
-                            .rotateWithAnimation(uiState.rotationDegrees)
-                            .padding(WindowInsets.systemBars.asPaddingValues())
-                            .padding(20.dp),
-                )
+                DraggableBox {
+                    TrainingInfoCard(
+                        remainingReps = uiState.remainingReps,
+                        onClick = onClickCard,
+                        modifier =
+                            Modifier
+                                .rotateWithAnimation(uiState.rotationDegrees)
+                                .padding(WindowInsets.systemBars.asPaddingValues())
+                                .padding(20.dp),
+                    )
+                }
                 if (uiState.showPreparationTime) {
                     Column(
                         modifier =
