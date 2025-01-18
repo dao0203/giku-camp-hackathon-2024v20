@@ -12,7 +12,7 @@ data class WorkoutSetEntity(
     val historyId: String,
     val reps: Int,
     val weight: Double,
-    val rest: Int,
+    val rest: Int?,
 )
 
 object WorkoutSetEntityListConverter {

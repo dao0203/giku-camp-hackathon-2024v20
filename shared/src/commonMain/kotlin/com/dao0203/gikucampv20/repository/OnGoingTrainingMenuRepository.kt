@@ -19,7 +19,11 @@ interface OnGoingTrainingMenuRepository {
 
     fun decreaseSets()
 
-    fun addWorkoutSet(workoutSet: WorkoutSet)
+    fun addWorkoutSetDefault()
+
+    fun updateWorkoutSet(workoutSet: WorkoutSet)
+
+    fun getCurrentWorkoutSet(): WorkoutSet
 
     fun updatePlannedTrainingMenu(trainingMenu: TrainingMenu)
 
@@ -46,8 +50,24 @@ class OnGoingTrainingMenuRepositoryImpl : OnGoingTrainingMenuRepository {
         _onGoingTrainingMenu.update { it.copy(sets = it.sets - 1) }
     }
 
-    override fun addWorkoutSet(workoutSet: WorkoutSet) {
+    override fun getCurrentWorkoutSet(): WorkoutSet {
+        val currentSet = _onGoingTrainingMenu.value.sets
+        return _workoutSets.value[currentSet - 1]
+    }
+
+    override fun addWorkoutSetDefault() {
+        val workoutSet =
+            WorkoutSet.createDefault(
+                reps = _plannedTrainingMenu.value.reps,
+                weight = _plannedTrainingMenu.value.weight,
+            )
         _workoutSets.update { it + workoutSet }
+    }
+
+    override fun updateWorkoutSet(workoutSet: WorkoutSet) {
+        _workoutSets.update { workoutSets ->
+            workoutSets.map { if (it.id == workoutSet.id) workoutSet else it }
+        }
     }
 
     override fun updatePlannedTrainingMenu(trainingMenu: TrainingMenu) {

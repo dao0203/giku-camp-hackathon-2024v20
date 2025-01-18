@@ -27,6 +27,7 @@ data class TrainingRestUiState(
 
 data class TrainingRestViewModelState(
     val remainingRestTime: Int = 0,
+    val actualRestTime: Int = 0,
     val showTimeText: Boolean = true,
     val showSkipAlertDialog: Boolean = false,
 )
@@ -58,6 +59,20 @@ class TrainingRestViewModel :
 
     fun initialize() {
         operationTime()
+        viewModelScope.launch {
+            while (true) {
+                delay(1_000)
+                vmState.update { it.copy(actualRestTime = it.actualRestTime + 1) }
+            }
+        }
+    }
+
+    fun goNextSet() {
+        val workoutSet = onGoingTrainingMenuRepository.getCurrentWorkoutSet()
+        onGoingTrainingMenuRepository.updateWorkoutSet(
+            workoutSet.copy(rest = vmState.value.actualRestTime),
+        )
+        onGoingTrainingMenuRepository.decreaseSets()
     }
 
     private fun operationTime() {

@@ -33,8 +33,10 @@ import com.dao0203.gikucampv20.feature.training.TrainingRestViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun TrainingRestScreen(navigateToTrainingWithCamera: () -> Unit) {
-    val viewModel = koinViewModel<TrainingRestViewModel>()
+fun TrainingRestScreen(
+    navigateToTrainingWithCamera: () -> Unit,
+    viewModel: TrainingRestViewModel = koinViewModel(),
+) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     LaunchedEffect(Unit) {
         viewModel.initialize()
@@ -42,13 +44,20 @@ fun TrainingRestScreen(navigateToTrainingWithCamera: () -> Unit) {
     if (uiState.showSkipAlertDialog) {
         SkipAlertDialog(
             onDismissRequest = viewModel::changeShowSkipAlertDialog,
-            onConfirm = navigateToTrainingWithCamera,
+            onConfirm = {
+                viewModel.changeShowSkipAlertDialog()
+                viewModel.goNextSet()
+                navigateToTrainingWithCamera()
+            },
         )
     }
     TrainingRestContent(
         uiState = uiState,
         onClickSkip = viewModel::changeShowSkipAlertDialog,
-        onClickStart = navigateToTrainingWithCamera,
+        onClickStart = {
+            viewModel.goNextSet()
+            navigateToTrainingWithCamera()
+        },
     )
 }
 

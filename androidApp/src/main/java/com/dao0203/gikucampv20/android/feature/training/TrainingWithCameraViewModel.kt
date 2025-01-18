@@ -26,7 +26,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -153,17 +155,20 @@ class TrainingWithCameraViewModel :
 
     private fun collectReps() {
         viewModelScope.launch {
-            onGoingTrainingMenuRepository.onGoingTrainingMenu.collect {
-                if (it.reps == 0) {
-                    vmState.update { vm -> vm.copy(showFinishCheck = true) }
-                    delay(1_500) // for showing finish check
-                    _effect.emit(TrainingWithCameraEffect.NavigateToRest)
-                    onGoingTrainingMenuRepository.resetReps()
-                    onGoingTrainingMenuRepository.decreaseSets()
-                    vmState.update { TrainingWithCameraViewModelState() }
-                    cancel()
+            onGoingTrainingMenuRepository.onGoingTrainingMenu
+                .map { it.reps }
+                .distinctUntilChanged()
+                .collect {
+                    if (it == 0) {
+                        vmState.update { vm -> vm.copy(showFinishCheck = true) }
+                        delay(1_500) // for showing finish check
+                        _effect.emit(TrainingWithCameraEffect.NavigateToRest)
+                        onGoingTrainingMenuRepository.addWorkoutSetDefault()
+                        onGoingTrainingMenuRepository.resetReps()
+                        vmState.update { TrainingWithCameraViewModelState() }
+                        cancel()
+                    }
                 }
-            }
         }
     }
 
