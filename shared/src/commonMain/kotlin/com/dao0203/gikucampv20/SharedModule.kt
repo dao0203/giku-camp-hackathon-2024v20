@@ -1,5 +1,6 @@
 package com.dao0203.gikucampv20
 
+import com.dao0203.gikucampv20.feature.record.HistoryWithCalenderViewModel
 import com.dao0203.gikucampv20.feature.training.MenuDefinitionViewModel
 import com.dao0203.gikucampv20.feature.training.TrainingRestViewModel
 import com.dao0203.gikucampv20.feature.training.TrainingResultViewModel
@@ -20,4 +21,5 @@ val viewModelModule =
         viewModel<MenuDefinitionViewModel> { MenuDefinitionViewModel() }
         viewModel<TrainingRestViewModel> { TrainingRestViewModel() }
         viewModel<TrainingResultViewModel> { TrainingResultViewModel() }
+        viewModel<HistoryWithCalenderViewModel> { HistoryWithCalenderViewModel() }
     }
