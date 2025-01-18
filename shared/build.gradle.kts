@@ -49,6 +49,8 @@ kotlin {
             api(libs.kotlinx.datetime)
 
             implementation(libs.room.runtime)
+
+            implementation(libs.kotlinx.serialization.json)
         }
         androidMain.dependencies {
 
