@@ -156,18 +156,25 @@ class TrainingWithCameraViewModel :
     private fun collectReps() {
         viewModelScope.launch {
             onGoingTrainingMenuRepository.onGoingTrainingMenu
-                .map { it.reps }
                 .distinctUntilChanged()
                 .collect {
-                    if (it == 0) {
+                    if (it.reps != 0) return@collect
+                    if (it.sets == 1) {
                         vmState.update { vm -> vm.copy(showFinishCheck = true) }
                         delay(1_500) // for showing finish check
-                        _effect.emit(TrainingWithCameraEffect.NavigateToRest)
-                        onGoingTrainingMenuRepository.addWorkoutSetDefault()
-                        onGoingTrainingMenuRepository.resetReps()
-                        vmState.update { TrainingWithCameraViewModelState() }
+                        _effect.emit(TrainingWithCameraEffect.NavigateToResult)
+                        onGoingTrainingMenuRepository.addTrainingHistory()
+                        onGoingTrainingMenuRepository.updateOnGoingTrainingMenu(TrainingMenu.default())
+                        onGoingTrainingMenuRepository.updatePlannedTrainingMenu(TrainingMenu.default())
                         cancel()
                     }
+                    vmState.update { vm -> vm.copy(showFinishCheck = true) }
+                    delay(1_500) // for showing finish check
+                    _effect.emit(TrainingWithCameraEffect.NavigateToRest)
+                    onGoingTrainingMenuRepository.addWorkoutSetDefault()
+                    onGoingTrainingMenuRepository.resetReps()
+                    vmState.update { TrainingWithCameraViewModelState() }
+                    cancel()
                 }
         }
     }
