@@ -333,7 +333,6 @@ private fun TrainingTypeItem(
 }
 
 @MainPreviews
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun DefinitionMenuScreenPreview() {
     MainTheme {
@@ -351,7 +350,6 @@ private fun DefinitionMenuScreenPreview() {
 }
 
 @MainPreviews
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun DefinitionMenuContentSelectedPreview() {
     MainTheme {
