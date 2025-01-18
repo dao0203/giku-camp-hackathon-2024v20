@@ -92,4 +92,6 @@ dependencies {
     lintChecks(libs.compose.lint.checks)
 
     implementation(libs.lottie.compose)
+
+    implementation(libs.calender.compose)
 }
