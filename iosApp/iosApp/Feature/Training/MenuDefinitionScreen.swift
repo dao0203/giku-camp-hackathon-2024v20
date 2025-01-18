@@ -11,6 +11,7 @@ class MenuDefinitionObservableState: ObservableObject {
 struct MenuDefinitionScreen: View {
     let storeOwner = CustomViewModelStoreOwner<MenuDefinitionViewModel>()
     @StateObject private var observableState = MenuDefinitionObservableState()
+    @Environment(\.theme) var theme
 
     var body: some View {
         Observing(storeOwner.instance.uiState) { uiState in
@@ -43,7 +44,7 @@ struct MenuDefinitionScreen: View {
                         Image(systemName: "arrowshape.right.fill")
                             .foregroundColor(.white)
                             .frame(width: 56, height: 56)
-                            .background(Color.blue)
+                            .background(theme.primaryContainer)
                             .clipShape(Circle())
                             .shadow(radius: 5)
                     }
@@ -90,15 +91,6 @@ struct TrainingMenuInputs: View {
             }
 
             HStack(spacing: 8) {
-//                TextField(
-//                    "Training Type",
-//                    text: Binding(
-//                        get: { uiState.selectedTrainingType?.name ?? "Select Training Type" },
-//                        set: { _ in }
-//                    )
-//                )
-//                    .disabled(true)
-//                    .textFieldStyle(RoundedBorderTextFieldStyle())
                 Text(uiState.selectedTrainingType?.name ?? "Select Type") // 値を表示
                     .font(.body)
                     .padding(8)
@@ -141,6 +133,7 @@ struct TrainingTypesByGroup: View {
 struct TrainingTypeItem: View {
     let trainingType: TrainingType
     let onSelectTrainingType: (TrainingType) -> Void
+    @Environment(\.theme) var theme
 
     var body: some View {
         Button(action: {
@@ -149,6 +142,7 @@ struct TrainingTypeItem: View {
             VStack(alignment: .leading) {
                 Text(trainingType.name)
                     .font(.title3)
+                    .foregroundColor(theme.primaryContainer)
                 Text(trainingType.description_)
                     .font(.subheadline)
                     .foregroundColor(.secondary)
