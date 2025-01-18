@@ -6,6 +6,7 @@ sealed interface Training {
     val id: String
     val type: TrainingType
 
+    // TODO: 既存のTrainingMenuと入れ替える
     data class Menu(
         override val id: String,
         override val type: TrainingType,
@@ -24,10 +25,3 @@ sealed interface Training {
         val createdAt: LocalDate,
     ) : Training
 }
-
-data class WorkoutSet(
-    val id: String,
-    val reps: Int,
-    val weight: Double,
-    val rest: Int,
-)
