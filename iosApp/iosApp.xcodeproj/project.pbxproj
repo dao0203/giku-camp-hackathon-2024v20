@@ -17,6 +17,7 @@
 		FA2ABA592D3AE4C60026C050 /* TrainingWithCameraScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2ABA582D3AE4C60026C050 /* TrainingWithCameraScreen.swift */; };
 		FA2ABA5C2D3B5B010026C050 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2ABA5B2D3B5B010026C050 /* Color.swift */; };
 		FA2ABA5F2D3B5B3B0026C050 /* MainTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2ABA5E2D3B5B3B0026C050 /* MainTheme.swift */; };
+		FA2ABA642D3B85A30026C050 /* PoseLandmarkerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2ABA632D3B85A30026C050 /* PoseLandmarkerHelper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -47,6 +48,8 @@
 		FA2ABA582D3AE4C60026C050 /* TrainingWithCameraScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingWithCameraScreen.swift; sourceTree = "<group>"; };
 		FA2ABA5B2D3B5B010026C050 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		FA2ABA5E2D3B5B3B0026C050 /* MainTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTheme.swift; sourceTree = "<group>"; };
+		FA2ABA632D3B85A30026C050 /* PoseLandmarkerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseLandmarkerHelper.swift; sourceTree = "<group>"; };
+		FA2ABA652D3B88000026C050 /* pose_landmarker_full.task */ = {isa = PBXFileReference; lastKnownFileType = file; name = pose_landmarker_full.task; path = ../../../../Downloads/pose_landmarker_full.task; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,7 +86,6 @@
 				C5FF0143AB8F46FBEDAA6DCC /* Pods-iosApp.debug.xcconfig */,
 				CF81108D91804627F29577BA /* Pods-iosApp.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -108,6 +110,8 @@
 		7555FF7D242A565900829871 /* iosApp */ = {
 			isa = PBXGroup;
 			children = (
+				FA2ABA652D3B88000026C050 /* pose_landmarker_full.task */,
+				FA2ABA622D3B85840026C050 /* PoseLandmark */,
 				FA2ABA5A2D3B5AF30026C050 /* Theme */,
 				058557BA273AAA24004C7B11 /* Assets.xcassets */,
 				7555FF82242A565900829871 /* ContentView.swift */,
@@ -144,6 +148,14 @@
 				FA2ABA5E2D3B5B3B0026C050 /* MainTheme.swift */,
 			);
 			path = Theme;
+			sourceTree = "<group>";
+		};
+		FA2ABA622D3B85840026C050 /* PoseLandmark */ = {
+			isa = PBXGroup;
+			children = (
+				FA2ABA632D3B85A30026C050 /* PoseLandmarkerHelper.swift */,
+			);
+			path = PoseLandmark;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -266,6 +278,7 @@
 				7555FF83242A565900829871 /* ContentView.swift in Sources */,
 				38C7267629F263E16DE5F456 /* CustomViewModelStoreOwner.swift in Sources */,
 				38C72155E0CA8D47F5B0FB32 /* MenuDefinitionScreen.swift in Sources */,
+				FA2ABA642D3B85A30026C050 /* PoseLandmarkerHelper.swift in Sources */,
 				FA2ABA5F2D3B5B3B0026C050 /* MainTheme.swift in Sources */,
 				FA2ABA5C2D3B5B010026C050 /* Color.swift in Sources */,
 			);
