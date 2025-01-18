@@ -44,7 +44,7 @@ kotlin {
             implementation(libs.koin.compose.viewmodel)
 
             // kotlinx-datetime
-            implementation(libs.kotlinx.datetime)
+            api(libs.kotlinx.datetime)
         }
         androidMain.dependencies {
 

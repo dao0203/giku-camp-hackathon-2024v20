@@ -1,7 +1,10 @@
 package com.dao0203.gikucampv20.android.ui.theme
+
+import android.annotation.SuppressLint
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
@@ -261,6 +264,7 @@ val unspecified_scheme =
         Color.Unspecified,
     )
 
+@SuppressLint("ComposeModifierMissing")
 @Composable
 fun MainTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
@@ -284,6 +288,6 @@ fun MainTheme(
     MaterialTheme(
         colorScheme = colorScheme,
         typography = AppTypography,
-        content = content,
+        content = { Surface { content() } },
     )
 }
