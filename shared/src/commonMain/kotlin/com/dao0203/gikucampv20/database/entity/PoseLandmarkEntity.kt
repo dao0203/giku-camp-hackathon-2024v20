@@ -1,9 +1,7 @@
 package com.dao0203.gikucampv20.database.entity
 
-import androidx.room.Entity
 import com.dao0203.gikucampv20.domain.PoseLandmark
 
-@Entity
 enum class PoseLandmarkEntity(
     val index: Int,
 ) {

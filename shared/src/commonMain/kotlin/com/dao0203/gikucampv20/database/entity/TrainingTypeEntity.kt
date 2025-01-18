@@ -1,7 +1,7 @@
 package com.dao0203.gikucampv20.database.entity
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
 import com.dao0203.gikucampv20.domain.TrainingType
 import kotlinx.datetime.Instant
@@ -11,12 +11,13 @@ import kotlinx.serialization.json.Json
 
 @Entity
 data class TrainingTypeEntity(
-    @PrimaryKey val id: String,
+    val trainingTypeId: String,
     val name: String,
     val description: String,
     val muscleGroups: List<MuscleGroupEntity>,
+    val targetPoseLandmarksIndices: List<PoseLandmarksIndexEntity>?,
+    @ColumnInfo(name = "training_type_created_at")
     val createdAt: Long,
-    val targetPoseLandmarksIndices: List<PoseLandmarksIndexEntity>? = null,
 )
 
 object TrainingTypeEntityListConverter {
@@ -33,7 +34,7 @@ object TrainingTypeEntityListConverter {
 
 internal fun TrainingTypeEntity.toTrainingType(): TrainingType {
     return TrainingType(
-        id = id,
+        id = trainingTypeId,
         name = name,
         description = description,
         muscleGroups = muscleGroups.toMuscleGroup(),

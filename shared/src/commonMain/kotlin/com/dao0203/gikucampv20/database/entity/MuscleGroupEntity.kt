@@ -1,11 +1,9 @@
 package com.dao0203.gikucampv20.database.entity
 
-import androidx.room.Entity
 import androidx.room.TypeConverter
 import com.dao0203.gikucampv20.domain.MuscleGroup
 import kotlinx.serialization.json.Json
 
-@Entity
 enum class MuscleGroupEntity(val id: Int) {
     OTHER(0),
     CHEST(1),
@@ -27,18 +25,6 @@ object MuscleGroupEntityListConverter {
     @TypeConverter
     fun toMuscleGroupEntityList(value: String): List<MuscleGroupEntity> {
         return Json.decodeFromString(value)
-    }
-}
-
-object MuscleGroupEntityConverter {
-    @TypeConverter
-    fun fromMuscleGroupEntity(value: MuscleGroupEntity): Int {
-        return value.id
-    }
-
-    @TypeConverter
-    fun toMuscleGroupEntity(value: Int): MuscleGroupEntity {
-        return MuscleGroupEntity.entries.first { it.id == value }
     }
 }
 

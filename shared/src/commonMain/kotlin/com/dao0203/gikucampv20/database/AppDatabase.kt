@@ -8,21 +8,23 @@ import androidx.room.Query
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.room.Update
-import com.dao0203.gikucampv20.database.entity.MuscleGroupEntityConverter
 import com.dao0203.gikucampv20.database.entity.MuscleGroupEntityListConverter
-import com.dao0203.gikucampv20.database.entity.PoseLandmarkEntityConverter
+import com.dao0203.gikucampv20.database.entity.PoseLandmarksIndexEntityListConverter
 import com.dao0203.gikucampv20.database.entity.TrainingHistoryEntity
 import com.dao0203.gikucampv20.database.entity.TrainingTypeEntityListConverter
+import com.dao0203.gikucampv20.database.entity.WorkoutSetEntityListConverter
 
 @Database(
-    entities = [TrainingHistoryEntity::class],
+    entities = [
+        TrainingHistoryEntity::class,
+    ],
     version = 1,
 )
 @TypeConverters(
-    MuscleGroupEntityConverter::class,
-    PoseLandmarkEntityConverter::class,
+    PoseLandmarksIndexEntityListConverter::class,
     MuscleGroupEntityListConverter::class,
     TrainingTypeEntityListConverter::class,
+    WorkoutSetEntityListConverter::class,
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun trainingHistoryDao(): TrainingHistoryDao

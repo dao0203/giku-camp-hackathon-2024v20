@@ -2,46 +2,38 @@ package com.dao0203.gikucampv20.database.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.TypeConverter
 import com.dao0203.gikucampv20.domain.WorkoutSet
-import kotlin.uuid.ExperimentalUuidApi
-import kotlin.uuid.Uuid
+import kotlinx.serialization.json.Json
 
 @Entity
 data class WorkoutSetEntity(
-    @PrimaryKey val id: String,
+    @PrimaryKey val workoutSetId: String,
+    val historyId: String,
     val reps: Int,
     val weight: Double,
     val rest: Int,
-) {
-    companion object {
-        fun fromWorkoutSet(workoutSet: WorkoutSet): WorkoutSetEntity {
-            return WorkoutSetEntity(
-                id = workoutSet.id,
-                reps = workoutSet.reps,
-                weight = workoutSet.weight,
-                rest = workoutSet.rest,
-            )
-        }
+)
 
-        @OptIn(ExperimentalUuidApi::class)
-        fun createFromWorkoutSet(workoutSet: WorkoutSet): WorkoutSetEntity {
-            return WorkoutSetEntity(
-                id = Uuid.random().toString(),
-                reps = workoutSet.reps,
-                weight = workoutSet.weight,
-                rest = workoutSet.rest,
-            )
-        }
+object WorkoutSetEntityListConverter {
+    @TypeConverter
+    fun fromWorkoutSetEntityList(value: List<WorkoutSetEntity>): String {
+        return Json.encodeToString(value)
+    }
+
+    @TypeConverter
+    fun toWorkoutSetEntityList(value: String): List<WorkoutSetEntity> {
+        return Json.decodeFromString(value)
     }
 }
 
-private fun List<WorkoutSetEntity>.toWorkoutSet(): List<WorkoutSet> {
+internal fun List<WorkoutSetEntity>.toWorkoutSet(): List<WorkoutSet> {
     return map { it.toWorkoutSet() }
 }
 
 private fun WorkoutSetEntity.toWorkoutSet(): WorkoutSet {
     return WorkoutSet(
-        id = id,
+        id = workoutSetId,
         reps = reps,
         weight = weight,
         rest = rest,
