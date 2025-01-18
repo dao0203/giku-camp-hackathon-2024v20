@@ -13,14 +13,14 @@ import org.koin.core.component.KoinComponent
 @Stable
 data class HistoryWithCalenderUiState(
     val showBackGroundDays: Set<LocalDate>,
-    val selectedDate: LocalDate,
+    val selectedDate: LocalDate?,
 )
 
 class HistoryWithCalenderViewModel : ViewModel(), KoinComponent {
-    val _uiState =
+    private val _uiState =
         MutableStateFlow(
             HistoryWithCalenderUiState(
-                showBackGroundDays = emptySet(),
+                showBackGroundDays = setOf(LocalDate(2025, 1, 1)),
                 selectedDate = Clock.System.todayIn(TimeZone.currentSystemDefault()),
             ),
         )
@@ -29,6 +29,4 @@ class HistoryWithCalenderViewModel : ViewModel(), KoinComponent {
     fun onDateSelected(date: LocalDate) {
         _uiState.value = _uiState.value.copy(selectedDate = date)
     }
-
-
 }

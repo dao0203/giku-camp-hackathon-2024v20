@@ -1,6 +1,7 @@
 package com.dao0203.gikucampv20.android.feature.history
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -42,12 +43,14 @@ fun HistoryWithCalenderScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     HistoryWithCalenderContent(
         uiState = uiState,
+        onDayClick = viewModel::onDateSelected,
     )
 }
 
 @Composable
 private fun HistoryWithCalenderContent(
     uiState: HistoryWithCalenderUiState,
+    onDayClick: (LocalDate) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
@@ -61,6 +64,7 @@ private fun HistoryWithCalenderContent(
         ) {
             HistoryHorizontalCalender(
                 showBackGroundDays = uiState.showBackGroundDays,
+                onDayClick = onDayClick,
             )
         }
     }
@@ -69,6 +73,7 @@ private fun HistoryWithCalenderContent(
 @Composable
 fun HistoryHorizontalCalender(
     showBackGroundDays: Set<LocalDate>,
+    onDayClick: (LocalDate) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val currentMonth = remember { YearMonth.now() }
@@ -104,6 +109,7 @@ fun HistoryHorizontalCalender(
                         .any { date ->
                             it.date.toKotlinLocalDate() == date
                         },
+                onDayClick = onDayClick,
             )
         },
         modifier = modifier,
@@ -115,6 +121,7 @@ private fun Day(
     day: CalendarDay,
     showBackGround: Boolean,
     modifier: Modifier = Modifier,
+    onDayClick: (LocalDate) -> Unit,
 ) {
     Box(
         modifier =
@@ -124,12 +131,15 @@ private fun Day(
                 .clip(RoundedCornerShape(8.dp))
                 .background(
                     color =
-                    if (showBackGround) {
-                        MaterialTheme.colorScheme.primaryContainer
-                    } else {
-                        Color.Unspecified
-                    },
-                ),
+                        if (showBackGround) {
+                            MaterialTheme.colorScheme.primaryContainer
+                        } else {
+                            Color.Unspecified
+                        },
+                )
+                .clickable {
+                    onDayClick(day.date.toKotlinLocalDate())
+                },
         contentAlignment = Alignment.Center,
     ) {
         Text(
@@ -145,6 +155,7 @@ private fun CalenderPreview() {
     MainTheme {
         HistoryHorizontalCalender(
             showBackGroundDays = setOf(LocalDate(2025, 1, 1)),
+            onDayClick = {},
         )
     }
 }
