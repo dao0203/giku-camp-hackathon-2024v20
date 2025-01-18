@@ -59,8 +59,7 @@ class OnGoingTrainingMenuRepositoryImpl(
     }
 
     override fun getCurrentWorkoutSet(): WorkoutSet {
-        val currentSet = _onGoingTrainingMenu.value.sets
-        return _workoutSets.value[currentSet - 1]
+        return _workoutSets.value.last()
     }
 
     override fun addWorkoutSetDefault() {

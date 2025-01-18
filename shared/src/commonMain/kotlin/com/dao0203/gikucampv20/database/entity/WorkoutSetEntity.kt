@@ -4,9 +4,11 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
 import com.dao0203.gikucampv20.domain.WorkoutSet
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 
 @Entity
+@Serializable
 data class WorkoutSetEntity(
     @PrimaryKey val workoutSetId: String,
     val historyId: String,

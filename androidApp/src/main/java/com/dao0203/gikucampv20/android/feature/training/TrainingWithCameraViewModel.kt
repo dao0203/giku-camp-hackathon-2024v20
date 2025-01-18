@@ -163,6 +163,7 @@ class TrainingWithCameraViewModel :
                         vmState.update { vm -> vm.copy(showFinishCheck = true) }
                         delay(1_500) // for showing finish check
                         _effect.emit(TrainingWithCameraEffect.NavigateToResult)
+                        onGoingTrainingMenuRepository.addWorkoutSetDefault()
                         onGoingTrainingMenuRepository.addTrainingHistory()
                         onGoingTrainingMenuRepository.updateOnGoingTrainingMenu(TrainingMenu.default())
                         onGoingTrainingMenuRepository.updatePlannedTrainingMenu(TrainingMenu.default())
