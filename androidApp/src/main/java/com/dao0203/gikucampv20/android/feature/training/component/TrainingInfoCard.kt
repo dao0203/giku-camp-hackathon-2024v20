@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dao0203.gikucampv20.android.ui.theme.MainTheme
 import com.dao0203.gikucampv20.android.util.DrawableRes
-import com.dao0203.gikucampv20.android.util.MainPreview
+import com.dao0203.gikucampv20.android.util.MainPreviews
 import com.dao0203.gikucampv20.android.util.StringRes
 
 @Composable
@@ -85,7 +85,7 @@ fun TrainingInfoCard(
     }
 }
 
-@MainPreview
+@MainPreviews
 @Composable
 private fun TrainingInfoCardPreview() {
     MainTheme {
@@ -96,7 +96,7 @@ private fun TrainingInfoCardPreview() {
     }
 }
 
-@MainPreview
+@MainPreviews
 @Composable
 private fun TrainingInfoCardOneDigitPreview() {
     MainTheme {

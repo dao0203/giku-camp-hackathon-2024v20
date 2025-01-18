@@ -9,6 +9,7 @@
     <string name="rest">休憩</string>
     <string name="seconds">秒</string>
     <string name="start">スタート</string>
+    <string name="menu">メニュー</string>
     <string name="training_type">種目</string>
     <string name="muscle_groups">筋肉部位</string>
     <string name="select_training_type">トレーニングタイプを選択してください</string>

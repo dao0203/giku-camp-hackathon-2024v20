@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.dao0203.gikucampv20.android.R
 import com.dao0203.gikucampv20.android.ui.theme.MainTheme
-import com.dao0203.gikucampv20.android.util.MainPreview
+import com.dao0203.gikucampv20.android.util.MainPreviews
 
 @Composable
 fun SkipAlertDialog(
@@ -58,7 +58,7 @@ fun SkipAlertDialog(
     )
 }
 
-@MainPreview
+@MainPreviews
 @Composable
 private fun SkipAlertDialogPreview() {
     MainTheme {

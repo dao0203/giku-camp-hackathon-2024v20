@@ -26,7 +26,7 @@ import com.dao0203.gikucampv20.android.R
 import com.dao0203.gikucampv20.android.feature.training.component.CircularTimer
 import com.dao0203.gikucampv20.android.feature.training.component.SkipAlertDialog
 import com.dao0203.gikucampv20.android.ui.theme.MainTheme
-import com.dao0203.gikucampv20.android.util.MainPreview
+import com.dao0203.gikucampv20.android.util.MainPreviews
 import com.dao0203.gikucampv20.android.util.StringRes
 import com.dao0203.gikucampv20.feature.training.TrainingRestUiState
 import com.dao0203.gikucampv20.feature.training.TrainingRestViewModel
@@ -123,7 +123,7 @@ private fun TrainingRestContent(
     }
 }
 
-@MainPreview
+@MainPreviews
 @Composable
 private fun TrainingRestContentPreview() {
     MainTheme {
@@ -142,7 +142,7 @@ private fun TrainingRestContentPreview() {
     }
 }
 
-@MainPreview
+@MainPreviews
 @Composable
 private fun TrainingRestScreenPreview() {
     MainTheme {

@@ -9,6 +9,7 @@
     <string name="rest">Rest</string>
     <string name="seconds">Seconds</string>
     <string name="start">Start</string>
+    <string name="menu">Menu</string>
     <string name="training_type">Training Type</string>
     <string name="muscle_groups">Muscle Groups</string>
     <string name="select_training_type">Please select a training type</string>

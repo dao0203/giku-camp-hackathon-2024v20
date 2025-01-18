@@ -1,5 +1,6 @@
 package com.dao0203.gikucampv20.android.feature.training
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -18,24 +19,28 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.dao0203.gikucampv20.android.R
 import com.dao0203.gikucampv20.android.ui.theme.MainTheme
-import com.dao0203.gikucampv20.android.util.MainPreview
+import com.dao0203.gikucampv20.android.util.MainPreviews
 import com.dao0203.gikucampv20.domain.TrainingType
 import com.dao0203.gikucampv20.domain.defaults
 import com.dao0203.gikucampv20.feature.training.DefinitionMenuUiState
@@ -90,6 +95,7 @@ fun DefinitionMenuScreen(onStartTraining: () -> Unit) {
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun DefinitionMenuScreenContent(
     onStartTraining: () -> Unit,
@@ -104,6 +110,21 @@ private fun DefinitionMenuScreenContent(
 ) {
     Scaffold(
         modifier = modifier,
+        topBar = {
+            TopAppBar(
+                title = { Text(stringResource(R.string.menu)) },
+                actions = {
+                    IconButton(
+                        onClick = { },
+                    ) {
+                        Icon(
+                            Icons.Filled.DateRange,
+                            contentDescription = null,
+                        )
+                    }
+                },
+            )
+        },
         floatingActionButton = {
             if (uiState.showStartingTrainingButton) {
                 ExtendedFloatingActionButton(
@@ -311,7 +332,8 @@ private fun TrainingTypeItem(
     }
 }
 
-@MainPreview
+@MainPreviews
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun DefinitionMenuScreenPreview() {
     MainTheme {
@@ -328,7 +350,8 @@ private fun DefinitionMenuScreenPreview() {
     }
 }
 
-@MainPreview
+@MainPreviews
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun DefinitionMenuContentSelectedPreview() {
     MainTheme {

@@ -25,7 +25,6 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -50,7 +49,7 @@ import com.dao0203.gikucampv20.android.feature.training.component.TrainingInfoCa
 import com.dao0203.gikucampv20.android.ui.theme.MainTheme
 import com.dao0203.gikucampv20.android.ui.theme.surfaceLight
 import com.dao0203.gikucampv20.android.ui.theme.surfaceVariantDark
-import com.dao0203.gikucampv20.android.util.MainPreview
+import com.dao0203.gikucampv20.android.util.MainPreviews
 import com.dao0203.gikucampv20.android.util.rotateWithAnimation
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -221,7 +220,7 @@ private fun TrainingWithCameraContent(
     }
 }
 
-@MainPreview
+@MainPreviews
 @Composable
 private fun TrainingWithCameraContentPreview() {
     MainTheme {

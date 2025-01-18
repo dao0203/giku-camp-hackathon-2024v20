@@ -3,6 +3,7 @@ package com.dao0203.gikucampv20.android.feature.history
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
@@ -19,7 +20,7 @@ private fun HistoryWithCalenderContent(
         modifier = modifier,
     ) { innerPadding ->
         Box(modifier = Modifier.padding(innerPadding)) {
-            HistoryWithCalenderScreen()
+            Text("History with Calendar")
         }
     }
 }
