@@ -36,10 +36,7 @@ fun TrainingInfoCard(
         modifier =
             modifier
                 .clip(RoundedCornerShape(8.dp))
-                .size(
-                    width = 120.dp,
-                    height = 120.dp,
-                ),
+                .size(120.dp),
         elevation = CardDefaults.elevatedCardElevation(),
     ) {
         Box(
