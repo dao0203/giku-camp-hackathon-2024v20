@@ -49,14 +49,18 @@ fun NavController.navigateToResult() {
     navigate(TrainingRoute.Result)
 }
 
-fun NavGraphBuilder.trainingNavigation(navController: NavController) {
+fun NavGraphBuilder.trainingNavigation(
+    navController: NavController,
+    navigateToHistory: () -> Unit,
+) {
     navigation<TrainingRoute.Base>(
         startDestination = TrainingRoute.MenuDefinition,
     ) {
         composable<TrainingRoute.MenuDefinition> {
-            DefinitionMenuScreen {
-                navController.navigateToTrainingWithCamera()
-            }
+            DefinitionMenuScreen(
+                navigateToHistory = navigateToHistory,
+                onStartTraining = navController::navigateToTrainingWithCamera,
+            )
         }
         composable<TrainingRoute.TrainingAction.TrainingWithCamera> {
             TrainingWithCameraScreen(

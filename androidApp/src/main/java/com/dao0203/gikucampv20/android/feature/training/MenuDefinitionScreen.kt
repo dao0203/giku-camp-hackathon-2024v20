@@ -1,6 +1,5 @@
 package com.dao0203.gikucampv20.android.feature.training
 
-import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -35,7 +34,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.dao0203.gikucampv20.android.R
@@ -54,7 +52,10 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun DefinitionMenuScreen(onStartTraining: () -> Unit) {
+fun DefinitionMenuScreen(
+    onStartTraining: () -> Unit,
+    navigateToHistory: () -> Unit,
+) {
     val permissionState = rememberPermissionState(android.Manifest.permission.CAMERA)
 
     LaunchedEffect(Unit) {
@@ -86,6 +87,7 @@ fun DefinitionMenuScreen(onStartTraining: () -> Unit) {
                 listState.animateScrollToItem(0)
             }
         },
+        onCalenderClick = navigateToHistory,
         onSetsChange = viewModel::changeSets,
         onRepsChange = viewModel::changeReps,
         onWeightChange = viewModel::changeWeight,
@@ -99,6 +101,7 @@ fun DefinitionMenuScreen(onStartTraining: () -> Unit) {
 @Composable
 private fun DefinitionMenuScreenContent(
     onStartTraining: () -> Unit,
+    onCalenderClick: () -> Unit,
     onSelectTrainingType: (TrainingType) -> Unit,
     onSetsChange: (String) -> Unit,
     onRepsChange: (String) -> Unit,
@@ -115,7 +118,7 @@ private fun DefinitionMenuScreenContent(
                 title = { Text(stringResource(R.string.menu)) },
                 actions = {
                     IconButton(
-                        onClick = { },
+                        onClick = onCalenderClick,
                     ) {
                         Icon(
                             Icons.Filled.DateRange,
@@ -338,6 +341,7 @@ private fun DefinitionMenuScreenPreview() {
     MainTheme {
         DefinitionMenuScreenContent(
             onStartTraining = {},
+            onCalenderClick = {},
             onSelectTrainingType = {},
             onSetsChange = {},
             onRepsChange = {},
@@ -355,6 +359,7 @@ private fun DefinitionMenuContentSelectedPreview() {
     MainTheme {
         DefinitionMenuScreenContent(
             onStartTraining = {},
+            onCalenderClick = {},
             onSelectTrainingType = {},
             onSetsChange = {},
             onRepsChange = {},
