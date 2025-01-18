@@ -2,6 +2,7 @@ package com.dao0203.gikucampv20
 
 import androidx.room.Room
 import com.dao0203.gikucampv20.database.AppDatabase
+import com.dao0203.gikucampv20.database.TrainingHistoryDao
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
@@ -16,4 +17,5 @@ actual val databaseModule =
             )
                 .build()
         }
+        single<TrainingHistoryDao> { get<AppDatabase>().trainingHistoryDao() }
     }

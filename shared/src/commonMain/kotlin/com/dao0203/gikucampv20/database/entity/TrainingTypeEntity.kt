@@ -6,6 +6,7 @@ import androidx.room.TypeConverter
 import com.dao0203.gikucampv20.domain.TrainingType
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.atStartOfDayIn
 import kotlinx.datetime.toLocalDateTime
 import kotlinx.serialization.json.Json
 
@@ -30,6 +31,17 @@ object TrainingTypeEntityListConverter {
     fun toTrainingTypeEntityList(value: String): List<TrainingTypeEntity> {
         return Json.decodeFromString(value)
     }
+}
+
+internal fun TrainingType.toTrainingTypeEntity(): TrainingTypeEntity {
+    return TrainingTypeEntity(
+        trainingTypeId = id,
+        name = name,
+        description = description,
+        muscleGroups = muscleGroups.toMuscleGroupEntity(),
+        targetPoseLandmarksIndices = targetPoseLandmarksIndices?.toPoseLandmarksIndexEntity(),
+        createdAt = createdAt.atStartOfDayIn(TimeZone.currentSystemDefault()).toEpochMilliseconds(),
+    )
 }
 
 internal fun TrainingTypeEntity.toTrainingType(): TrainingType {

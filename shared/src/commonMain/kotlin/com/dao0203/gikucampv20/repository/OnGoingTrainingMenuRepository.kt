@@ -1,5 +1,6 @@
 package com.dao0203.gikucampv20.repository
 
+import com.dao0203.gikucampv20.domain.Training
 import com.dao0203.gikucampv20.domain.TrainingMenu
 import com.dao0203.gikucampv20.domain.WorkoutSet
 import com.dao0203.gikucampv20.domain.default
@@ -7,6 +8,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.datetime.Clock
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 
 interface OnGoingTrainingMenuRepository {
     val plannedTrainingMenu: Flow<TrainingMenu>
@@ -25,12 +29,16 @@ interface OnGoingTrainingMenuRepository {
 
     fun getCurrentWorkoutSet(): WorkoutSet
 
+    suspend fun addTrainingHistory()
+
     fun updatePlannedTrainingMenu(trainingMenu: TrainingMenu)
 
     fun updateOnGoingTrainingMenu(trainingMenu: TrainingMenu)
 }
 
-class OnGoingTrainingMenuRepositoryImpl : OnGoingTrainingMenuRepository {
+class OnGoingTrainingMenuRepositoryImpl(
+    private val trainingHistoryRepository: TrainingHistoryRepository,
+) : OnGoingTrainingMenuRepository {
     private val _plannedTrainingMenu = MutableStateFlow(TrainingMenu.default())
     override val plannedTrainingMenu = _plannedTrainingMenu.asStateFlow()
     private val _onGoingTrainingMenu = MutableStateFlow(TrainingMenu.default())
@@ -58,6 +66,7 @@ class OnGoingTrainingMenuRepositoryImpl : OnGoingTrainingMenuRepository {
     override fun addWorkoutSetDefault() {
         val workoutSet =
             WorkoutSet.createDefault(
+                historyId = _onGoingTrainingMenu.value.id,
                 reps = _plannedTrainingMenu.value.reps,
                 weight = _plannedTrainingMenu.value.weight,
             )
@@ -68,6 +77,20 @@ class OnGoingTrainingMenuRepositoryImpl : OnGoingTrainingMenuRepository {
         _workoutSets.update { workoutSets ->
             workoutSets.map { if (it.id == workoutSet.id) workoutSet else it }
         }
+    }
+
+    override suspend fun addTrainingHistory() {
+        val trainingHistory =
+            Training.History(
+                id = _onGoingTrainingMenu.value.id,
+                type = _onGoingTrainingMenu.value.type!!,
+                sets = _onGoingTrainingMenu.value.sets,
+                workoutSet = _workoutSets.value,
+                createdAt =
+                    Clock.System.now()
+                        .toLocalDateTime(TimeZone.currentSystemDefault()).date,
+            )
+        trainingHistoryRepository.addTrainingHistory(trainingHistory)
     }
 
     override fun updatePlannedTrainingMenu(trainingMenu: TrainingMenu) {

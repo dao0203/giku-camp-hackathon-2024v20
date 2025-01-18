@@ -1,6 +1,9 @@
 package com.dao0203.gikucampv20.domain
 
-import kotlinx.datetime.Instant
+import kotlinx.datetime.Clock
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
@@ -11,7 +14,7 @@ data class TrainingMenu(
     val reps: Int,
     val weight: Double,
     val rest: Int,
-    val createdAt: Instant,
+    val createdAt: LocalDate,
 ) {
     companion object
 }
@@ -25,5 +28,7 @@ fun TrainingMenu.Companion.default() =
         reps = 0,
         weight = 0.0,
         rest = 0,
-        createdAt = Instant.DISTANT_PAST,
+        createdAt =
+            Clock.System.now()
+                .toLocalDateTime(TimeZone.currentSystemDefault()).date,
     )

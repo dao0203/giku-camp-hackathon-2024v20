@@ -23,6 +23,17 @@ object PoseLandmarksIndexEntityListConverter {
     }
 }
 
+internal fun List<PoseLandmarksIndex>.toPoseLandmarksIndexEntity(): List<PoseLandmarksIndexEntity> {
+    return map { it.toPoseLandmarksIndexEntity() }
+}
+
+internal fun PoseLandmarksIndex.toPoseLandmarksIndexEntity(): PoseLandmarksIndexEntity {
+    return PoseLandmarksIndexEntity(
+        start = start.toPoseLandmarkEntity(),
+        end = end.toPoseLandmarkEntity(),
+    )
+}
+
 internal fun List<PoseLandmarksIndexEntity>.toPoseLandmarksIndex(): List<PoseLandmarksIndex> {
     return map { it.toPoseLandmarksIndex() }
 }

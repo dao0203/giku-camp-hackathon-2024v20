@@ -1,11 +1,15 @@
 package com.dao0203.gikucampv20.repository
 
+import com.dao0203.gikucampv20.database.TrainingHistoryDao
+import com.dao0203.gikucampv20.database.entity.TrainingHistoryEntity
+import com.dao0203.gikucampv20.database.entity.toTrainingHistory
 import com.dao0203.gikucampv20.domain.Training
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 interface TrainingHistoryRepository {
@@ -18,31 +22,32 @@ interface TrainingHistoryRepository {
     suspend fun updateTrainingHistory(training: Training.History)
 }
 
-class TrainingHistoryRepositoryImpl : TrainingHistoryRepository {
-    private val _trainingHistory = MutableStateFlow(mutableListOf<Training.History>())
-    override val trainingHistory: Flow<List<Training.History>> = _trainingHistory.asStateFlow()
+class TrainingHistoryRepositoryImpl(
+    private val trainingHistoryDao: TrainingHistoryDao,
+) : TrainingHistoryRepository {
+    override val trainingHistory: Flow<List<Training.History>> =
+        flow {
+            emitAll(trainingHistoryDao.getAllStream().map { it.toTrainingHistory() })
+        }
 
     override suspend fun addTrainingHistory(training: Training.History) {
         withContext(Dispatchers.IO) {
-            _trainingHistory.value.add(training)
-            return@withContext
+            val entity = TrainingHistoryEntity.fromTrainingHistory(training)
+            trainingHistoryDao.insert(entity)
         }
     }
 
     override suspend fun deleteTrainingHistory(training: Training.History) {
         withContext(Dispatchers.IO) {
-            _trainingHistory.value.remove(training)
-            return@withContext
+            val entity = TrainingHistoryEntity.fromTrainingHistory(training)
+            trainingHistoryDao.delete(entity)
         }
     }
 
     override suspend fun updateTrainingHistory(training: Training.History) {
         withContext(Dispatchers.IO) {
-            val index = _trainingHistory.value.indexOfFirst { it.id == training.id }
-            if (index != -1) {
-                _trainingHistory.value[index] = training
-            }
-            return@withContext
+            val entity = TrainingHistoryEntity.fromTrainingHistory(training)
+            trainingHistoryDao.update(entity)
         }
     }
 }

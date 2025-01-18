@@ -28,6 +28,24 @@ object MuscleGroupEntityListConverter {
     }
 }
 
+internal fun List<MuscleGroup>.toMuscleGroupEntity(): List<MuscleGroupEntity> {
+    return map { it.toMuscleGroupEntity() }
+}
+
+private fun MuscleGroup.toMuscleGroupEntity(): MuscleGroupEntity {
+    return when (this) {
+        MuscleGroup.OTHER -> MuscleGroupEntity.OTHER
+        MuscleGroup.CHEST -> MuscleGroupEntity.CHEST
+        MuscleGroup.BACK -> MuscleGroupEntity.BACK
+        MuscleGroup.FOREARM -> MuscleGroupEntity.FOREARM
+        MuscleGroup.SHOULDER -> MuscleGroupEntity.SHOULDER
+        MuscleGroup.TRICEPS -> MuscleGroupEntity.TRICEPS
+        MuscleGroup.BICEPS -> MuscleGroupEntity.BICEPS
+        MuscleGroup.LEGS -> MuscleGroupEntity.LEGS
+        MuscleGroup.ABS -> MuscleGroupEntity.ABS
+    }
+}
+
 internal fun List<MuscleGroupEntity>.toMuscleGroup(): List<MuscleGroup> {
     return map { it.toMuscleGroup() }
 }

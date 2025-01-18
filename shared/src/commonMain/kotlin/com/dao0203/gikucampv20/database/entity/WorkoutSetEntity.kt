@@ -27,6 +27,20 @@ object WorkoutSetEntityListConverter {
     }
 }
 
+internal fun List<WorkoutSet>.toWorkoutSetEntity(): List<WorkoutSetEntity> {
+    return map { it.toWorkoutSetEntity() }
+}
+
+private fun WorkoutSet.toWorkoutSetEntity(): WorkoutSetEntity {
+    return WorkoutSetEntity(
+        workoutSetId = id,
+        historyId = historyId,
+        reps = reps,
+        weight = weight,
+        rest = rest,
+    )
+}
+
 internal fun List<WorkoutSetEntity>.toWorkoutSet(): List<WorkoutSet> {
     return map { it.toWorkoutSet() }
 }

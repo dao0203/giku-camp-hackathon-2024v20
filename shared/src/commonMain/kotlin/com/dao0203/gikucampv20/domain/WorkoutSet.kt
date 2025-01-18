@@ -5,6 +5,7 @@ import kotlin.uuid.Uuid
 
 data class WorkoutSet(
     val id: String,
+    val historyId: String,
     val reps: Int,
     val weight: Double,
     val rest: Int?,
@@ -12,11 +13,13 @@ data class WorkoutSet(
     companion object {
         @OptIn(ExperimentalUuidApi::class)
         fun createDefault(
+            historyId: String,
             reps: Int,
             weight: Double,
             rest: Int? = null,
         ) = WorkoutSet(
             id = Uuid.random().toString(),
+            historyId = historyId,
             reps = reps,
             weight = weight,
             rest = rest,

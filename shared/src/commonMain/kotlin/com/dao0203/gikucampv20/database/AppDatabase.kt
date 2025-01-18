@@ -13,6 +13,7 @@ import com.dao0203.gikucampv20.database.entity.PoseLandmarksIndexEntityListConve
 import com.dao0203.gikucampv20.database.entity.TrainingHistoryEntity
 import com.dao0203.gikucampv20.database.entity.TrainingTypeEntityListConverter
 import com.dao0203.gikucampv20.database.entity.WorkoutSetEntityListConverter
+import kotlinx.coroutines.flow.Flow
 
 @Database(
     entities = [
@@ -37,6 +38,9 @@ interface TrainingHistoryDao {
 
     @Query("SELECT * FROM TrainingHistoryEntity")
     suspend fun getAll(): List<TrainingHistoryEntity>
+
+    @Query("SELECT * FROM TrainingHistoryEntity")
+    suspend fun getAllStream(): Flow<List<TrainingHistoryEntity>>
 
     @Delete
     suspend fun delete(entity: TrainingHistoryEntity)

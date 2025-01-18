@@ -40,6 +40,10 @@ enum class PoseLandmarkEntity(
     RIGHT_FOOT_INDEX(32),
 }
 
+internal fun PoseLandmark.toPoseLandmarkEntity(): PoseLandmarkEntity {
+    return PoseLandmarkEntity.valueOf(name)
+}
+
 internal fun PoseLandmarkEntity.toPoseLandmark(): PoseLandmark {
     return PoseLandmark.valueOf(name)
 }
