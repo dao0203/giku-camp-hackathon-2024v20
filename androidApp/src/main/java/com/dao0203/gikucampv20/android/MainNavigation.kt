@@ -3,6 +3,7 @@ package com.dao0203.gikucampv20.android
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
+import com.dao0203.gikucampv20.android.feature.history.navigation.historyNavigation
 import com.dao0203.gikucampv20.android.feature.training.navigation.TrainingRoute
 import com.dao0203.gikucampv20.android.feature.training.navigation.trainingNavigation
 import com.dao0203.gikucampv20.android.ui.MainAppState
@@ -19,5 +20,6 @@ fun MainNavHost(
         modifier = modifier,
     ) {
         trainingNavigation(navController)
+        historyNavigation(navController)
     }
 }
