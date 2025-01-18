@@ -22,8 +22,8 @@ fun TrainingType.Companion.defaults() =
     listOf(
         TrainingType(
             id = "1",
-            name = "Bench Press",
-            description = "Bench Press is a compound exercise that builds strength and muscle in the chest and triceps.",
+            name = "ベンチプレス",
+            description = "ベンチプレスは胸と上腕三頭筋の筋力と筋肉を鍛えるコンパウンドエクササイズです。",
             muscleGroups = listOf(MuscleGroup.CHEST, MuscleGroup.TRICEPS),
             createdAt = Instant.DISTANT_PAST,
             targetPoseLandmarksIndices =
@@ -36,8 +36,8 @@ fun TrainingType.Companion.defaults() =
         ),
         TrainingType(
             id = "2",
-            name = "Deadlift",
-            description = "Deadlift is a compound exercise that builds strength and muscle in the back, legs, and forearms.",
+            name = "デッドリフト",
+            description = "デッドリフトは背中、脚、前腕の筋力と筋肉を鍛えるコンパウンドエクササイズです。",
             muscleGroups = listOf(MuscleGroup.BACK, MuscleGroup.LEGS, MuscleGroup.FOREARM),
             createdAt = Instant.DISTANT_PAST,
             targetPoseLandmarksIndices =
@@ -50,8 +50,8 @@ fun TrainingType.Companion.defaults() =
         ),
         TrainingType(
             id = "3",
-            name = "Shoulder Press",
-            description = "Shoulder Press is an isolation exercise that builds strength and muscle in the shoulders.",
+            name = "ショルダープレス",
+            description = "ショルダープレスは肩の筋力と筋肉を鍛えるアイソレーションエクササイズです。",
             muscleGroups = listOf(MuscleGroup.SHOULDER),
             targetPoseLandmarksIndices =
                 listOf(
@@ -64,43 +64,43 @@ fun TrainingType.Companion.defaults() =
         ),
         TrainingType(
             id = "4",
-            name = "Bicep Curl",
-            description = "Bicep Curl is an isolation exercise that builds strength and muscle in the biceps.",
+            name = "バイセップカール",
+            description = "バイセップカールは上腕二頭筋の筋力と筋肉を鍛えるアイソレーションエクササイズです。",
             muscleGroups = listOf(MuscleGroup.BICEPS),
             createdAt = Instant.DISTANT_PAST,
         ),
         TrainingType(
             id = "5",
-            name = "Tricep Extension",
-            description = "Tricep Extension is an isolation exercise that builds strength and muscle in the triceps.",
+            name = "トライセップエクステンション",
+            description = "トライセップエクステンションは上腕三頭筋の筋力と筋肉を鍛えるアイソレーションエクササイズです。",
             muscleGroups = listOf(MuscleGroup.TRICEPS),
             createdAt = Instant.DISTANT_PAST,
         ),
         TrainingType(
             id = "6",
-            name = "Leg Press",
-            description = "Leg Press is a compound exercise that builds strength and muscle in the legs.",
+            name = "レッグプレス",
+            description = "レッグプレスは脚の筋力と筋肉を鍛えるコンパウンドエクササイズです。",
             muscleGroups = listOf(MuscleGroup.LEGS),
             createdAt = Instant.DISTANT_PAST,
         ),
         TrainingType(
             id = "7",
-            name = "Crunch",
-            description = "Crunch is an isolation exercise that builds strength and muscle in the abs.",
+            name = "クランチ",
+            description = "クランチは腹筋の筋力と筋肉を鍛えるアイソレーションエクササイズです。",
             muscleGroups = listOf(MuscleGroup.ABS),
             createdAt = Instant.DISTANT_PAST,
         ),
         TrainingType(
             id = "8",
-            name = "Pull-up",
-            description = "Pull-up is a compound exercise that builds strength and muscle in the back and forearms.",
+            name = "プルアップ",
+            description = "プルアップは背中と前腕の筋力と筋肉を鍛えるコンパウンドエクササイズです。",
             muscleGroups = listOf(MuscleGroup.BACK, MuscleGroup.FOREARM),
             createdAt = Instant.DISTANT_PAST,
         ),
         TrainingType(
             id = "9",
-            name = "Squat",
-            description = "Squat is a compound exercise that builds strength and muscle in the legs and back.",
+            name = "スクワット",
+            description = "スクワットは脚と背中の筋力と筋肉を鍛えるコンパウンドエクササイズです。",
             muscleGroups = listOf(MuscleGroup.LEGS, MuscleGroup.BACK),
             createdAt = Instant.DISTANT_PAST,
             targetPoseLandmarksIndices =
@@ -113,22 +113,22 @@ fun TrainingType.Companion.defaults() =
         ),
         TrainingType(
             id = "10",
-            name = "Dumbbell Row",
-            description = "Dumbbell Row is a compound exercise that builds strength and muscle in the back and forearms.",
+            name = "ダンベルロー",
+            description = "ダンベルローは背中と前腕の筋力と筋肉を鍛えるコンパウンドエクササイズです。",
             muscleGroups = listOf(MuscleGroup.BACK, MuscleGroup.FOREARM),
             createdAt = Instant.DISTANT_PAST,
         ),
         TrainingType(
             id = "11",
-            name = "Lateral Raise",
-            description = "Lateral Raise is an isolation exercise that builds strength and muscle in the shoulders.",
+            name = "ラテラルレイズ",
+            description = "ラテラルレイズは肩の筋力と筋肉を鍛えるアイソレーションエクササイズです。",
             muscleGroups = listOf(MuscleGroup.SHOULDER),
             createdAt = Instant.DISTANT_PAST,
         ),
         TrainingType(
             id = "12",
-            name = "Hammer Curl",
-            description = "Hammer Curl is an isolation exercise that builds strength and muscle in the biceps.",
+            name = "ハンマーカール",
+            description = "ハンマーカールは上腕二頭筋の筋力と筋肉を鍛えるアイソレーションエクササイズです。",
             muscleGroups = listOf(MuscleGroup.BICEPS),
             createdAt = Instant.DISTANT_PAST,
         ),

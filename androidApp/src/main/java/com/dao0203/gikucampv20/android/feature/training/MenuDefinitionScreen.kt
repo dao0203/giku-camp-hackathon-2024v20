@@ -37,7 +37,7 @@ import com.dao0203.gikucampv20.android.R
 import com.dao0203.gikucampv20.android.ui.theme.MainTheme
 import com.dao0203.gikucampv20.android.util.MainPreview
 import com.dao0203.gikucampv20.domain.TrainingType
-import com.dao0203.gikucampv20.domain.dummies
+import com.dao0203.gikucampv20.domain.defaults
 import com.dao0203.gikucampv20.feature.training.DefinitionMenuUiState
 import com.dao0203.gikucampv20.feature.training.MenuDefinitionViewModel
 import com.dao0203.gikucampv20.feature.training.MuscleGroupsUiModel
@@ -298,7 +298,13 @@ private fun TrainingTypeItem(
         onClick = { onSelectTrainingType(trainingType) },
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            Text(text = trainingType.name, style = MaterialTheme.typography.titleMedium)
+            Text(
+                text = trainingType.name,
+                style =
+                    MaterialTheme.typography.titleMedium.copy(
+                        color = MaterialTheme.colorScheme.secondaryContainer,
+                    ),
+            )
             Spacer(modifier = Modifier.height(4.dp))
             Text(text = trainingType.description, style = MaterialTheme.typography.bodyMedium)
         }
@@ -340,7 +346,7 @@ private fun DefinitionMenuContentSelectedPreview() {
                     reps = "10",
                     weight = "20.0",
                     rest = "120",
-                    selectedTrainingType = TrainingType.dummies().first(),
+                    selectedTrainingType = TrainingType.defaults().first(),
                 ),
         )
     }
