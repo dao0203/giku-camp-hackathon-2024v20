@@ -3,7 +3,6 @@ package com.dao0203.gikucampv20.android.feature.training.component
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -56,7 +55,7 @@ fun TrainingInfoCard(
             Row(
                 modifier =
                     Modifier
-                        .align(Alignment.BottomEnd)
+                        .align(Alignment.BottomEnd),
             ) {
                 val baseModifier = Modifier.alignByBaseline()
                 Text(
@@ -77,9 +76,10 @@ fun TrainingInfoCard(
             Icon(
                 painterResource(DrawableRes.more_horiz),
                 contentDescription = null,
-                modifier = Modifier
-                    .size(24.dp)
-                    .align(Alignment.TopEnd),
+                modifier =
+                    Modifier
+                        .size(24.dp)
+                        .align(Alignment.TopEnd),
             )
         }
     }
@@ -106,4 +106,3 @@ private fun TrainingInfoCardOneDigitPreview() {
         )
     }
 }
-
