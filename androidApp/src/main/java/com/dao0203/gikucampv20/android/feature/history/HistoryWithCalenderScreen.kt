@@ -3,6 +3,7 @@ package com.dao0203.gikucampv20.android.feature.history
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -16,8 +17,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.dao0203.gikucampv20.android.R
 import com.dao0203.gikucampv20.android.ui.theme.MainTheme
 import com.dao0203.gikucampv20.android.util.MainPreviews
 import com.dao0203.gikucampv20.feature.record.HistoryWithCalenderUiState
@@ -82,12 +86,22 @@ fun HistoryHorizontalCalender(
 
     HorizontalCalendar(
         state = state,
+        monthHeader = {
+            val month = it.yearMonth.month.value
+            val year = it.yearMonth.year
+            Text(
+                text = stringResource(R.string.date, month, year),
+                style = MaterialTheme.typography.bodyMedium,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth(),
+            )
+        },
         dayContent = {
             Day(
                 it,
                 showBackGround =
                     showBackGroundDays
-                        .all { date ->
+                        .any { date ->
                             it.date.toKotlinLocalDate() == date
                         },
             )
@@ -110,11 +124,11 @@ private fun Day(
                 .clip(RoundedCornerShape(8.dp))
                 .background(
                     color =
-                        if (showBackGround) {
-                            MaterialTheme.colorScheme.primaryContainer
-                        } else {
-                            Color.Unspecified
-                        },
+                    if (showBackGround) {
+                        MaterialTheme.colorScheme.primaryContainer
+                    } else {
+                        Color.Unspecified
+                    },
                 ),
         contentAlignment = Alignment.Center,
     ) {
