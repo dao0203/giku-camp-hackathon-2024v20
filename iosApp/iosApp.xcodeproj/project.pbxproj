@@ -14,6 +14,8 @@
 		38C7267629F263E16DE5F456 /* CustomViewModelStoreOwner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C72BAF2C2080BE702B735A /* CustomViewModelStoreOwner.swift */; };
 		7555FF83242A565900829871 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7555FF82242A565900829871 /* ContentView.swift */; };
 		FA2ABA592D3AE4C60026C050 /* TrainingWithCameraScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2ABA582D3AE4C60026C050 /* TrainingWithCameraScreen.swift */; };
+		FA2ABA5C2D3B5B010026C050 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2ABA5B2D3B5B010026C050 /* Color.swift */; };
+		FA2ABA5F2D3B5B3B0026C050 /* MainTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2ABA5E2D3B5B3B0026C050 /* MainTheme.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -39,6 +41,8 @@
 		7555FF82242A565900829871 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		7555FF8C242A565B00829871 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FA2ABA582D3AE4C60026C050 /* TrainingWithCameraScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingWithCameraScreen.swift; sourceTree = "<group>"; };
+		FA2ABA5B2D3B5B010026C050 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
+		FA2ABA5E2D3B5B3B0026C050 /* MainTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTheme.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +92,7 @@
 		7555FF7D242A565900829871 /* iosApp */ = {
 			isa = PBXGroup;
 			children = (
+				FA2ABA5A2D3B5AF30026C050 /* Theme */,
 				058557BA273AAA24004C7B11 /* Assets.xcassets */,
 				7555FF82242A565900829871 /* ContentView.swift */,
 				7555FF8C242A565B00829871 /* Info.plist */,
@@ -113,6 +118,15 @@
 				FA2ABA582D3AE4C60026C050 /* TrainingWithCameraScreen.swift */,
 			);
 			path = Training;
+			sourceTree = "<group>";
+		};
+		FA2ABA5A2D3B5AF30026C050 /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+				FA2ABA5B2D3B5B010026C050 /* Color.swift */,
+				FA2ABA5E2D3B5B3B0026C050 /* MainTheme.swift */,
+			);
+			path = Theme;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -212,6 +226,8 @@
 				7555FF83242A565900829871 /* ContentView.swift in Sources */,
 				38C7267629F263E16DE5F456 /* CustomViewModelStoreOwner.swift in Sources */,
 				38C72155E0CA8D47F5B0FB32 /* MenuDefinitionScreen.swift in Sources */,
+				FA2ABA5F2D3B5B3B0026C050 /* MainTheme.swift in Sources */,
+				FA2ABA5C2D3B5B010026C050 /* Color.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
