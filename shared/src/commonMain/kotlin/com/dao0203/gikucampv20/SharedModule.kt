@@ -6,6 +6,7 @@ import com.dao0203.gikucampv20.feature.training.TrainingRestViewModel
 import com.dao0203.gikucampv20.feature.training.TrainingResultViewModel
 import com.dao0203.gikucampv20.repository.OnGoingTrainingMenuRepository
 import com.dao0203.gikucampv20.repository.OnGoingTrainingMenuRepositoryImpl
+import org.koin.core.module.Module
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
@@ -23,3 +24,5 @@ val viewModelModule =
         viewModel<TrainingResultViewModel> { TrainingResultViewModel() }
         viewModel<HistoryWithCalenderViewModel> { HistoryWithCalenderViewModel() }
     }
+
+expect val databaseModule: Module

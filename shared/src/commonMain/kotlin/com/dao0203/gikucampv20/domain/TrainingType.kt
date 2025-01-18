@@ -1,13 +1,16 @@
 package com.dao0203.gikucampv20.domain
 
-import kotlinx.datetime.Instant
+import kotlinx.datetime.Clock
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 
 data class TrainingType(
     val id: String,
     val name: String,
     val description: String,
     val muscleGroups: List<MuscleGroup>,
-    val createdAt: Instant,
+    val createdAt: LocalDate,
     val targetPoseLandmarksIndices: List<PoseLandmarksIndex>? = null, // TODO: Remove initial value
 ) {
     companion object
@@ -18,6 +21,12 @@ data class PoseLandmarksIndex(
     val end: PoseLandmark,
 )
 
+private val createdAtDefault: LocalDate
+    get() =
+        Clock.System
+            .now()
+            .toLocalDateTime(TimeZone.currentSystemDefault()).date
+
 fun TrainingType.Companion.defaults() =
     listOf(
         TrainingType(
@@ -25,7 +34,7 @@ fun TrainingType.Companion.defaults() =
             name = "ベンチプレス",
             description = "ベンチプレスは胸と上腕三頭筋の筋力と筋肉を鍛えるコンパウンドエクササイズです。",
             muscleGroups = listOf(MuscleGroup.CHEST, MuscleGroup.TRICEPS),
-            createdAt = Instant.DISTANT_PAST,
+            createdAt = createdAtDefault,
             targetPoseLandmarksIndices =
                 listOf(
                     PoseLandmarksIndex(
@@ -39,7 +48,7 @@ fun TrainingType.Companion.defaults() =
             name = "デッドリフト",
             description = "デッドリフトは背中、脚、前腕の筋力と筋肉を鍛えるコンパウンドエクササイズです。",
             muscleGroups = listOf(MuscleGroup.BACK, MuscleGroup.LEGS, MuscleGroup.FOREARM),
-            createdAt = Instant.DISTANT_PAST,
+            createdAt = createdAtDefault,
             targetPoseLandmarksIndices =
                 listOf(
                     PoseLandmarksIndex(
@@ -60,49 +69,49 @@ fun TrainingType.Companion.defaults() =
                         end = PoseLandmark.RIGHT_WRIST,
                     ),
                 ),
-            createdAt = Instant.DISTANT_PAST,
+            createdAt = createdAtDefault,
         ),
         TrainingType(
             id = "4",
             name = "バイセップカール",
             description = "バイセップカールは上腕二頭筋の筋力と筋肉を鍛えるアイソレーションエクササイズです。",
             muscleGroups = listOf(MuscleGroup.BICEPS),
-            createdAt = Instant.DISTANT_PAST,
+            createdAt = createdAtDefault,
         ),
         TrainingType(
             id = "5",
             name = "トライセップエクステンション",
             description = "トライセップエクステンションは上腕三頭筋の筋力と筋肉を鍛えるアイソレーションエクササイズです。",
             muscleGroups = listOf(MuscleGroup.TRICEPS),
-            createdAt = Instant.DISTANT_PAST,
+            createdAt = createdAtDefault,
         ),
         TrainingType(
             id = "6",
             name = "レッグプレス",
             description = "レッグプレスは脚の筋力と筋肉を鍛えるコンパウンドエクササイズです。",
             muscleGroups = listOf(MuscleGroup.LEGS),
-            createdAt = Instant.DISTANT_PAST,
+            createdAt = createdAtDefault,
         ),
         TrainingType(
             id = "7",
             name = "クランチ",
             description = "クランチは腹筋の筋力と筋肉を鍛えるアイソレーションエクササイズです。",
             muscleGroups = listOf(MuscleGroup.ABS),
-            createdAt = Instant.DISTANT_PAST,
+            createdAt = createdAtDefault,
         ),
         TrainingType(
             id = "8",
             name = "プルアップ",
             description = "プルアップは背中と前腕の筋力と筋肉を鍛えるコンパウンドエクササイズです。",
             muscleGroups = listOf(MuscleGroup.BACK, MuscleGroup.FOREARM),
-            createdAt = Instant.DISTANT_PAST,
+            createdAt = createdAtDefault,
         ),
         TrainingType(
             id = "9",
             name = "スクワット",
             description = "スクワットは脚と背中の筋力と筋肉を鍛えるコンパウンドエクササイズです。",
             muscleGroups = listOf(MuscleGroup.LEGS, MuscleGroup.BACK),
-            createdAt = Instant.DISTANT_PAST,
+            createdAt = createdAtDefault,
             targetPoseLandmarksIndices =
                 listOf(
                     PoseLandmarksIndex(
@@ -116,21 +125,21 @@ fun TrainingType.Companion.defaults() =
             name = "ダンベルロー",
             description = "ダンベルローは背中と前腕の筋力と筋肉を鍛えるコンパウンドエクササイズです。",
             muscleGroups = listOf(MuscleGroup.BACK, MuscleGroup.FOREARM),
-            createdAt = Instant.DISTANT_PAST,
+            createdAt = createdAtDefault,
         ),
         TrainingType(
             id = "11",
             name = "ラテラルレイズ",
             description = "ラテラルレイズは肩の筋力と筋肉を鍛えるアイソレーションエクササイズです。",
             muscleGroups = listOf(MuscleGroup.SHOULDER),
-            createdAt = Instant.DISTANT_PAST,
+            createdAt = createdAtDefault,
         ),
         TrainingType(
             id = "12",
             name = "ハンマーカール",
             description = "ハンマーカールは上腕二頭筋の筋力と筋肉を鍛えるアイソレーションエクササイズです。",
             muscleGroups = listOf(MuscleGroup.BICEPS),
-            createdAt = Instant.DISTANT_PAST,
+            createdAt = createdAtDefault,
         ),
     )
 

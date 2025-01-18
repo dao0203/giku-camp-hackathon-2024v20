@@ -26,6 +26,7 @@ sealed interface Training {
 }
 
 data class WorkoutSet(
+    val id: String,
     val reps: Int,
     val weight: Double,
     val rest: Int,

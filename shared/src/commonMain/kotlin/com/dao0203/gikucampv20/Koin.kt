@@ -6,9 +6,9 @@ fun initKoin(platformDeclaration: KoinAppDeclaration = {}) {
     org.koin.core.context.startKoin {
         platformDeclaration.invoke(this)
         modules(
-//            sharedModule(),
             repositoryModule,
             viewModelModule,
+            databaseModule,
         )
     }
 }
