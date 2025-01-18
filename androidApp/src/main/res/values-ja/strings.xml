@@ -18,4 +18,5 @@
     <string name="skip">スキップ</string>
     <string name="cancel">キャンセル</string>
     <string name="skip_alert_title">この休憩をスキップして次のセットに進行しますか？</string>
+    <string name="date">%1$s月 %2$s</string>
 </resources>
