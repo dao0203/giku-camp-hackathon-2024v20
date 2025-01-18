@@ -26,14 +26,30 @@ struct MenuDefinitionScreen: View {
                     TrainingTypesByGroup(
                         muscleGroupsUiModel: uiState.muscleGroupsUiModel,
                         onSelectTrainingType: { selectedType in
-                            storeOwner.instance.changeSets("3")
-                            storeOwner.instance.changeReps("10")
-                            storeOwner.instance.changeWeight("20.0")
-                            storeOwner.instance.changeRest("120")
+                            storeOwner.instance.changeSets(sets: "3")
+                            storeOwner.instance.changeReps(reps: "10")
+                            storeOwner.instance.changeWeight(weight: "20.0")
+                            storeOwner.instance.changeRest(rest: "120")
+                            observableState.sets = "3"
+                            observableState.reps = "10"
+                            observableState.weight = "20.0"
+                            observableState.rest = "120"
                             storeOwner.instance.changeTrainingType(type: selectedType)
                         }
                     )
                 }
+                .overlay(
+                    Button(action: {}) {
+                        Image(systemName: "arrowshape.right.fill")
+                            .foregroundColor(.white)
+                            .frame(width: 56, height: 56)
+                            .background(Color.blue)
+                            .clipShape(Circle())
+                            .shadow(radius: 5)
+                    }
+                    .padding()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
+                )
                 .padding()
             }
         }
