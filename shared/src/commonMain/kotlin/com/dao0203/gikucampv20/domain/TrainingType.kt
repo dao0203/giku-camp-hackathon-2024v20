@@ -18,7 +18,7 @@ data class PoseLandmarksIndex(
     val end: PoseLandmark,
 )
 
-fun TrainingType.Companion.dummies() =
+fun TrainingType.Companion.defaults() =
     listOf(
         TrainingType(
             id = "1",
@@ -53,6 +53,13 @@ fun TrainingType.Companion.dummies() =
             name = "Shoulder Press",
             description = "Shoulder Press is an isolation exercise that builds strength and muscle in the shoulders.",
             muscleGroups = listOf(MuscleGroup.SHOULDER),
+            targetPoseLandmarksIndices =
+                listOf(
+                    PoseLandmarksIndex(
+                        start = PoseLandmark.LEFT_WRIST,
+                        end = PoseLandmark.RIGHT_WRIST,
+                    ),
+                ),
             createdAt = Instant.DISTANT_PAST,
         ),
         TrainingType(

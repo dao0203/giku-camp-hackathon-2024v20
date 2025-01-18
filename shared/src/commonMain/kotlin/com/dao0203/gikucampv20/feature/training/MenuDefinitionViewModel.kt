@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.dao0203.gikucampv20.domain.MuscleGroup
 import com.dao0203.gikucampv20.domain.TrainingMenu
 import com.dao0203.gikucampv20.domain.TrainingType
-import com.dao0203.gikucampv20.domain.dummies
+import com.dao0203.gikucampv20.domain.defaults
 import com.dao0203.gikucampv20.domain.groupByMuscleGroup
 import com.dao0203.gikucampv20.repository.OnGoingTrainingMenuRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,12 +34,14 @@ data class DefinitionMenuUiState(
     val reps: String = "",
     val weight: String = "",
     val rest: String = "",
-    val muscleGroupsUiModel: MuscleGroupsUiModel = MuscleGroupsUiModel(
-        TrainingType.groupByMuscleGroup(TrainingType.dummies())
-    )
+    val muscleGroupsUiModel: MuscleGroupsUiModel =
+        MuscleGroupsUiModel(
+            TrainingType.groupByMuscleGroup(TrainingType.defaults()),
+        ),
 ) {
     val showStartingTrainingButton: Boolean
-        get() = selectedTrainingType != null &&
+        get() =
+            selectedTrainingType != null &&
                 sets.isNotBlank() &&
                 reps.isNotBlank() &&
                 weight.isNotBlank() &&
@@ -50,12 +52,13 @@ data class DefinitionMenuUiState(
 class MenuDefinitionViewModel : ViewModel(), KoinComponent {
     private val onGoingTrainingMenuRepository by inject<OnGoingTrainingMenuRepository>()
     private val _uiState = MutableStateFlow(DefinitionMenuUiState())
-    val uiState: StateFlow<DefinitionMenuUiState> = _uiState
-        .stateIn(
-            viewModelScope,
-            SharingStarted.Lazily,
-            DefinitionMenuUiState()
-        )
+    val uiState: StateFlow<DefinitionMenuUiState> =
+        _uiState
+            .stateIn(
+                viewModelScope,
+                SharingStarted.Lazily,
+                DefinitionMenuUiState(),
+            )
 
     fun changeTrainingType(type: TrainingType) {
         _uiState.update { it.copy(selectedTrainingType = type) }
@@ -78,15 +81,16 @@ class MenuDefinitionViewModel : ViewModel(), KoinComponent {
     }
 
     fun startTraining() {
-        val trainingMenu = TrainingMenu(
-            id = Uuid.random().toString(),
-            type = uiState.value.selectedTrainingType,
-            sets = uiState.value.sets.toInt(),
-            reps = uiState.value.reps.toInt(),
-            weight = uiState.value.weight.toDouble(),
-            rest = uiState.value.rest.toInt(),
-            createdAt = Clock.System.now(),
-        )
+        val trainingMenu =
+            TrainingMenu(
+                id = Uuid.random().toString(),
+                type = uiState.value.selectedTrainingType,
+                sets = uiState.value.sets.toInt(),
+                reps = uiState.value.reps.toInt(),
+                weight = uiState.value.weight.toDouble(),
+                rest = uiState.value.rest.toInt(),
+                createdAt = Clock.System.now(),
+            )
         onGoingTrainingMenuRepository.updatePlannedTrainingMenu(trainingMenu)
         onGoingTrainingMenuRepository.updateOnGoingTrainingMenu(trainingMenu)
     }
