@@ -48,6 +48,7 @@ internal fun List<WorkoutSetEntity>.toWorkoutSet(): List<WorkoutSet> {
 private fun WorkoutSetEntity.toWorkoutSet(): WorkoutSet {
     return WorkoutSet(
         id = workoutSetId,
+        historyId = historyId,
         reps = reps,
         weight = weight,
         rest = rest,
