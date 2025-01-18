@@ -20,6 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.dao0203.gikucampv20.android.ui.theme.MainTheme
 import com.dao0203.gikucampv20.android.util.DrawableRes
 import com.dao0203.gikucampv20.android.util.MainPreview
@@ -33,47 +34,53 @@ fun TrainingInfoCard(
 ) {
     Card(
         onClick = onClick,
-        modifier = modifier
-            .clip(RoundedCornerShape(8.dp))
-            .size(
-                width = 120.dp,
-                height = 120.dp,
-            ),
+        modifier =
+            modifier
+                .clip(RoundedCornerShape(8.dp))
+                .size(
+                    width = 120.dp,
+                    height = 120.dp,
+                ),
         elevation = CardDefaults.elevatedCardElevation(),
     ) {
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(8.dp),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(8.dp),
         ) {
             Text(
                 text = stringResource(StringRes.remaining),
                 style = MaterialTheme.typography.bodyMedium,
             )
             Row(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .align(Alignment.BottomEnd)
+                modifier =
+                    Modifier
+                        .align(Alignment.BottomEnd)
             ) {
-                Row(
-                    modifier = Modifier
-                        .align(Alignment.Bottom),
-                ) {
-                    val baseModifier = Modifier.alignByBaseline()
-                    Text(
-                        text = remainingReps.toString(),
-                        style = MaterialTheme.typography.displayLarge,
-                        modifier = baseModifier
-                    )
-                    Spacer(modifier = Modifier.size(4.dp))
-                    Text(
-                        text = stringResource(StringRes.reps),
-                        style = MaterialTheme.typography.bodyMedium,
-                        modifier = baseModifier
-                    )
-                }
-                Icon(painterResource(DrawableRes.more_horiz), contentDescription = null)
+                val baseModifier = Modifier.alignByBaseline()
+                Text(
+                    text = remainingReps.toString(),
+                    style =
+                        MaterialTheme.typography.displayLarge.copy(
+                            fontSize = 70.sp,
+                        ),
+                    modifier = baseModifier,
+                )
+                Spacer(modifier = Modifier.size(4.dp))
+                Text(
+                    text = stringResource(StringRes.reps),
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = baseModifier,
+                )
             }
+            Icon(
+                painterResource(DrawableRes.more_horiz),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(24.dp)
+                    .align(Alignment.TopEnd),
+            )
         }
     }
 }
@@ -88,3 +95,15 @@ private fun TrainingInfoCardPreview() {
         )
     }
 }
+
+@MainPreview
+@Composable
+private fun TrainingInfoCardOneDigitPreview() {
+    MainTheme {
+        TrainingInfoCard(
+            remainingReps = 1,
+            onClick = {},
+        )
+    }
+}
+
