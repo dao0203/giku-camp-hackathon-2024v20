@@ -8,9 +8,11 @@ import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atStartOfDayIn
 import kotlinx.datetime.toLocalDateTime
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 
 @Entity
+@Serializable
 data class TrainingTypeEntity(
     val trainingTypeId: String,
     val name: String,

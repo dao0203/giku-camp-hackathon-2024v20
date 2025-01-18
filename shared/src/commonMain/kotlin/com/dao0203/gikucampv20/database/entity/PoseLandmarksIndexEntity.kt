@@ -3,9 +3,11 @@ package com.dao0203.gikucampv20.database.entity
 import androidx.room.Entity
 import androidx.room.TypeConverter
 import com.dao0203.gikucampv20.domain.PoseLandmarksIndex
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 
 @Entity
+@Serializable
 data class PoseLandmarksIndexEntity(
     val start: PoseLandmarkEntity,
     val end: PoseLandmarkEntity,
