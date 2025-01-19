@@ -56,14 +56,17 @@ class HistoryWithCalenderViewModel : ViewModel(), KoinComponent {
                     emptyList()
                 }
             }
+    private val showBackGroundDays =
+        trainingHistoryRepository.trainingHistory
+            .map { it.map { history -> history.createdAt }.toSet() }
     val uiState =
         combine(
             historiesState,
-            trainingHistoryRepository.trainingHistory,
+            showBackGroundDays,
             vmState,
-        ) { histories, defaultHistory, vmState ->
+        ) { histories, showBackgroundDays, vmState ->
             HistoryWithCalenderUiState(
-                showBackGroundDays = defaultHistory.map { it.createdAt }.toSet(),
+                showBackGroundDays = showBackgroundDays,
                 selectedDate = vmState.selectedDate,
                 histories = histories,
                 now = vmState.now,

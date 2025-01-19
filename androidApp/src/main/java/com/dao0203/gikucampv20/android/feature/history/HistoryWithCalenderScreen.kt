@@ -64,6 +64,7 @@ private fun HistoryWithCalenderContent(
         ) {
             HistoryHorizontalCalender(
                 showBackGroundDays = uiState.showBackGroundDays,
+                showBackGroundSelectedDay = uiState.selectedDate,
                 now = uiState.now,
                 onDayClick = onDayClick,
             )
@@ -74,6 +75,7 @@ private fun HistoryWithCalenderContent(
 @Composable
 fun HistoryHorizontalCalender(
     showBackGroundDays: Set<LocalDate>,
+    showBackGroundSelectedDay: LocalDate?,
     now: LocalDate,
     onDayClick: (LocalDate) -> Unit,
     modifier: Modifier = Modifier,
@@ -110,6 +112,8 @@ fun HistoryHorizontalCalender(
                         .any { date ->
                             it.date.toKotlinLocalDate() == date
                         },
+                showBackGroundSelected =
+                    showBackGroundSelectedDay == it.date.toKotlinLocalDate(),
                 onDayClick = onDayClick,
             )
         },
@@ -121,6 +125,7 @@ fun HistoryHorizontalCalender(
 private fun Day(
     day: CalendarDay,
     showBackGround: Boolean,
+    showBackGroundSelected: Boolean,
     modifier: Modifier = Modifier,
     onDayClick: (LocalDate) -> Unit,
 ) {
@@ -132,8 +137,12 @@ private fun Day(
                 .clip(RoundedCornerShape(8.dp))
                 .background(
                     color =
-                        if (showBackGround) {
-                            MaterialTheme.colorScheme.primaryContainer
+                        if (showBackGroundSelected || showBackGround) {
+                            if (showBackGround) {
+                                MaterialTheme.colorScheme.secondaryContainer
+                            } else {
+                                MaterialTheme.colorScheme.primaryContainer
+                            }
                         } else {
                             Color.Unspecified
                         },
@@ -145,13 +154,19 @@ private fun Day(
     ) {
         Text(
             text = day.date.dayOfMonth.toString(),
-            style = MaterialTheme.typography.bodyMedium.copy(
-                color = if (showBackGround) {
-                    MaterialTheme.colorScheme.onPrimaryContainer
-                } else {
-                    MaterialTheme.colorScheme.onSurface
-                },
-            )
+            style =
+                MaterialTheme.typography.bodyMedium.copy(
+                    color =
+                        if (showBackGroundSelected || showBackGround) {
+                            if (showBackGround) {
+                                MaterialTheme.colorScheme.onSecondaryContainer
+                            } else {
+                                MaterialTheme.colorScheme.onPrimaryContainer
+                            }
+                        } else {
+                            MaterialTheme.colorScheme.onSurface
+                        },
+                ),
         )
     }
 }
@@ -163,6 +178,7 @@ private fun CalenderPreview() {
         HistoryHorizontalCalender(
             showBackGroundDays = setOf(LocalDate(2025, 1, 1)),
             now = LocalDate(2025, 1, 1),
+            showBackGroundSelectedDay = LocalDate(2025, 1, 2),
             onDayClick = {},
         )
     }
