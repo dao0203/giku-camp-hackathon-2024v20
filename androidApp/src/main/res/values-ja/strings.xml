@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">一番楽しい筋トレアプリ</string>
+    <string name="app_name">FunFit</string>
     <string name="remaining">残り</string>
     <string name="reps">回</string>
+    <string name="reps_pattern">%1$d 回</string>
     <string name="sets">セット</string>
     <string name="weight">重量</string>
     <string name="kg">kg</string>
+    <string name="kg_pattern">%.2f kg</string>
     <string name="rest">休憩</string>
     <string name="seconds">秒</string>
+    <string name="seconds_pattern">%1$d 秒</string>
     <string name="start">スタート</string>
     <string name="menu">メニュー</string>
     <string name="training_type">種目</string>

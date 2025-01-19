@@ -29,8 +29,8 @@ data class WorkoutSet(
 
 fun WorkoutSet.Companion.dummies(historyId: String) =
     listOf(
-        WorkoutSet.createDefault(historyId, 10, 50.0, 60),
-        WorkoutSet.createDefault(historyId, 10, 50.0, 60),
-        WorkoutSet.createDefault(historyId, 10, 50.0, 60),
-        WorkoutSet.createDefault(historyId, 10, 50.0, 60),
+        createDefault(historyId, 10, 50.0, 60),
+        createDefault(historyId, 10, 50.0, 60),
+        createDefault(historyId, 10, 50.0, 60),
+        createDefault(historyId, 10, 50.0, 60),
     )

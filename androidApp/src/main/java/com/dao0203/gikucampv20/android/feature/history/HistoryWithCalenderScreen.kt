@@ -2,14 +2,18 @@ package com.dao0203.gikucampv20.android.feature.history
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -21,12 +25,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.dao0203.gikucampv20.android.R
 import com.dao0203.gikucampv20.android.ui.theme.MainTheme
 import com.dao0203.gikucampv20.android.util.MainPreviews
+import com.dao0203.gikucampv20.android.util.StringRes
 import com.dao0203.gikucampv20.domain.Training
 import com.dao0203.gikucampv20.domain.dummies
 import com.dao0203.gikucampv20.feature.record.HistoryWithCalenderUiState
@@ -84,27 +90,31 @@ private fun HistoryWithCalenderContent(
             item {
                 Text(
                     text = stringResource(R.string.history),
-                    style = MaterialTheme.typography.bodyLarge,
-                    modifier = Modifier.padding(16.dp),
+                    style =
+                        MaterialTheme.typography.titleLarge.copy(
+                            fontWeight = FontWeight.Bold,
+                        ),
+                    modifier = Modifier.padding(horizontal = 4.dp),
                 )
             }
             uiState.historiesByMuscleGroup.forEach { (muscleGroup, histories) ->
                 item {
+                    Spacer(Modifier.height(8.dp))
                     Text(
-                        text = muscleGroup.name,
+                        text = muscleGroup.description,
                         style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.padding(16.dp),
+                        modifier = Modifier.padding(horizontal = 4.dp),
                     )
+                    Spacer(Modifier.height(8.dp))
                 }
                 items(
                     histories.size,
                     key = { index -> histories[index].id },
                 ) { index ->
                     val history = histories[index]
-                    Text(
-                        text = history.workoutSet.toString(),
-                        style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.padding(16.dp),
+                    HistoryItem(
+                        history = history,
+                        modifier = Modifier.padding(horizontal = 4.dp),
                     )
                 }
             }
@@ -216,23 +226,121 @@ private fun HistoryItem(
     history: Training.History,
     modifier: Modifier = Modifier,
 ) {
-    Text(
-        text = history.workoutSet.toString(),
-        style = MaterialTheme.typography.bodyMedium,
-        modifier = modifier,
-    )
-}
+    Box(
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(8.dp))
+                .background(MaterialTheme.colorScheme.surface),
+    ) {
+        // 筋トレの名前
+        Column {
+            Text(
+                text = history.type.name,
+                style =
+                    MaterialTheme.typography.bodyMedium.copy(
+                        color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    ),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .background(MaterialTheme.colorScheme.primaryContainer)
+                        .padding(4.dp),
+            )
+            history.workoutSet.forEachIndexed { index, workout ->
+                Row(
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(4.dp),
+                ) {
+                    val baseLineModifier = Modifier.alignByBaseline()
+                    Text(
+                        text = (index + 1).toString(),
+                        style =
+                            MaterialTheme.typography.bodyMedium.copy(
+                            ),
+                        textAlign = TextAlign.Center,
+                        modifier = baseLineModifier,
+                    )
+                    Row(
+                        modifier = Modifier.weight(1f),
+                        horizontalArrangement = Arrangement.Center,
+                    ) {
+                        Text(
+                            text = workout.reps.toString(),
+                            style =
+                                MaterialTheme.typography.bodyMedium.copy(
+                                    fontWeight = FontWeight.Bold,
+                                ),
+                            textAlign = TextAlign.Center,
+                            modifier = baseLineModifier,
+                        )
+                        Spacer(Modifier.width(2.dp))
+                        Text(
+                            text = stringResource(StringRes.reps),
+                            textAlign = TextAlign.Center,
+                            style =
+                                MaterialTheme.typography.bodySmall.copy(
+                                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+                                ),
+                            modifier = baseLineModifier,
+                        )
+                    }
 
-@MainPreviews
-@Composable
-private fun CalenderPreview() {
-    MainTheme {
-        HistoryHorizontalCalender(
-            showBackGroundDays = setOf(LocalDate(2025, 1, 1)),
-            now = LocalDate(2025, 1, 1),
-            showBackGroundSelectedDay = LocalDate(2025, 1, 2),
-            onDayClick = {},
-        )
+                    Row(
+                        modifier = Modifier.weight(1f),
+                        horizontalArrangement = Arrangement.Center,
+                    ) {
+                        Text(
+                            text = workout.weight.toString(),
+                            style =
+                                MaterialTheme.typography.bodyMedium.copy(
+                                    fontWeight = FontWeight.Bold,
+                                ),
+                            textAlign = TextAlign.Center,
+                            modifier = baseLineModifier,
+                        )
+                        Spacer(Modifier.width(2.dp))
+                        Text(
+                            text = stringResource(StringRes.kg),
+                            textAlign = TextAlign.Center,
+                            style =
+                                MaterialTheme.typography.bodySmall.copy(
+                                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+                                ),
+                            modifier = baseLineModifier,
+                        )
+                    }
+                    workout.rest?.let {
+                        Row(
+                            modifier = Modifier.weight(1f),
+                            horizontalArrangement = Arrangement.Center,
+                        ) {
+                            Text(
+                                text = it.toString(),
+                                style =
+                                    MaterialTheme.typography.bodyMedium.copy(
+                                        fontWeight = FontWeight.Bold,
+                                    ),
+                                textAlign = TextAlign.Center,
+                                modifier = baseLineModifier,
+                            )
+                            Spacer(Modifier.width(2.dp))
+                            Text(
+                                text = stringResource(StringRes.seconds),
+                                style =
+                                    MaterialTheme.typography.bodySmall.copy(
+                                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+                                    ),
+                                textAlign = TextAlign.Center,
+                                modifier = baseLineModifier,
+                            )
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -243,6 +351,9 @@ private fun HistoryWithCalenderContentPreview() {
         HistoryWithCalenderContent(
             uiState =
                 HistoryWithCalenderUiState.default().copy(
+                    showBackGroundDays = setOf(LocalDate(2025, 1, 1)),
+                    now = LocalDate(2025, 1, 1),
+                    selectedDate = LocalDate(2025, 1, 2),
                     historiesByMuscleGroup = Training.History.dummies(),
                 ),
             onDayClick = {},

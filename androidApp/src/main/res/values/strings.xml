@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">The Most Enjoyable Workout App</string>
+    <string name="app_name">FunFit</string>
     <string name="remaining">Remaining</string>
     <string name="reps">Reps</string>
+    <string name="reps_pattern">%1$d Reps</string>
     <string name="sets">Sets</string>
     <string name="weight">Weight</string>
+    <string name="kg_pattern">%.2f kg</string>
     <string name="kg">kg</string>
     <string name="rest">Rest</string>
     <string name="seconds">Seconds</string>
+    <string name="seconds_pattern">%1$d Seconds</string>
     <string name="start">Start</string>
     <string name="menu">Menu</string>
     <string name="training_type">Training Type</string>

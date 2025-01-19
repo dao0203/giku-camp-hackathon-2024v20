@@ -44,5 +44,15 @@ fun Training.History.Companion.dummies(): Map<MuscleGroup, List<Training.History
                     createdAt = LocalDate(2021, 1, 1),
                 ),
             ),
+        MuscleGroup.CHEST to
+            listOf(
+                Training.History(
+                    id = "dummy2",
+                    type = TrainingType.dummy(),
+                    sets = 4,
+                    workoutSet = WorkoutSet.dummies("dummy2"),
+                    createdAt = LocalDate(2021, 1, 1),
+                ),
+            ),
     )
 }
