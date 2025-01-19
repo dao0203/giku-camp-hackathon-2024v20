@@ -17,6 +17,7 @@
     <string name="operate_red_bar_align_for_easy_counting">Operate the red bar \nto adjust the position \nto make it easier to count. \nUntil fixed… %1$s</string>
     <string name="skip">Skip</string>
     <string name="cancel">Cancel</string>
+    <string name="history">History</string>
     <string name="skip_alert_title">Do you want to skip this break and proceed to the next set?</string>
     <string name="date">%1$s %2$s</string>
 </resources>

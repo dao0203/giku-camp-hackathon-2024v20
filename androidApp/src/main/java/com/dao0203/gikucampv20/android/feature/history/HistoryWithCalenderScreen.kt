@@ -3,10 +3,14 @@ package com.dao0203.gikucampv20.android.feature.history
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -16,7 +20,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -24,6 +27,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.dao0203.gikucampv20.android.R
 import com.dao0203.gikucampv20.android.ui.theme.MainTheme
 import com.dao0203.gikucampv20.android.util.MainPreviews
+import com.dao0203.gikucampv20.domain.Training
+import com.dao0203.gikucampv20.domain.dummies
 import com.dao0203.gikucampv20.feature.record.HistoryWithCalenderUiState
 import com.dao0203.gikucampv20.feature.record.HistoryWithCalenderViewModel
 import com.kizitonwose.calendar.compose.HorizontalCalendar
@@ -47,6 +52,8 @@ fun HistoryWithCalenderScreen(
     )
 }
 
+private const val CALENDER_KEY = "CALENDER_KEY"
+
 @Composable
 private fun HistoryWithCalenderContent(
     uiState: HistoryWithCalenderUiState,
@@ -56,18 +63,51 @@ private fun HistoryWithCalenderContent(
     Scaffold(
         modifier = modifier,
     ) { innerPadding ->
-        Box(
+        LazyColumn(
             modifier =
                 Modifier
-                    .padding(innerPadding)
-                    .fillMaxSize(),
+                    .fillMaxSize()
+                    .padding(innerPadding),
+            contentPadding = PaddingValues(horizontal = 16.dp),
         ) {
-            HistoryHorizontalCalender(
-                showBackGroundDays = uiState.showBackGroundDays,
-                showBackGroundSelectedDay = uiState.selectedDate,
-                now = uiState.now,
-                onDayClick = onDayClick,
-            )
+            item { Spacer(Modifier.height(8.dp)) }
+            item(
+                key = CALENDER_KEY,
+            ) {
+                HistoryHorizontalCalender(
+                    showBackGroundDays = uiState.showBackGroundDays,
+                    showBackGroundSelectedDay = uiState.selectedDate,
+                    now = uiState.now,
+                    onDayClick = onDayClick,
+                )
+            }
+            item {
+                Text(
+                    text = stringResource(R.string.history),
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.padding(16.dp),
+                )
+            }
+            uiState.historiesByMuscleGroup.forEach { (muscleGroup, histories) ->
+                item {
+                    Text(
+                        text = muscleGroup.name,
+                        style = MaterialTheme.typography.bodyLarge,
+                        modifier = Modifier.padding(16.dp),
+                    )
+                }
+                items(
+                    histories.size,
+                    key = { index -> histories[index].id },
+                ) { index ->
+                    val history = histories[index]
+                    Text(
+                        text = history.workoutSet.toString(),
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.padding(16.dp),
+                    )
+                }
+            }
         }
     }
 }
@@ -138,13 +178,13 @@ private fun Day(
                 .background(
                     color =
                         if (showBackGroundSelected || showBackGround) {
-                            if (showBackGround) {
-                                MaterialTheme.colorScheme.secondaryContainer
-                            } else {
+                            if (showBackGroundSelected) {
                                 MaterialTheme.colorScheme.primaryContainer
+                            } else {
+                                MaterialTheme.colorScheme.secondaryContainer
                             }
                         } else {
-                            Color.Unspecified
+                            MaterialTheme.colorScheme.surfaceVariant
                         },
                 )
                 .clickable {
@@ -171,6 +211,18 @@ private fun Day(
     }
 }
 
+@Composable
+private fun HistoryItem(
+    history: Training.History,
+    modifier: Modifier = Modifier,
+) {
+    Text(
+        text = history.workoutSet.toString(),
+        style = MaterialTheme.typography.bodyMedium,
+        modifier = modifier,
+    )
+}
+
 @MainPreviews
 @Composable
 private fun CalenderPreview() {
@@ -179,6 +231,20 @@ private fun CalenderPreview() {
             showBackGroundDays = setOf(LocalDate(2025, 1, 1)),
             now = LocalDate(2025, 1, 1),
             showBackGroundSelectedDay = LocalDate(2025, 1, 2),
+            onDayClick = {},
+        )
+    }
+}
+
+@MainPreviews
+@Composable
+private fun HistoryWithCalenderContentPreview() {
+    MainTheme {
+        HistoryWithCalenderContent(
+            uiState =
+                HistoryWithCalenderUiState.default().copy(
+                    historiesByMuscleGroup = Training.History.dummies(),
+                ),
             onDayClick = {},
         )
     }
