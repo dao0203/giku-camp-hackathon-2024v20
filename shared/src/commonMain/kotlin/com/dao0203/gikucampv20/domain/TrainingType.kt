@@ -96,6 +96,13 @@ fun TrainingType.Companion.defaults() =
             name = "トライセップエクステンション",
             description = "トライセップエクステンションは上腕三頭筋の筋力と筋肉を鍛えるアイソレーションエクササイズです。",
             muscleGroups = listOf(MuscleGroup.TRICEPS),
+            targetPoseLandmarksIndices =
+                listOf(
+                    PoseLandmarksIndex(
+                        start = PoseLandmark.LEFT_WRIST,
+                        end = PoseLandmark.RIGHT_WRIST,
+                    ),
+                ),
             createdAt = createdAtDefault,
         ),
         TrainingType(

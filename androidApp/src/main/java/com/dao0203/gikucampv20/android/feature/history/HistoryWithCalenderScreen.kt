@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -231,7 +232,7 @@ private fun HistoryItem(
             modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(8.dp))
-                .background(MaterialTheme.colorScheme.surface),
+                .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)),
     ) {
         // 筋トレの名前
         Column {
@@ -247,6 +248,51 @@ private fun HistoryItem(
                         .background(MaterialTheme.colorScheme.primaryContainer)
                         .padding(4.dp),
             )
+            Row(
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 4.dp),
+            ) {
+                Text(
+                    text = stringResource(StringRes.sets),
+                    style =
+                        MaterialTheme.typography.labelSmall.copy(
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+                        ),
+                    modifier = Modifier,
+                )
+                Text(
+                    text = stringResource(StringRes.reps),
+                    style =
+                        MaterialTheme.typography.labelSmall.copy(
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+                        ),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.weight(1f)
+                        .offset(x = (-20).dp),
+                )
+                Text(
+                    text = stringResource(StringRes.weight),
+                    style =
+                        MaterialTheme.typography.labelSmall.copy(
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+                        ),
+                    modifier = Modifier.weight(1f)
+                        .offset(x = (-20).dp),
+                    textAlign = TextAlign.Center,
+                )
+                Text(
+                    text = stringResource(StringRes.rest),
+                    style =
+                        MaterialTheme.typography.labelSmall.copy(
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+                        ),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.weight(1f)
+                        .offset(x = (-10).dp),
+                )
+            }
             history.workoutSet.forEachIndexed { index, workout ->
                 Row(
                     modifier =
@@ -258,10 +304,11 @@ private fun HistoryItem(
                     Text(
                         text = (index + 1).toString(),
                         style =
-                            MaterialTheme.typography.bodyMedium.copy(
-                            ),
+                            MaterialTheme.typography.bodyMedium.copy(),
                         textAlign = TextAlign.Center,
-                        modifier = baseLineModifier,
+                        modifier =
+                            baseLineModifier
+                                .offset(x = 12.dp),
                     )
                     Row(
                         modifier = Modifier.weight(1f),
@@ -312,31 +359,29 @@ private fun HistoryItem(
                             modifier = baseLineModifier,
                         )
                     }
-                    workout.rest?.let {
-                        Row(
-                            modifier = Modifier.weight(1f),
-                            horizontalArrangement = Arrangement.Center,
-                        ) {
-                            Text(
-                                text = it.toString(),
-                                style =
-                                    MaterialTheme.typography.bodyMedium.copy(
-                                        fontWeight = FontWeight.Bold,
-                                    ),
-                                textAlign = TextAlign.Center,
-                                modifier = baseLineModifier,
-                            )
-                            Spacer(Modifier.width(2.dp))
-                            Text(
-                                text = stringResource(StringRes.seconds),
-                                style =
-                                    MaterialTheme.typography.bodySmall.copy(
-                                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
-                                    ),
-                                textAlign = TextAlign.Center,
-                                modifier = baseLineModifier,
-                            )
-                        }
+                    Row(
+                        modifier = Modifier.weight(1f),
+                        horizontalArrangement = Arrangement.Center,
+                    ) {
+                        Text(
+                            text = workout.rest?.toString() ?: "---",
+                            style =
+                                MaterialTheme.typography.bodyMedium.copy(
+                                    fontWeight = FontWeight.Bold,
+                                ),
+                            textAlign = TextAlign.Center,
+                            modifier = baseLineModifier,
+                        )
+                        Spacer(Modifier.width(2.dp))
+                        Text(
+                            text = stringResource(StringRes.seconds),
+                            style =
+                                MaterialTheme.typography.bodySmall.copy(
+                                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+                                ),
+                            textAlign = TextAlign.Center,
+                            modifier = baseLineModifier,
+                        )
                     }
                 }
             }
