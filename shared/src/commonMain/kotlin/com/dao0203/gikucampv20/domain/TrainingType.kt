@@ -4,6 +4,8 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
 data class TrainingType(
     val id: String,
@@ -26,6 +28,17 @@ private val createdAtDefault: LocalDate
         Clock.System
             .now()
             .toLocalDateTime(TimeZone.currentSystemDefault()).date
+
+@OptIn(ExperimentalUuidApi::class)
+fun TrainingType.Companion.dummy() =
+    TrainingType(
+        id = "dummy + ${Uuid.random()}",
+        name = "dummy",
+        description = "dummy",
+        // random,
+        muscleGroups = listOf(MuscleGroup.BACK, MuscleGroup.CHEST),
+        createdAt = LocalDate(2021, 1, 1),
+    )
 
 fun TrainingType.Companion.defaults() =
     listOf(

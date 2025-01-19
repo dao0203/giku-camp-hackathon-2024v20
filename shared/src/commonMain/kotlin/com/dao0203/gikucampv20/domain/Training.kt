@@ -23,5 +23,26 @@ sealed interface Training {
         val sets: Int,
         val workoutSet: List<WorkoutSet>,
         val createdAt: LocalDate,
-    ) : Training
+    ) : Training {
+        companion object
+    }
+}
+
+fun List<Training.History>.byMuscleGroup(): Map<MuscleGroup, List<Training.History>> {
+    return groupBy { it.type.muscleGroups.first() }
+}
+
+fun Training.History.Companion.dummies(): Map<MuscleGroup, List<Training.History>> {
+    return mapOf(
+        MuscleGroup.BACK to
+            listOf(
+                Training.History(
+                    id = "dummy",
+                    type = TrainingType.dummy(),
+                    sets = 4,
+                    workoutSet = WorkoutSet.dummies("dummy"),
+                    createdAt = LocalDate(2021, 1, 1),
+                ),
+            ),
+    )
 }
