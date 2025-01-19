@@ -2,31 +2,80 @@ package com.dao0203.gikucampv20.feature.record
 
 import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.dao0203.gikucampv20.domain.Training
+import com.dao0203.gikucampv20.repository.TrainingHistoryRepository
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
 import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 @Stable
 data class HistoryWithCalenderUiState(
     val showBackGroundDays: Set<LocalDate>,
     val selectedDate: LocalDate?,
+    val histories: List<Training.History>,
+    val now: LocalDate,
+) {
+    companion object {
+        fun default() =
+            HistoryWithCalenderUiState(
+                showBackGroundDays = emptySet(),
+                selectedDate = null,
+                histories = emptyList(),
+                now = Clock.System.todayIn(TimeZone.currentSystemDefault()),
+            )
+    }
+}
+
+data class HistoryWithCalenderViewModelState(
+    val now: LocalDate = Clock.System.todayIn(TimeZone.currentSystemDefault()),
+    val selectedDate: LocalDate? = null,
 )
 
 class HistoryWithCalenderViewModel : ViewModel(), KoinComponent {
-    private val _uiState =
-        MutableStateFlow(
+    private val trainingHistoryRepository: TrainingHistoryRepository by inject()
+    private val vmState = MutableStateFlow(HistoryWithCalenderViewModelState())
+    private val historiesState =
+        vmState
+            .map { it.selectedDate }
+            .distinctUntilChanged()
+            .combine(trainingHistoryRepository.trainingHistory) { selectedDate, histories ->
+                if (selectedDate != null) {
+                    histories.filter { it.createdAt == selectedDate }
+                } else {
+                    emptyList()
+                }
+            }
+    val uiState =
+        combine(
+            historiesState,
+            trainingHistoryRepository.trainingHistory,
+            vmState,
+        ) { histories, defaultHistory, vmState ->
             HistoryWithCalenderUiState(
-                showBackGroundDays = setOf(LocalDate(2025, 1, 1)),
-                selectedDate = Clock.System.todayIn(TimeZone.currentSystemDefault()),
-            ),
-        )
-    val uiState = _uiState.asStateFlow()
+                showBackGroundDays = defaultHistory.map { it.createdAt }.toSet(),
+                selectedDate = vmState.selectedDate,
+                histories = histories,
+                now = vmState.now,
+            )
+        }
+            .stateIn(
+                viewModelScope,
+                SharingStarted.Lazily,
+                HistoryWithCalenderUiState.default(),
+            )
 
-    fun onDateSelected(date: LocalDate) {
-        _uiState.value = _uiState.value.copy(selectedDate = date)
+    fun changeSelectedDate(date: LocalDate) {
+        vmState.update { it.copy(selectedDate = date) }
     }
 }

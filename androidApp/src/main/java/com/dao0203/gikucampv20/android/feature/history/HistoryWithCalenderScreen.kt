@@ -13,7 +13,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -31,10 +30,11 @@ import com.kizitonwose.calendar.compose.HorizontalCalendar
 import com.kizitonwose.calendar.compose.rememberCalendarState
 import com.kizitonwose.calendar.core.CalendarDay
 import com.kizitonwose.calendar.core.firstDayOfWeekFromLocale
+import com.kizitonwose.calendar.core.yearMonth
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.toJavaLocalDate
 import kotlinx.datetime.toKotlinLocalDate
 import org.koin.compose.viewmodel.koinViewModel
-import java.time.YearMonth
 
 @Composable
 fun HistoryWithCalenderScreen(
@@ -43,7 +43,7 @@ fun HistoryWithCalenderScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     HistoryWithCalenderContent(
         uiState = uiState,
-        onDayClick = viewModel::onDateSelected,
+        onDayClick = viewModel::changeSelectedDate,
     )
 }
 
@@ -64,6 +64,7 @@ private fun HistoryWithCalenderContent(
         ) {
             HistoryHorizontalCalender(
                 showBackGroundDays = uiState.showBackGroundDays,
+                now = uiState.now,
                 onDayClick = onDayClick,
             )
         }
@@ -73,14 +74,14 @@ private fun HistoryWithCalenderContent(
 @Composable
 fun HistoryHorizontalCalender(
     showBackGroundDays: Set<LocalDate>,
+    now: LocalDate,
     onDayClick: (LocalDate) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val currentMonth = remember { YearMonth.now() }
-    val startMonth = remember { currentMonth.minusMonths(100) } // Adjust as needed
-    val endMonth = remember { currentMonth.plusMonths(100) } // Adjust as needed
-    val firstDayOfWeek = remember { firstDayOfWeekFromLocale() } // Available from the library
-
+    val currentMonth = now.toJavaLocalDate().yearMonth
+    val startMonth = currentMonth.minusMonths(100)
+    val endMonth = currentMonth.plusMonths(100)
+    val firstDayOfWeek = firstDayOfWeekFromLocale()
     val state =
         rememberCalendarState(
             startMonth = startMonth,
@@ -144,7 +145,13 @@ private fun Day(
     ) {
         Text(
             text = day.date.dayOfMonth.toString(),
-            style = MaterialTheme.typography.bodyMedium,
+            style = MaterialTheme.typography.bodyMedium.copy(
+                color = if (showBackGround) {
+                    MaterialTheme.colorScheme.onPrimaryContainer
+                } else {
+                    MaterialTheme.colorScheme.onSurface
+                },
+            )
         )
     }
 }
@@ -155,6 +162,7 @@ private fun CalenderPreview() {
     MainTheme {
         HistoryHorizontalCalender(
             showBackGroundDays = setOf(LocalDate(2025, 1, 1)),
+            now = LocalDate(2025, 1, 1),
             onDayClick = {},
         )
     }
