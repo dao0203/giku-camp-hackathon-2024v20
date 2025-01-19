@@ -3,7 +3,9 @@ package com.dao0203.gikucampv20.feature.record
 import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.dao0203.gikucampv20.domain.MuscleGroup
 import com.dao0203.gikucampv20.domain.Training
+import com.dao0203.gikucampv20.domain.byMuscleGroup
 import com.dao0203.gikucampv20.repository.TrainingHistoryRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -23,7 +25,7 @@ import org.koin.core.component.inject
 data class HistoryWithCalenderUiState(
     val showBackGroundDays: Set<LocalDate>,
     val selectedDate: LocalDate?,
-    val histories: List<Training.History>,
+    val historiesByMuscleGroup: Map<MuscleGroup, List<Training.History>>,
     val now: LocalDate,
 ) {
     companion object {
@@ -31,7 +33,7 @@ data class HistoryWithCalenderUiState(
             HistoryWithCalenderUiState(
                 showBackGroundDays = emptySet(),
                 selectedDate = null,
-                histories = emptyList(),
+                historiesByMuscleGroup = emptyMap(),
                 now = Clock.System.todayIn(TimeZone.currentSystemDefault()),
             )
     }
@@ -45,15 +47,15 @@ data class HistoryWithCalenderViewModelState(
 class HistoryWithCalenderViewModel : ViewModel(), KoinComponent {
     private val trainingHistoryRepository: TrainingHistoryRepository by inject()
     private val vmState = MutableStateFlow(HistoryWithCalenderViewModelState())
-    private val historiesState =
+    private val historiesByMuscleGroupState =
         vmState
             .map { it.selectedDate }
             .distinctUntilChanged()
             .combine(trainingHistoryRepository.trainingHistory) { selectedDate, histories ->
                 if (selectedDate != null) {
-                    histories.filter { it.createdAt == selectedDate }
+                    histories.filter { it.createdAt == selectedDate }.byMuscleGroup()
                 } else {
-                    emptyList()
+                    emptyMap()
                 }
             }
     private val showBackGroundDays =
@@ -61,14 +63,14 @@ class HistoryWithCalenderViewModel : ViewModel(), KoinComponent {
             .map { it.map { history -> history.createdAt }.toSet() }
     val uiState =
         combine(
-            historiesState,
+            historiesByMuscleGroupState,
             showBackGroundDays,
             vmState,
         ) { histories, showBackgroundDays, vmState ->
             HistoryWithCalenderUiState(
                 showBackGroundDays = showBackgroundDays,
                 selectedDate = vmState.selectedDate,
-                histories = histories,
+                historiesByMuscleGroup = histories,
                 now = vmState.now,
             )
         }
